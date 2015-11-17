@@ -2,6 +2,15 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
+        <meta name="version" content="1.0.0">
+        <meta name="author" content="Aaron Walwyn">
+        <meta name="description" content="Hogcraft 3.0">
+
+        <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/stylesheet.css') }}">
+
+        <!---<script src="js/jquery-2.1.0.js"></script>
+        <script src="js/main.js"></script>-->
+
         {% if title %}
         <title>{{ title }} - Pathways</title>
         {% else %}
@@ -9,8 +18,22 @@
         {% endif %}
     </head>
     <body>
-        <div>Pathways| <a href="/index">Home</a></div>
-        <hr>
-        {% block content %}{% endblock %}
+        <nav>
+            <div id="top">
+                <div id="logo">Pathways</div>
+            </div>
+            <div id="bottom">
+                <ul>
+                    <li>Home</li>
+                    <li>Your Pathway</li>
+                    <li>About</li>
+                </ul>
+            </div>
+        </nav>
+        <!--<div>Pathways| <a href="/index">Home</a></div>
+        <hr>-->
+        <div id="content">
+            {% block content %}{% endblock %}
+        <div>
     </body>
 </html>
