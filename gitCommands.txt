@@ -14,3 +14,5 @@ $ git push
 $ git checkout Frontend
 
 $ git push --set-upstream origin Frontend
+
+$ git branch -a
