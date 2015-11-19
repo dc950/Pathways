@@ -13,30 +13,11 @@ body {
 
 /*----  Base Template ----*/
 /*----  Navigation Bar ----*/
-nav {
-	background-color: #33ff66;
-}
 
-nav #top {
-	background-color: red;
-}
 
-nav #top #logo {
-	font-size: 25pt;
-	padding: 10px
-}
-
-nav #bottom {
-	background-color: #FF9999;
-}
-
-nav #bottom ul {
+.nav-bottom {
 	margin: 0;
-	padding: 10px;
-}
-
-nav #bottom ul li {
-	display: inline-block;
+	padding: 0 !important;
 }
 
 /*----  Index Template ----*/
