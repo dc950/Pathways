@@ -50,9 +50,9 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse nav-bottom" id="bs-example-navbar-collapse-2">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="#">Home <span class="sr-only">(current)</span></a></li>
-                        <li><a href="#">Your Pathway</a></li>
-                        <li><a href="#">About</a></li>
+                        <li class="active"><a href="{{ url_for('index') }}">Home <span class="sr-only">(current)</span></a></li>
+                        <li><a href="{{ url_for('pathway') }}">Your Pathway</a></li>
+                        <li><a href="{{ url_for('about') }}">About</a></li>
                     </ul>
                     <form class="navbar-form navbar-right" role="search">
                         <div class="form-group">
