@@ -7,8 +7,7 @@ from app import app
 @app.route('/home')
 def index():
     return render_template("index.html",
-                           title="Home",
-                           g.user.is_authenticated=True)
+                           title="Home")
 @app.route('/about')
 def about():
     return render_template("about.html",
