@@ -1,4 +1,4 @@
-@font-face {
+/*@font-face {
 	font-family: "coolvetica";
 	src: url(../fonts/coolvetica.ttf);
 }
@@ -48,13 +48,34 @@ nav #bottom ul li {
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: center;
+	
+	display: flex;
+  	align-items: center;
+  	justify-content: center;
 }
 
-.header-image {
-
+.vcenter {
+    max-width: 50%;
+    align-items: center;
+  	justify-content: center;
 }
+
+#get-started {
+	color: #33FF66;
+	display: block;
+	text-align: center;
+}
+
+#get-started-button {
+	width: 125px;
+	height: 50px;
+	margin: auto auto;
+	text-align: center;
+	display: block;
+}
+
 
 main {
 	background-color: #CFCFCF;
-	margin: 50px;
+	margin: 25px;
 }

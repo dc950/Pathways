@@ -11,6 +11,12 @@
         <script src="{{ url_for('static', filename='js/jquery-2.1.4.js') }}"></script>
         <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 
+        <!-- Bootstrap Addons -->
+        <link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap-3-3-5/css/bootstrap.css') }}">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Page specific <head extesions -->
         {% block head_extension %}{% endblock %}
 
         {% if title %}
@@ -20,16 +26,16 @@
         {% endif %}
     </head>
     <body>
-        <nav>
+        <nav class="container-fluid">
             <div id="top">
                 <div id="logo">Pathways</div>
             </div>
-            <div id="bottom">
-                <ul>
-                    <li>Home</li>
-                    <li>Your Pathway</li>
-                    <li>About</li>
-                </ul>
+            <div id="bottom" class="container-fluid">
+                <div class="row">
+                    <div class="col-md-1">Home</div>
+                    <div class="col-md-1">Pathway</div>
+                    <div class="col-md-1">About</div>
+                </div>
             </div>
         </nav>
         <header>
@@ -38,7 +44,7 @@
         <main>
             {% block main_content %}{% endblock %}
         </main>
-        <footer>
+        <footer class="container-fluid">
             This is the Footer. Reflective Engineering 2015.
         </footer>
     </body>
