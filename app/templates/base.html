@@ -11,6 +11,8 @@
         <script src="{{ url_for('static', filename='js/jquery-2.1.4.js') }}"></script>
         <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 
+        {% block head_extension %}{% endblock %}
+
         {% if title %}
         <title>{{ title }} - Pathways</title>
         {% else %}
@@ -30,10 +32,14 @@
                 </ul>
             </div>
         </nav>
-        <!--<div>Pathways| <a href="/index">Home</a></div>
-        <hr>-->
+        <header>
+            {% block header_content %}{% endblock %}
+        </header>
         <main>
-            {% block content %}{% endblock %}
+            {% block main_content %}{% endblock %}
         </main>
+        <footer>
+            This is the Footer. Reflective Engineering 2015.
+        </footer>
     </body>
 </html>

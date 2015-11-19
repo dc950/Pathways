@@ -1,7 +1,17 @@
 {% extends "base.html" %}
-{% block content %}
+
+<!-- Add page specific <head></head> elements here -->
+{% block head_extension %}
+{% endblock %}
+
+<!-- Page header 100% width -->
+{% block header_content %}
+	<!-- Home page Slideshow -->
 	<div id="image-block">
-		<!--<img class="header-image" src="https://upload.wikimedia.org/wikipedia/commons/c/c4/PM5544_with_non-PAL_signals.png">-->
 	</div>
-    <p>Hello, welcome to pathways!</p>
+{% endblock %}
+
+<!-- Main content block for page -->
+{% block main_content %}
+    <p>This is section 2!</p>
 {% endblock %}
