@@ -20,6 +20,15 @@ body {
 	padding: 0 !important;
 }
 
+.user-avatar {
+	height: 50px;
+}
+
+.user-info {
+	display: inline-block;
+	vertical-align: middle;
+}
+
 /*----  Index Template ----*/
 /*----  Image Block ----*/
 
@@ -72,5 +81,4 @@ main {
 	padding: 15px;
 	margin: 5px;
 	background-color: green;
-}
 }
