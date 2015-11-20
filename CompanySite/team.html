@@ -8,12 +8,12 @@
 
 <!-- Set the page to the width of the device and set the zoon level -->
 <meta name="viewport" content="width = device-width, initial-scale = 1">
-<title>Bootstrap Tutorial</title>
+<title>Reflective Engineering</title>
 <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 
 <style>
 .jumbotron{
-    background-color:#2E2D88;
+    background-color:#3333cc;
     color:white;
 }
 /* Adds borders for tabs */
@@ -34,226 +34,137 @@
 <!-- CONTAINERS -->
 <!-- container puts padding around itself while container-fluid fills the whole screen. Bootstap grids require a container. -->
 <div class="container">
-
+<img src="5.png" class="pull-right" alt="Ref Eng" width="250" height="100">
 <!-- page-header adds space aroundtext and enlarges it. It also adds an underline at the end -->
 <div class="page-header">
-<h1>Bootstrap Tutorial</h1>
+<h1>Meet The Team</h1>
+<ul class="list-inline">
+  <li><a href="index.html">Home</a></li>
+  <li><a href="previous.html">Previous Projects</a></li>
+  <li><a href="team.html">Meet The Team</a></li>
+  <li><a href="contact.html">Contact Us</a></li>
+</ul>
 </div>
 
 <!-- jumbotron enlarges fonts and puts everything in a gray box with rounded corners. If jumbotron is outside a container it fills the total width. You can change the styles by placing the changes after the Bootstrap CDN link -->
 <div class="jumbotron">
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-
+<p><STRONG>Staff List.</STRONG></p>
+<br>
+<p> At Reflective Engineering we are proud to employ over 5 of the industry’s most enthusiastic and dedicated individuals. We are all passionate about what we do and every one of us is responsible for the continued success of Reflective Engineering. Click on a name to find out more about us. </p>
 <!-- BUTTONS -->
 <!-- There are many built in button colors and sizes. If a link is to trigger in page functionality it should use role="button". The button element should be used in most situations -->
 <p>
-<a href="popo.html" class = "btn btn-default btn-lg" role="button">About us</a>
+  <br>
+<!-- NAVIGATION ELEMENTS -->
+<div class="container">
 
+
+
+
+<!-- Use nav-pills, nav-tabs. To center tabs add nav-justified to the class for ul -->
+<ul class="nav nav-pills">
+  <li class="active"><a data-toggle="tab" href="#duncan">Duncan Cameron</a></li>
+  <li><a data-toggle="tab" href="#adam">Adam Dalley</a></li>
+  <li><a data-toggle="tab" href="#deaven">Deaven Howarth</a></li>
+  <li><a data-toggle="tab" href="#omer">Omer Khalafalla</a></li>
+  <li><a data-toggle="tab" href="#scott">Scott Singh</a></li>
+  <li><a data-toggle="tab" href="#leroi">Leroi Walwyn</a></li>
+  
+</ul>
+
+<div class="tab-content">
+  <div id="duncan" class="tab-pane fade in active">
+    <img src="male.png" class="pull-left" alt="malesilhoutte" width="280" height="350">
+    <p>Head of Technical team. </p>
+    <br>
+    <p>Date Joined: 27/09/2010</p>
+    <br>
+    <p>-High visibility leadership position within one of the leading hedge funds in the world</p>
+    <br>
+    <p>-Ability to lead and deliver complex IT projects</p>
+    <br>
+    <p>-Opportunity to work with cutting-edge technologies across multiple industries </p>
+    <!-- pic here nigga -->
+  </div>
+  <div id="adam" class="tab-pane fade">
+    <img src="male.png" class="pull-left" alt="malesilhoutte" width="280" height="350">
+    <p>Head of Software team. </p>
+      <br>
+    <p>Date Joined: 18/02/2012</p>
+      <br>
+    <p>-Testing the product in controlled, real situations before going live </p>
+      <br>
+    <p>-Presenting ideas for system improvements, including cost proposals</p>
+      <br>
+    <p>-Working closely with analysts, designers and staff  </p>
+  </div>
+  <div id="deaven" class="tab-pane fade">
+    <img src="female.png" class="pull-left" alt="femalesilhoutte" width="280" height="350">
+    <p>Head of Technical writers team. </p>
+    <br>
+    <p>Date Joined: 12/05/2009</p>
+    <br>
+    <p>-Proficient technical writer with the ability to create, assimilate, and convey technical material in a concise and effective manner. </p>
+    <br>
+    <p>-Worked as part of a printed media company before joining as a software specialist through technical team. Handled several project management jobs.</p>
+  </div>
+  <div id="omer" class="tab-pane fade">
+     <img src="male.png" class="pull-left" alt="malesilhoutte" width="280" height="350">
+    <p>Head of Marketing and Information team. </p>
+      <br>
+    <p>Date Joined: 04/12/2010</p>
+      <br>
+    <p>-Worked with Information Technology to improve the quality of the services being delivered.</p>
+      <br>
+    <p>-Assisted in Integration and Testing of new solutions.</p>
+      <br>
+    <p>-Supports the development of training material andparticipates in the implementation. </p>
+  </div>
+  <div id="scott" class="tab-pane fade">
+      <img src="male.png" class="pull-left" alt="malesilhoutte" width="280" height="350">
+    <p>Head of Maintenance Engineers team. </p>
+      <br>
+    <p>Date Joined: 20/03/2007</p>
+      <br>
+    <p>-Designing maintenance strategies, procedures and methods.</p>
+      <br>
+    <p>-Carrying out routine scheduled maintenance work and responding to equipment faults.</p>
+      <br>
+    <p>-Diagnosing breakdown problems.</p>
+  </div>
+  <div id="leroi" class="tab-pane fade">
+     <img src="male.png" class="pull-left" alt="malesilhoutte" width="280" height="350">
+    <p>Head of Software Engineering team. </p>
+      <br>
+    <p>Date Joined: 12/08/2011</p>
+      <br>
+    <p>-Experience in costing new or modified systems.</p>
+      <br>
+    <p>-Able to meet steer team in right direction to meet deadlines.</p>
+      <br>
+    <p>-Writing new software and operating manuals</p>
+  </div>
+</div>
+
+</div>
 </p>
 
-<!-- bootstraptut2.html -->
-
-<!-- ICONS -->
-<!-- Bootstrap has hundreds of free icons. http://getbootstrap.com/components/#glyphicons They can be used on their own or inside of buttons with a link or regular button for example. -->
-<p>
-<span class="glyphicon glyphicon-film"></span>
-
-<a href="#" class="btn btn-primary btn-lg">Trash <span class="glyphicon glyphicon-trash"></span></a>
-
-<button type="button" class="btn btn-default btn-lg">
-
-  <!-- aria-hidden hides decorative icons from screen readers -->
-  <span class="glyphicon glyphicon-phone-alt" aria-hidden="true"></span> Call Me
-</button>
-</p>
-
 </div>
 </div>
 
 <div class="container">
 
-<!-- well surrounds the text with a rounded border and gray background. The size can be changed with well-sm or well-lg -->
-<div class="well well-sm">
-<p>Exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
-</div>
 
-<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
-</div>
-
-<div class="container">
-
-<!-- ROUNDED IMAGES -->
-<!-- Images marked as responsive have a max-width equal to the screen. You can add rounded corners with img-rounded, img-circle, and img-thumbnail. pull-left and pull-right will float images in the provided direction. center-block will place the image in the center. -->
-<img src="ntt-logo.png" id="nttLogo" class="img-responsive img-thumbnail pull-left" alt="Responsive image">
-
-<!-- CONTEXTUAL COLORS -->
-<!-- Contextual colors can be added to text -->
-<p>
-<span class="text-muted">Quis nostrud</span>
-<span class="text-primary">exercitation ullamco</span>
-<span class="text-success">laboris nisi</span>
-<span class="text-info">ut aliquip</span>
-<span class="text-warning">ex ea commodo</span>
-<span class="text-danger">consequat.</span> Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-
-<!-- You can set contextual backgrounds -->
-<p class="bg-primary">Duis aute irure dolor</p>
-<p class="bg-success">In reprehenderit</p>
-<p class="bg-info">In voluptate velit</p>
-<p class="bg-warning">Esse cillum dolore eu</p>
-<p class="bg-danger">Fugiat nulla pariatur</p>
-</div>
-
-<div class="container">
-
-<!-- DROP DOWN MENUS -->
-<!-- You can easily add a drop down menu with class dropdown, or dropup. Change button size with btn-lg, btn-sm, btn-xs
-ARIA stands for Accessible Rich Internet Applications and it is used to make apps more excessible for people with disabilities. aria-haspopup states that the element has a sub menu. aria-expanded defines if the sub-menu is expanded. Full list here http://www.w3.org/TR/wai-aria/states_and_properties#aria-expanded -->
-<div class="dropdown">
-  <button class="btn btn-primary dropdown-toggle btn-lg" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-    Favorite Hero
-
-    <!-- Display icon in button -->
-    <span class="caret"></span>
-  </button>
-  <ul class="dropdown-menu">
-
-    <!-- Unselectable header -->
-    <li class="dropdown-header">Marvel</li>
-    <li><a href="#">Spiderman</a></li>
-    <li><a href="#">Captain America</a></li>
-    <li><a href="#">Iron Man</a></li>
-
-    <!-- Seperates content in menu -->
-    <li role="separator" class="divider"></li>
-    <li class="dropdown-header">DC</li>
-
-    <!-- Disable menu element -->
-    <li class="disabled"><a href="#">Superman</a></li>
-    <li><a href="#">Batman</a></li>
-    <li><a href="#">Flash</a></li>
-  </ul>
-</div>
 </div><br>
 
 <!-- INPUT GROUPS -->
 <div class="container">
 
-<!-- We can add text or buttons on the right and/or left of input elements. Use input-group-lg or input-group-sm for input sizing -->
-<div class="input-group input-group-lg">
-  <span class="input-group-addon">Your name</span>
-  <input type="text" class="form-control" placeholder="Full Name">
-</div><br>
 
-<div class="input-group input-group-sm">
-  <input type="text" class="form-control" placeholder="Full Name">
-  <span class="input-group-btn">
-    <button class="btn btn-default" type="button">Enter</button>
-  </span>
-</div><br>
-
-<!-- Create input button dropdowns. aria-haspopup states that input has a sub menu. aria-expanded closes the dropdown by default -->
-<div class="row">
-    <div class="input-group">
-      <div class="input-group-btn">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">User ID <span class="caret"></span></button>
-        <ul class="dropdown-menu">
-          <li><a href="#">Facebook</a></li>
-          <li><a href="#">Twitter</a></li>
-          <li><a href="#">Google+</a></li>
-        </ul>
-      </div>
-      <input type="text" class="form-control" aria-label="...">
-    </div>
-</div><br>
-
-<!-- Input radio and checkboxes -->
-<div class="row">
-    <div class="input-group">
-      <span class="input-group-addon">
-
-        <!-- Change to radio for radio -->
-        <input type="checkbox">
-      </span>
-      <input type="text" class="form-control">
-    </div>
-</div>
 
 </div><br>
 
-<!-- NAVIGATION ELEMENTS -->
-<div class="container">
 
-<!-- Basic horizontal menu -->
-<ul class="list-inline">
-  <li><a href="#">Home</a></li>
-  <li><a href="#">About</a></li>
-
-  <!-- Add a dropdown menu -->
-  <li class="dropdown">
-    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Contact
-    <span class="caret"></span></a>
-    <ul class="dropdown-menu">
-      <li><a href="#">Phone</a></li>
-      <li><a href="#">Email</a></li>
-      <li><a href="#">Achedule Appointment</a></li>
-    </ul>
-  </li>
-  <li><a href="#">Shop</a></li>
-</ul>
-
-<!-- Basic vertical menu -->
-<ul class="nav nav-pills nav-stacked">
-  <li class="active"><a href="#">Home</a></li>
-  <li><a href="#">About</a></li>
-
-  <!-- Add drop down menu -->
-  <li class="dropdown">
-    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Contact
-    <span class="caret"></span></a>
-    <ul class="dropdown-menu">
-      <li><a href="#">Phone</a></li>
-      <li><a href="#">Email</a></li>
-      <li><a href="#">Schedule Appointment</a></li>
-    </ul>
-  </li>
-  <li><a href="#">Shop</a></li>
-</ul>
-
-<!-- Use nav-pills, nav-tabs. To center tabs add nav-justified to the class for ul -->
-<ul class="nav nav-pills">
-  <li class="active"><a data-toggle="tab" href="#superman">Superman</a></li>
-  <li><a data-toggle="tab" href="#batman">Batman</a></li>
-
-  <!-- Dropdown menu item -->
-  <li class="dropdown">
-    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Flash
-    <span class="caret"></span></a>
-    <ul class="dropdown-menu">
-
-      <!-- Disable a tab -->
-      <li class="disabled"><a data-toggle="tab" href="#flash">The Flash</a></li>
-      <li><a data-toggle="tab" href="#kidflash">Kid Flash</a></li>
-    </ul>
-  </li>
-</ul>
-
-<div class="tab-content">
-  <div id="superman" class="tab-pane fade in active">
-    <p>Superman is a fictional superhero appearing in American comic books published by DC Comics. </p>
-  </div>
-  <div id="batman" class="tab-pane fade">
-    <p>Batman is a fictional superhero appearing in American comic books published by DC Comics. </p>
-  </div>
-  <div id="flash" class="tab-pane fade">
-    <p>The Flash is a fictional superhero appearing in American comic books published by DC Comics. </p>
-  </div>
-  <div id="kidflash" class="tab-pane fade">
-    <p>Kid Flash is a fictional superhero appearing in American comic books published by DC Comics. </p>
-  </div>
-</div>
-
-</div>
 
 <!-- Collapsible Navigation Bar -->
 <div class="container">
