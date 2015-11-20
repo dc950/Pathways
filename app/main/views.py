@@ -16,7 +16,7 @@ def user(user_id):
     user_obj = User.query.filter_by(id=user_id).first()
     if user_obj is None:
         flash('User %s not found.' % user_id)
-        return redirect(url_for('index'))
+        return redirect(url_for('main.index'))
     name = user_obj.first_name + " " + user_obj.last_name
     return render_template("user.html",
                            user=user_obj,
