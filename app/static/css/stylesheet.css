@@ -78,7 +78,20 @@ main {
 }
 
 .qualifification-section {
-	padding: 15px;
-	margin: 5px;
+	padding: 7px;
+	margin: 35px;
 	background-color: green;
+	height: 130px;
+	
+}
+
+.edit-button {
+	height: 20px;
+	width: 50px;
+	background-color: red;
+	
+	float: right;
+	position: absolute;
+	top: 0;
+	right: 0;
 }
