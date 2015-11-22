@@ -3,5 +3,5 @@
 	<div id="image-block">
 		<!--<img class="header-image" src="https://upload.wikimedia.org/wikipedia/commons/c/c4/PM5544_with_non-PAL_signals.png">-->
 	</div>
-    <p>Hello, welcome to pathways!</p>
+    <p>Hello {% if current_user.is_authenticated %} {{ current_user.first_name }}{% else %} stranger{% endif %}, welcome to pathways!</p>
 {% endblock %}

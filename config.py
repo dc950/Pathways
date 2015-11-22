@@ -15,7 +15,7 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    print("Running in Development mode: live at")
+    print("Running in Development mode: live at http://127.0.0.1:5000/")
     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
         'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
 
