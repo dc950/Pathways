@@ -137,3 +137,8 @@ local.properties
 
 # CDT-specific
 .cproject
+
+
+#Ignore database files
+*.sqlite
+*.db
