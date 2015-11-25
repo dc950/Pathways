@@ -5,6 +5,14 @@ $ git pull
 
 $ git add *
 
+$ git commit -a -m "Commit Message Here
+
 $ git commit -m "Commit Message Here"
 
 $ git push
+
+$ git checkout Frontend
+
+$ git push --set-upstream origin Frontend
+
+$ git branch -a

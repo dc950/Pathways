@@ -25,15 +25,25 @@
             <div id="bottom">
                 <ul>
                     <li>Home</li>
-                    <li><a href="{{ url_for('user', user_id=1) }}" >Your Pathway</a></li>
+                    {% if current_user.is_authenticated %}
+                    <li><a href="{{ url_for('main.user', user_id=current_user.id) }}" >Your Pathway</a></li>
+                    {% endif %}
                     <li>About</li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    {% if current_user.is_authenticated %}
+                    <li>><a href="{{ url_for('auth.logout') }}">Sign Out</a></li>
+                    {% else %}
+                    <li><a href="{{ url_for('auth.login') }}">Sign In</a></li>
+                    {% endif %}
                 </ul>
             </div>
         </nav>
         <!--<div>Pathways| <a href="/index">Home</a></div>
         <hr>-->
-        <div id="content">
+
+        <main>
             {% block content %}{% endblock %}
-        <div>
+        </main>
     </body>
 </html>
