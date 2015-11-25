@@ -3,12 +3,15 @@
 <!-- Add page specific <head></head> elements here -->
 {% block head_extension %}
 	<script src="{{ url_for('static', filename='js/d3/d3.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/pathway.js') }}"></script>
 {% endblock %}
 
 <!-- Page header 100% width -->
 {% block header_content %}
 	<div id="pathway-container">
-		This is where the pathways is shown
+		<svg class="overlay">
+			<circle cx='40' cy='60' r='10'></circle>
+		</svg>
 	</div>
 {% endblock %}
 

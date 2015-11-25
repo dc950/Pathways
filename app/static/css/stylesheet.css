@@ -34,7 +34,7 @@ body {
 
 #image-block {
 	height: 400px;
-	background-image: url(https://upload.wikimedia.org/wikipedia/commons/c/c4/PM5544_with_non-PAL_signals.png);
+	background-image: url(../img/education-stock-image.jpg);
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: center;
@@ -76,6 +76,10 @@ main {
 	background-color: red;
 	height: 350px;
 }
+
+.overlay{
+      background-color:#EEE !important;
+  }
 
 .qualifification-section {
 	padding: 7px;

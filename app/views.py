@@ -22,3 +22,12 @@ def pathway():
 def test():
     return render_template("test.html",
                            title="Test")
+
+
+@app.route('/js/<path:path>')
+def send_js(path):
+    return send_from_directory('js', path)
+
+@app.route('/img/<path:path>')
+def send_img(path):
+    return send_from_directory('img', path)
