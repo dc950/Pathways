@@ -1,0 +1,12 @@
+<p> Dear {{ user.username }} </p>
+
+<p> Welcome to Pathways </p>
+
+<p>To confirm your account, please <a href = {{ url_for('auth.confirm', token=token, _external = True) }}> click here </a></p>
+
+<p>Alternatively, copy and paste the following link into your browser's address bar</p>
+<p>{{ url_for('auth.confirm', token=token, _external = True) }}</p>
+
+<p>Sincerely,</p>
+
+<p>The Reflective Pathways Team</p>

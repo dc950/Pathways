@@ -3,10 +3,14 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 #  SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
 
+
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or "somethingnoonewillguesshopefully"
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    PATHWAYS_MAIL_SUBJECT_PREFIX = '[Pathways]'
+    PATHWAYS_MAIL_SENDER = 'Pathways Admin <ReflectiveEngineering@gmail.com>'
+    PATHWAYS_ADMIN = os.environ.get('PATHWAYS_ADMIN')
 
     @staticmethod
     def init_app(app):
@@ -15,6 +19,12 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
+    MAIL_SERVER = 'smtp.gmail.com'
+    MAIL_PORT = 587
+    MAIL_USE_SSL = False
+    MAIL_USE_TLS = True
+    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')  # 'ReflectiveEngineering@gmail.com'
+    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')  # 'Group1Pathway'
     print("Running in Development mode: live at http://127.0.0.1:5000/")
     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
         'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')

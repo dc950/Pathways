@@ -1,0 +1,11 @@
+Dear {{ user.username }}
+
+Welcome to Pathways
+
+To confirm your account, please click the following link
+
+{{ url_for('auth.confirm', token=token, _external = True) }}
+
+Sincerely,
+
+Reflective Pathways
