@@ -41,6 +41,7 @@ def register():
                     last_name=form.last_name.data,
                     email=form.email.data,
                     password=form.password.data)
+        user.generate_username()
         db.session.add(user)
         db.session.commit()
         user.send_confirmation_email()

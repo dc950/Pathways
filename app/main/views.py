@@ -13,11 +13,11 @@ def index():
                            title="Home")
 
 
-@main.route('/user/<user_id>')
-def user(user_id):
-    user_obj = User.query.filter_by(id=user_id).first()
+@main.route('/user/<username>')
+def user(username):
+    user_obj = User.query.filter_by(username=username).first()
     if user_obj is None:
-        flash('User %s not found.' % user_id)
+        flash('User %s not found.' % username)
         return redirect(url_for('main.index'))
     name = user_obj.first_name + " " + user_obj.last_name
     return render_template("user.html",

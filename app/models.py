@@ -20,6 +20,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(100), index=True, unique=True)
     password_hash = db.Column(db.String(128))
     confirmed = db.Column(db.Boolean, default=False)
+    username = db.Column(db.String(60), unique=True)
 
     def __repr__(self):
         return '<User %r>' % (self.first_name + self.last_name)
@@ -56,3 +57,15 @@ class User(UserMixin, db.Model):
         db.session.add(self)
         return True
 
+    def generate_username(self):
+        u_name = (self.first_name + self.last_name).lower()
+        if User.query.filter_by(username=u_name).first() is None:
+            self.username = u_name
+            return
+        version = 1
+        while True:
+            new_u_name = (u_name + str(version)).lower()
+            if User.query.filter_by(username=new_u_name).first() is None:
+                self.username = new_u_name
+                return
+            version += 1
