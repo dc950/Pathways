@@ -28,17 +28,18 @@
 			"grade" : "F"
 		}]
 	},
-	"A2-Level" : {
-		"level" : 3,
+	"BSc" : {
+		"level" : 6,
 		"subjects" : [{
-			"name" : "Maths",
-			"grade" : "D"
-		}, {
-			"name" : "English",
-			"grade" : "E"
-		}, {
-			"name" : "Science",
-			"grade" : "F"
+			"name" : "Computer Science",
+			"grade" : "1st"
+		}]
+	},
+	"Msc" : {
+		"level" : 7,
+		"subjects" : [{
+			"name" : "Computer Science",
+			"grade" : "1st"
 		}]
 	}
 }

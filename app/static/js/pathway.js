@@ -19,35 +19,47 @@ $(document).ready(function(){
 		var newCircles = [];
 
 		$.each(treeData, function(index, value){
-    		console.log(index);
+    		//console.log(value);
 
-    		var circles = baseSvg.selectAll('circle').data(treeData[index].subjects);
-	        newCircles[j] = circles.enter();
+    		var circles = baseSvg.selectAll('circle').data(value.subjects);
 
-	        console.log(newCircles[j].size());
-
-			/*newCircles.append('circle').attr('cx', function(d, i){
-				return (i+1) * 40;
-			}).attr('cy', function(d, i){
-				return (j+1) * 40;
-			}).attr('r', '10').attr('data-subject', function(d){
-				return d.name;
-			}).attr('data-qualification', function(d){
-				return index
-			});*/
-
-			j++;			
+	        newCircles[j] = {qualification: index ,level: value.level, subjects: circles.enter()};
+	        j++;			
     	});
 
+    	console.log(newCircles);
+
     	$.each(newCircles, function(index, value){
-    		value.append('circle').attr('cx', function(d, i){
+    		console.log(value)
+
+    		value.subjects.append('circle').attr('cx', function(d, i){
 				return (i+1) * 40;
 			}).attr('cy', function(d, i){
 				return (index+1) * 40;
 			}).attr('r', '10').attr('data-subject', function(d){
 				return d.name;
-			}).attr('data-qualification', function(d){
-				return index
+			}).attr('data-qualification', function(){
+				return value.qualification
+			}).attr('data-level', function(){
+				return value.level;
+			})
+			.attr('class', function(){
+				switch(value.level) {
+					case 1:
+						return "node node-level-1"
+					case 2:
+						return "node node-level-2"
+					case 3:
+						return "node node-level-3"
+					case 4:
+						return "node node-level-4"
+					case 5:
+						return "node node-level-5"
+					case 6:
+						return "node node-level-6"
+					default:
+						return "node"
+				}
 			});
     	});
 	});
