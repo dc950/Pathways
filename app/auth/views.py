@@ -1,4 +1,4 @@
-from flask import render_template, redirect, request, url_for, flash
+from flask import render_template, redirect, request, url_for, flash, Markup
 from flask.ext.login import login_user, logout_user, login_required, current_user
 from . import auth
 from ..models import User
@@ -27,6 +27,12 @@ def logout():
     return redirect(url_for('main.index'))
 
 
+@auth.route('/send_token')
+def send_token():
+    current_user.send_confirmation_email()
+    return redirect(request.args.get('next') or url_for('main.index'))
+
+
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
@@ -37,9 +43,7 @@ def register():
                     password=form.password.data)
         db.session.add(user)
         db.session.commit()
-        token = user.generate_confirmation_token()
-        send_email(user.email, 'Confirm Your Account', 'auth/email/confirm', user=user, token=token)
-        flash('A confirmation email has been sent to your email')
+        user.send_confirmation_email()
         return redirect(url_for('auth.login'))
     return render_template('register.html', form=form)
 
@@ -59,4 +63,5 @@ def confirm(token):
 @auth.before_app_request
 def before_request():
     if current_user.is_authenticated and not current_user.confirmed and request.endpoint[:5] != 'auth.':
-        flash('Note: Your account has not been authenticated yet.')
+        message = Markup("'Note: Your account has not been authenticated yet. <a href='"+url_for('auth.send_token')+"'> Click here </a> to resend the email.'")
+        flash(message)

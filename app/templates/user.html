@@ -1,4 +1,9 @@
 {% extends "base.html" %}
-{% block content %}
+
+{% block header_content %}
+    <h1>{{ user.first_name + " " + user.last_name}}</h1>
+{% endblock %}
+
+{% block main_content %}
     <p> This is the profile page for {{ user.first_name + " " + user.last_name}} </p>
 {% endblock %}

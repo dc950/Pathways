@@ -1,4 +1,4 @@
-Dear {{ user.username }}
+Dear {{ user.first_name }} {{ user.last_name }}
 
 Welcome to Pathways
 

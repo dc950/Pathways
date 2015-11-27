@@ -1,5 +1,6 @@
 from app import db
-from flask import current_app
+from flask import current_app, flash
+from .email import send_email
 from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask.ext.login import UserMixin
@@ -37,6 +38,11 @@ class User(UserMixin, db.Model):
     def generate_confirmation_token(self, expiration=3600):
         s = Serializer(current_app.config['SECRET_KEY'], expiration)
         return s.dumps({'confirm': self.id})
+
+    def send_confirmation_email(self):
+        token = self.generate_confirmation_token()
+        send_email(self.email, 'Confirm Your Account', 'auth/email/confirm', user=self, token=token)
+        flash('A confirmation email has been sent to your email')
 
     def confirm(self, token):
         s = Serializer(current_app.config['SECRET_KEY'])
