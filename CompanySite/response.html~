@@ -2,14 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<style type ="text/css" >
-   .footer{ 
-       position: fixed;     
-       text-align: leftß;    
-       bottom: 0px; 
-       width: 100%;
-   }  
-</style>
+
 <!-- If IE use the latest rendering engine -->
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
@@ -20,8 +13,8 @@
 
 <style>
 .jumbotron{
-    background-color:#ecf2f8;
-    color:black;
+    background-color:#e1e1ea;
+    color:white;
 }
 /* Adds borders for tabs */
 .tab-content {
@@ -37,6 +30,7 @@
 
 </head>
 <body>
+
 <!-- CONTAINERS -->
 <!-- container puts padding around itself while container-fluid fills the whole screen. Bootstap grids require a container. -->
 <div class="container">
@@ -52,45 +46,14 @@
 </ul>
 </div>
 	
-<div class="col-sm-12 col-md-12">
+
 	<div class="jumbotron">
-	<p>We're happy to answer any questions you have or provide you with an estimate of our services. Send us a message through the form below and we would be happy to get back to you.<p>
+	<p>Thank you for your feedback and time. You will hear from us shortly! (Due to certain limitations we are unable to receive any email or feedback at this time. We apologise in advance)<p>
 <br>
 <p>
 
-<!-- INPUT GROUPS -->
-<div class="container">
 
-<!-- We can add text or buttons on the right and/or left of input elements. Use input-group-lg or input-group-sm for input sizing -->
-<div class="input-group input-group-lg">
-  <span class="input-group-addon">Your name</span>
-  <input type="text" class="form-control" placeholder="Full Name">
-</div><br>
-<div class="input-group input-group-lg">
-  <span class="input-group-addon">Email   </span>
-  <input type="text" class="form-control" placeholder="">
-</div><br>
-<div class="input-group input-group-lg">
-  <span class="input-group-addon">Message</span>
-  <input type="text" class="form-control" placeholder="Insert Message">
-</div><br>
 
-<div class="input-group input-group-sm">
-  <a href="response.html" class="btn btn-default">Submit</a> 
-  </span>
-</div>
-</div>
-</div>
-<div class="container">
-<div class="footer">
-<hr>
-<ul class="list-inline">
-	<li>Blogs</li>
-	<li>Report a problem</li>
-	<li>Terms and Conditions</li>
-	<li>Copyright Reflective Engineering Ltd. 2015 ©</li>
-</div>
-</div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 </body>

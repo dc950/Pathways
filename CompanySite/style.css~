@@ -1,0 +1,51 @@
+body { 
+		background-image:url("4.png");
+		background-repeat:repeat;
+		}
+section {border:5px solid black;
+padding :50px;
+text-align:center;}
+h1 {
+	 text-align:center;
+	 color:#ccffff;
+	 text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+	 margin-right:900px;
+	 font-size:50px;
+}
+h2 {
+	 text-align:center;
+	 color:#ccffff;
+	 text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+h3 {
+	 text-align:left;
+	 color:#ccffff;
+	 text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+	 }
+	 
+form {text-align:left;
+	 color:#ccffff;
+	 text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+	}
+a:link {
+	color:#ccffff;
+	 text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+	}
+	a:visited{
+		color:#99ff99;
+		text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;}
+a:hover
+	{ 
+	color:#66ccff;
+	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;}
+	
+a:active {
+	color:#ff00ff;}
+	
+.footer{ 
+       position: fixed;     
+       text-align: center;    
+       bottom: 0px; 
+       width: 100%;
+   }

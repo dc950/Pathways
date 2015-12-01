@@ -20,7 +20,7 @@
 <style>
 .jumbotron{
     background-color:#e1e1ea;
-    color:black;
+    color:lightyellow;
 }
 /* Adds borders for tabs */
 .tab-content {
