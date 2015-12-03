@@ -107,6 +107,14 @@ main {
 	stroke-width: 3;
 }
 
+.node-level-2 {
+	fill: red !important;
+}
+
+.node-level-3 {
+	fill: yellow !important;
+}
+
 .node-level-6 {
 	fill: green !important;
 }
