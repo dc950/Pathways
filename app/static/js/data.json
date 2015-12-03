@@ -1,0 +1,45 @@
+{
+	"GCSE" : {
+		"level" : 2,
+		"subjects" : [{
+			"name" : "Maths",
+			"grade" : "A"
+		}, {
+			"name" : "English",
+			"grade" : "B"
+		}, {
+			"name" : "ICT",
+			"grade" : "A*"
+		}, {
+			"name" : "Science",
+			"grade" : "C"
+		}]
+	},
+	"AS-Level" : {
+		"level" : 3,
+		"subjects" : [{
+			"name" : "Maths",
+			"grade" : "D"
+		}, {
+			"name" : "English",
+			"grade" : "E"
+		}, {
+			"name" : "Science",
+			"grade" : "F"
+		}]
+	},
+	"BSc" : {
+		"level" : 6,
+		"subjects" : [{
+			"name" : "Computer Science",
+			"grade" : "1st"
+		}]
+	},
+	"Msc" : {
+		"level" : 7,
+		"subjects" : [{
+			"name" : "Computer Science",
+			"grade" : "1st"
+		}]
+	}
+}
