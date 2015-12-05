@@ -6,8 +6,8 @@
 {% endblock %}
 
 {% block scripts %}
-<script src="{{ url_for('static', filename='js/main.js') }}"></script>
 {{ super() }}
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
 {% endblock %}
 
 {% block html_attribs %}

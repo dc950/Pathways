@@ -1,4 +1,4 @@
-from flask import render_template, session, flash, redirect, url_for
+from flask import render_template, session, flash, redirect, url_for, send_from_directory
 from flask.ext.login import current_user
 from . import main
 from .. import db
@@ -25,7 +25,7 @@ def user(username):
                            title=name + " | pathways")
 
 
-@main.route('/edit', methods=['GET', 'POST'])
+@main.route('/user/edit-profile', methods=['GET', 'POST'])
 def edit():
     form = EditProfileForm()
     if form.validate_on_submit():
@@ -36,7 +36,12 @@ def edit():
         return redirect(url_for('.user', user_id=current_user.id))
     form.first_name.data = current_user.first_name
     form.last_name.data = current_user.last_name
-    return render_template('edit.html', form=form)
+    return render_template('edit-profile.html', form=form)
+
+@main.route('/user/pathway/edit-qualification')
+def editQualification():
+    return render_template("edit-qualificaiton.html",
+                           title="Edit Qualification")
 
 
 @main.route('/about')
@@ -45,7 +50,7 @@ def about():
                            title="Test")
 
 
-@main.route('/pathway')
+@main.route('/user/pathway')
 def pathway():
     return render_template("pathway.html",
                            title="Test")
@@ -59,9 +64,18 @@ def test():
 
 @main.route('/js/<path:path>')
 def send_js(path):
-    return send_from_directory('js', path)
+    return send_from_directory('static/js/pathways.js')
 
 
 @main.route('/img/<path:path>')
 def send_img(path):
     return send_from_directory('img', path)
+
+
+'''
+/
+/user/
+/user/edit-profile
+/user/pathways
+/user/pathways/edit-qualification 
+'''

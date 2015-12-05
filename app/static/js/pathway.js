@@ -2,7 +2,7 @@ $(document).ready(function(){
 
 	var test = [1, 2, 3, 4, 5, 6];
 	
-	treeJSON = d3.json("static/js/data.json", function(error, treeData) {
+	treeJSON = d3.json("../static/js/data.json", function(error, treeData) {
 		console.log("data.json loaded");
 		console.log(treeData);
 		console.log(Object.keys(treeData));
