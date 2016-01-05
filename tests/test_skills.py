@@ -16,7 +16,7 @@ class SkillsModelTestCase(unittest.TestCase):
         self.app_context.pop()
 
     def test_relationship(self):
-        s = Skill(name="pyhton")
+        s = Skill(name="python")
         u = User()
         u.skills.append(s)
         db.session.add(s)
@@ -50,6 +50,5 @@ class SkillsModelTestCase(unittest.TestCase):
         db.session.commit()
         u.add_skill_name("html")
         s = Skill.query.filter_by(name="html")
-        print(s.count)
         self.assertTrue(s.count() > 0)
         self.assertEqual(s.first(), u.skills[0])

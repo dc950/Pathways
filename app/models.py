@@ -11,10 +11,18 @@ from . import login_manager
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-
 user_skills = db.Table('user_skills',
                        db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
                        db.Column('skill_id', db.Integer, db.ForeignKey('skills.id')))
+
+'''
+
+user_qualifications = db.Table('user_qualifications',
+                               db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
+                               db.Column('qualification_id', db.Integer, db.ForeignKey('qualifications.id')),
+                               db.Column('grade', db.String(1)))
+
+'''
 
 
 class User(UserMixin, db.Model):
@@ -28,6 +36,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(60), unique=True)
 
     skills = db.relationship("Skill", secondary=user_skills)
+    qualifications = db.relationship('UserQualification', lazy='dynamic')
 
     def __repr__(self):
         return '<User %r>' % (self.first_name + self.last_name)
@@ -105,3 +114,58 @@ class Skill(db.Model):
     __tablename__ = 'skills'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=True)
+
+    def __repr__(self):
+        return '<Skill %r>' % self.name
+
+
+class Qualification(db.Model):
+    __tablename__ = 'qualifications'
+    id = db.Column(db.Integer, primary_key=True)
+    course_name = db.Column(db.String(128))
+    qualification_type_id = db.Column(db.Integer, db.ForeignKey('qualification_types.id'))
+    qualification_type = db.relationship("QualificationType")
+
+    @property
+    def level(self):
+        if self.qualification_type is None:
+            raise AttributeError('This Qualification has no QualificationType')
+        else:
+            return self.qualification_type.level
+
+    @property
+    def qualification_name(self):
+        if self.qualification_type is None:
+            raise AttributeError('This Qualification has no QualificationType')
+        else:
+            return self.qualification_type.name
+
+    def __repr__(self):
+        return '<Qualification %r>' % (self.level + self.name)
+
+
+class QualificationType(db.Model):
+    __tablename__ = 'qualification_types'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(128), unique=True)
+    level = db.Column(db.Integer)
+
+
+class UserQualification(db.Model):
+    __tablename__ = 'user_qualifications'
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+    qualifications_id = db.Column(db.Integer, db.ForeignKey('qualifications.id'), primary_key=True)
+    grade = db.Column(db.String(1))  # There's probably a better way to do this...
+    qualification = db.relationship("Qualification")
+
+    @property
+    def course_name(self):
+        return self.qualification.course_name
+
+    @property
+    def qualification_name(self):
+        return self.qualification.qualification_name
+
+    @property
+    def level(self):
+        return self.qualification.level
