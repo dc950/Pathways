@@ -12,6 +12,11 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
+user_skills = db.Table('user_skills',
+                       db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
+                       db.Column('skill_id', db.Integer, db.ForeignKey('skills.id')))
+
+
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
@@ -21,6 +26,8 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     confirmed = db.Column(db.Boolean, default=False)
     username = db.Column(db.String(60), unique=True)
+
+    skills = db.relationship("Skill", secondary=user_skills)
 
     def __repr__(self):
         return '<User %r>' % (self.first_name + self.last_name)
@@ -69,3 +76,32 @@ class User(UserMixin, db.Model):
                 self.username = new_u_name
                 return
             version += 1
+
+    def add_skill(self, skill):
+        """
+        Adds the skill to the user
+        :param skill: The skill object to be added
+        """
+        if skill not in self.skills:
+            self.skills.append(skill)
+
+    def add_skill_name(self, skill_name):
+        """
+        Adds the skill to the user by name - if the skill does not exist, it is created
+        :param skill_name: the name of the skill to be added
+        """
+        s = Skill.query.filter_by(name=skill_name)
+        if s.count():
+            if s.first() not in self.skills:
+                self.skills.append(s.first())
+        else:
+            s = Skill(name=skill_name)
+            db.session.add(s)
+            db.session.commit()
+            self.skills.append(s)
+
+
+class Skill(db.Model):
+    __tablename__ = 'skills'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), unique=True)
