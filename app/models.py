@@ -15,7 +15,7 @@ user_skills = db.Table('user_skills',
                        db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
                        db.Column('skill_id', db.Integer, db.ForeignKey('skills.id')))
 
-# If a request is made a connection is added.  user1 is requester, user 2 is requestee
+# If a request is made a connection is added.
 # If a request is sent, it is added again the other way around.  If both exist, the connection is made...
 connections = db.Table('connections',
                        db.Column('requesting_id', db.Integer, db.ForeignKey('users.id')),
@@ -52,6 +52,22 @@ class User(UserMixin, db.Model):
             if self in c.connection_requests:
                 cons.append(c)
         return cons
+
+    @property
+    def invitations(self):
+        invs = []
+        for i in self.connection_invitations:
+            if i not in self.connections:
+                invs.append(i)
+        return invs
+
+    @property
+    def requests(self):
+        reqs = []
+        for r in self.connection_requests:
+            if r not in self.connections:
+                reqs.append(r)
+        return reqs
 
     @property
     def password(self):
