@@ -106,8 +106,51 @@ class User(UserMixin, db.Model):
         else:
             s = Skill(name=skill_name)
             db.session.add(s)
+            db.session.add(self)
             db.session.commit()
             self.skills.append(s)
+
+    def add_qualification(self, qualification, grade=None):
+        """
+        Adds the qualification to the user
+        :param qualification: the Qualification object to be added
+        :param grade: The grade for the qualification
+        """
+        uq = UserQualification()
+        uq.qualification = qualification
+        if grade:
+            uq.grade = grade
+        self.qualifications.append(uq)
+        db.session.add(uq)
+        db.session.add(self)
+        db.session.commit()
+
+
+class Career(db.Model):
+    __tablename__ = 'careers'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(128), unique=True)
+    description = db.Column(db.String(1024))
+    #  Salary Information
+    qualifications = db.relationship('CareerQualification', lazy='dynamic')
+
+    def __repr__(self):
+        return '<Career %r>' % self.name
+
+    def add_qualification(self, qualification, points=None):
+        """
+        Adds the qualification to the career
+        :param qualification: the Qualification object to be added
+        :param points: The points for the qualification with relation to how important it is for the career
+        """
+        cq = CareerQualification()
+        cq.qualification = qualification
+        if points:
+            cq.points = points
+        self.qualifications.append(cq)
+        db.session.add(cq)
+        db.session.add(self)
+        db.session.commit()
 
 
 class Skill(db.Model):
@@ -156,6 +199,26 @@ class UserQualification(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
     qualifications_id = db.Column(db.Integer, db.ForeignKey('qualifications.id'), primary_key=True)
     grade = db.Column(db.String(1))  # There's probably a better way to do this...
+    qualification = db.relationship("Qualification")
+
+    @property
+    def course_name(self):
+        return self.qualification.course_name
+
+    @property
+    def qualification_name(self):
+        return self.qualification.qualification_name
+
+    @property
+    def level(self):
+        return self.qualification.level
+
+
+class CareerQualification(db.Model):
+    __tablename__ = 'career_qualifications'
+    career_id = db.Column(db.Integer, db.ForeignKey('careers.id'), primary_key=True)
+    qualifications_id = db.Column(db.Integer, db.ForeignKey('qualifications.id'), primary_key=True)
+    points = db.Column(db.Integer)
     qualification = db.relationship("Qualification")
 
     @property

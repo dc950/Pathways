@@ -30,3 +30,11 @@ class QualificationModelTestCase(unittest.TestCase):
         self.assertEqual(u.qualifications[0].grade, "A")
         a = u.qualifications.filter(Qualification.course_name == "Computing")
         self.assertEqual(a.first().qualification_name, "Higher")
+
+    def test_add_qualification(self):
+        t = QualificationType(name="Higher", level=6)
+        q = Qualification(course_name="Computing", qualification_type=t)
+        u = User()
+        u.add_qualification(q, "A")
+        self.assertEqual(u.qualifications[0].grade, "A")
+        self.assertEqual(u.qualifications[0].course_name, "Computing")
