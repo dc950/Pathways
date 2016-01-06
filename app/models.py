@@ -15,14 +15,11 @@ user_skills = db.Table('user_skills',
                        db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
                        db.Column('skill_id', db.Integer, db.ForeignKey('skills.id')))
 
-'''
-
-user_qualifications = db.Table('user_qualifications',
-                               db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
-                               db.Column('qualification_id', db.Integer, db.ForeignKey('qualifications.id')),
-                               db.Column('grade', db.String(1)))
-
-'''
+# If a request is made a connection is added.  user1 is requester, user 2 is requestee
+# If a request is sent, it is added again the other way around.  If both exist, the connection is made...
+connections = db.Table('connections',
+                       db.Column('requesting_id', db.Integer, db.ForeignKey('users.id')),
+                       db.Column('invitation_id', db.Integer, db.ForeignKey('users.id')))
 
 
 class User(UserMixin, db.Model):
@@ -38,12 +35,34 @@ class User(UserMixin, db.Model):
     skills = db.relationship("Skill", secondary=user_skills)
     qualifications = db.relationship('UserQualification', lazy='dynamic')
 
+    connection_requests = db.relationship('User',
+                                          secondary=connections,
+                                          primaryjoin=(connections.c.requesting_id == id),
+                                          secondaryjoin=(connections.c.invitation_id == id),
+                                          backref=db.backref('connection_invitations', lazy='dynamic'),
+                                          lazy='dynamic')
+
     def __repr__(self):
         return '<User %r>' % (self.first_name + self.last_name)
 
     @property
+    def connections(self):
+        cons = []
+        for c in self.connection_requests:
+            if self in c.connection_requests:
+                cons.append(c)
+        return cons
+
+    @property
     def password(self):
         raise AttributeError('Password is not a readable attribute')
+
+    def send_request(self, user):
+        """
+        Sends a request TO this user FROM the user in the parameter
+        :param user: the user sending the request
+        """
+        user.connection_requests.append(self)
 
     @password.setter
     def password(self, password):
