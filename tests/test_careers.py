@@ -1,5 +1,5 @@
 import unittest
-from app.models import User, Qualification, QualificationType, Career, CareerQualification
+from app.models import User, Qualification, QualificationType, Career, CareerQualification, Skill
 from app import db, create_app
 
 
@@ -22,3 +22,33 @@ class CareerModelTestCase(unittest.TestCase):
         c.add_qualification(q, 5)
         self.assertEqual(c.qualifications[0].course_name, "Computing")
         self.assertEqual(c.qualifications[0].points, 5)
+
+    def test_add_skills(self):
+        s = Skill(name="css")
+        c = Career()
+        db.session.add(s)
+        db.session.add(c)
+        db.session.commit()
+        c.add_skill(s)
+        self.assertEqual(s, c.skills[0].skill)
+
+    def test_add_existing_skills_by_name(self):
+        s = Skill(name="php")
+        c = Career()
+        db.session.add(s)
+        db.session.add(c)
+        db.session.commit()
+        c.add_skill_name("php")
+        db.session.add(c)
+        db.session.commit()
+        self.assertEqual(s, c.skills[0].skill)
+
+    def test_add_non_existant_skills_by_name(self):
+        c = Career()
+        db.session.add(c)
+        db.session.commit()
+        c.add_skill_name("html")
+        s = Skill.query.filter_by(name="html")
+        self.assertTrue(s.count() > 0)
+        self.assertEqual(s.first(), c.skills[0].skill)
+        self.assertEqual(s.first().name, c.skills[0].name)

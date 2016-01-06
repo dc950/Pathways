@@ -106,7 +106,6 @@ class User(UserMixin, db.Model):
         else:
             s = Skill(name=skill_name)
             db.session.add(s)
-            db.session.add(self)
             db.session.commit()
             self.skills.append(s)
 
@@ -121,9 +120,6 @@ class User(UserMixin, db.Model):
         if grade:
             uq.grade = grade
         self.qualifications.append(uq)
-        db.session.add(uq)
-        db.session.add(self)
-        db.session.commit()
 
 
 class Career(db.Model):
@@ -133,11 +129,12 @@ class Career(db.Model):
     description = db.Column(db.String(1024))
     #  Salary Information
     qualifications = db.relationship('CareerQualification', lazy='dynamic')
+    skills = db.relationship('CareerSkill', lazy='dynamic')
 
     def __repr__(self):
         return '<Career %r>' % self.name
 
-    def add_qualification(self, qualification, points=None):
+    def add_qualification(self, qualification, points=1):
         """
         Adds the qualification to the career
         :param qualification: the Qualification object to be added
@@ -148,9 +145,36 @@ class Career(db.Model):
         if points:
             cq.points = points
         self.qualifications.append(cq)
-        db.session.add(cq)
-        db.session.add(self)
-        db.session.commit()
+
+    def add_skill(self, skill, points=1):
+        """
+        Adds the skill to the user
+        :param skill: The skill object to be added
+        :param points: The points for showing the importance of the skill
+        """
+        for c_skill in self.skills:
+            if c_skill.skill is skill:
+                return
+        c_skill = CareerSkill(skill=skill, points=points)
+        self.skills.append(c_skill)
+
+    def add_skill_name(self, skill_name, points=1):
+        """
+        Adds the skill to the user by name - if the skill does not exist, it is created
+        :param skill_name: the name of the skill to be added
+        :param points: The points for showing the importance of the skill
+        """
+        s = Skill.query.filter_by(name=skill_name)
+        if s.count():
+            if s.first() not in self.skills:
+                c_skill = CareerSkill(skill=s.first(), points=points)
+                self.skills.append(c_skill)
+        else:
+            s = Skill(name=skill_name)
+            db.session.add(s)
+            db.session.commit()
+            c_skill = CareerSkill(skill=s, points=points)
+            self.skills.append(c_skill)
 
 
 class Skill(db.Model):
@@ -232,3 +256,15 @@ class CareerQualification(db.Model):
     @property
     def level(self):
         return self.qualification.level
+
+
+class CareerSkill(db.Model):
+    __tablename__ = 'career_skills'
+    career_id = db.Column(db.Integer, db.ForeignKey('careers.id'), primary_key=True)
+    skills_id = db.Column(db.Integer, db.ForeignKey('skills.id'), primary_key=True)
+    points = db.Column(db.Integer)
+    skill = db.relationship("Skill")
+
+    @property
+    def name(self):
+        return self.skill.name
