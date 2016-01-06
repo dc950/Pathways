@@ -29,8 +29,9 @@ class CareerModelTestCase(unittest.TestCase):
         db.session.add(s)
         db.session.add(c)
         db.session.commit()
-        c.add_skill(s)
+        c.add_skill(s, 3)
         self.assertEqual(s, c.skills[0].skill)
+        self.assertEqual(c.skills[0].points, 3)
 
     def test_add_existing_skills_by_name(self):
         s = Skill(name="php")
@@ -38,17 +39,19 @@ class CareerModelTestCase(unittest.TestCase):
         db.session.add(s)
         db.session.add(c)
         db.session.commit()
-        c.add_skill_name("php")
+        c.add_skill_name("php", 2)
         db.session.add(c)
         db.session.commit()
         self.assertEqual(s, c.skills[0].skill)
+        self.assertEqual(c.skills[0].points, 2)
 
     def test_add_non_existant_skills_by_name(self):
         c = Career()
         db.session.add(c)
         db.session.commit()
-        c.add_skill_name("html")
+        c.add_skill_name("html", 4)
         s = Skill.query.filter_by(name="html")
         self.assertTrue(s.count() > 0)
         self.assertEqual(s.first(), c.skills[0].skill)
         self.assertEqual(s.first().name, c.skills[0].name)
+        self.assertEqual(c.skills[0].points, 4)

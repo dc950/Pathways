@@ -101,13 +101,12 @@ class User(UserMixin, db.Model):
         """
         s = Skill.query.filter_by(name=skill_name)
         if s.count():
-            if s.first() not in self.skills:
-                self.skills.append(s.first())
+            self.add_skill(s.first())
         else:
             s = Skill(name=skill_name)
             db.session.add(s)
             db.session.commit()
-            self.skills.append(s)
+            self.add_skill(s)
 
     def add_qualification(self, qualification, grade=None):
         """
@@ -166,15 +165,12 @@ class Career(db.Model):
         """
         s = Skill.query.filter_by(name=skill_name)
         if s.count():
-            if s.first() not in self.skills:
-                c_skill = CareerSkill(skill=s.first(), points=points)
-                self.skills.append(c_skill)
+            self.add_skill(s.first(), points)
         else:
             s = Skill(name=skill_name)
             db.session.add(s)
             db.session.commit()
-            c_skill = CareerSkill(skill=s, points=points)
-            self.skills.append(c_skill)
+            self.add_skill(s, points)
 
 
 class Skill(db.Model):
