@@ -28,17 +28,31 @@
 			"grade" : "F"
 		}]
 	},
+	"Meh" : {
+		"level" : 4,
+		"subjects" : [{
+			"name" : "Computer Science",
+			"grade" : "1st"
+		}]
+	},
 	"BSc" : {
-		"level" : 6,
+		"level" : 5,
 		"subjects" : [{
 			"name" : "Computer Science",
 			"grade" : "1st"
 		}]
 	},
 	"Msc" : {
-		"level" : 7,
+		"level" : 6,
 		"subjects" : [{
 			"name" : "Computer Science",
+			"grade" : "1st"
+		}]
+	},
+	"Test" : {
+		"level" : 2,
+		"subjects" : [{
+			"name" : "Test",
 			"grade" : "1st"
 		}]
 	}
