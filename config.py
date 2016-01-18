@@ -25,7 +25,6 @@ class DevelopmentConfig(Config):
     MAIL_USE_TLS = True
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME') or 'ReflectiveEngineering@gmail.com'  # remove this at some point
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD') or 'Group1Pathway'
-    print("Running in Development mode: live at http://127.0.0.1:5000/")
     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
         'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
 
@@ -45,7 +44,6 @@ class ProductionConfig(Config):
     MAIL_USE_TLS = True
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME') or 'ReflectiveEngineering@gmail.com'  # remove this at some point
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD') or 'Group1Pathway'
-    print("Running in production mode")
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
         'sqlite:///' + os.path.join(basedir, 'data.sqlite')
 
