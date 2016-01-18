@@ -1,4 +1,4 @@
-from flask import render_template, session, flash, redirect, url_for
+from flask import render_template, session, flash, redirect, url_for, send_from_directory
 from flask.ext.login import current_user
 from . import main
 from .. import db
