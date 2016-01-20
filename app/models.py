@@ -73,6 +73,9 @@ class User(UserMixin, db.Model):
     def password(self):
         raise AttributeError('Password is not a readable attribute')
 
+    def made_request(self, user):
+        return user in self.connection_requests
+
     def send_request(self, user):
         """
         Sends a request TO this user FROM the user in the parameter

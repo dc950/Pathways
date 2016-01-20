@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block header_content %}
+{% endblock %}
+
+{% block main_content %}
+    <p>Connections</p><br>
+    {% for user in current_user.connections %}
+    <li><a href="{{ url_for('.user', username=user.username) }}">{{ user.first_name }} {{ user.last_name }}</a></li>
+    {% endfor %}
+    <br><p>All users</p><br>
+    {% for user in users %}
+    <li><a href="{{ url_for('.user', username=user.username) }}">{{ user.first_name }} {{ user.last_name }}</a></li>
+    {% endfor %}
+{% endblock %}
