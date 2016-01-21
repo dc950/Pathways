@@ -10,6 +10,10 @@
       <p>
           <p>{{ form.submit }}</p>
       </p>
+          {% for c in careers %}
+            <p>{{ c.name }}</p>
+            <p>{{ c.skills[0].name }}</p>
+          {% endfor %}
   </form>
     </div>
 
