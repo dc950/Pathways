@@ -134,7 +134,18 @@ $(document).ready(function(){
     	//Qualification Sections
     	console.log("No. Qual Sections: " + newCircles.length);
     	$.each(newCircles, function(index, value){
-    		$("#qualification-container")
+    		var el = $("<div class='col-md-5 col-sm-5 qualifification-section'></div>");
+			$("#qualification-container").append(el);
+			el.append("<div class='edit-button' role='button'>Edit [X]</div>");
+			el.append("<div>" + value.qualification + "</div>");
+
+			var li = $("<ul></ul>");
+			el.append(li);
+
+			$.each(value.subjects[0], function(index2, value2){
+				li.append("<li>" + value2.__data__.name + "</li>");
+				console.log(value2.__data__.name);
+			});
     	});
 
 	});
