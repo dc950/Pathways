@@ -102,9 +102,22 @@ main {
 
 /*----  Pathway Nodes ----*/
 .node {
-	fill: black;
+	/*fill: black;*/
 	stroke: black;
 	stroke-width: 3;
+}
+
+.tooltip {
+	stroke: black;
+	stroke-width: 3;
+}
+
+.node-label {
+	text-align: right;
+}
+
+/*.node-level-1 {
+	fill: orange !important;
 }
 
 .node-level-2 {
@@ -115,6 +128,14 @@ main {
 	fill: yellow !important;
 }
 
+.node-level-4 {
+	fill: cyan !important;
+}
+
+.node-level-5 {
+	fill: coral !important;
+}
+
 .node-level-6 {
 	fill: green !important;
-}
+}*/
