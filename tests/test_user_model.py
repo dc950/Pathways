@@ -53,3 +53,27 @@ class UserModelTestCase(unittest.TestCase):
         self.assertEqual(u.username, 'johndoe')
         self.assertEqual(u1.username, 'johndoe1')
         self.assertEqual(u2.username, 'johndoe2')
+
+    def test_connections(self):
+        u1 = User(first_name='John', last_name='Doe')
+        u2 = User(first_name='David', last_name='Smith')
+        # send request to user2 from user1
+        u2.send_request(u1)
+        self.assertEqual(u1.connection_requests[0], u2)
+        self.assertEqual(u2.connection_invitations[0], u1)
+        self.assertEqual(len(u1.connections), 0)
+        self.assertEqual(len(u2.connections), 0)
+        self.assertEqual(len(u2.invitations), 1)
+        self.assertEqual(len(u1.invitations), 0)
+        self.assertEqual(len(u2.requests), 0)
+        self.assertEqual(len(u1.requests), 1)
+        # user 2 accepts request by sending a request back
+        u1.send_request(u2)
+        self.assertEqual(u1.connections[0], u2)
+        self.assertEqual(u2.connections[0], u1)
+        self.assertEqual(len(u1.connections), 1)
+        self.assertEqual(len(u2.connections), 1)
+        self.assertEqual(len(u2.invitations), 0)
+        self.assertEqual(len(u1.invitations), 0)
+        self.assertEqual(len(u2.requests), 0)
+        self.assertEqual(len(u1.requests), 0)
