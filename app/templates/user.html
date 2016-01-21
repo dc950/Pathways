@@ -5,5 +5,24 @@
 {% endblock %}
 
 {% block main_content %}
-    <p> This is the profile page for {{ user.username}} </p>
+    <p> This is the profile page for {{user.username}} </p>
+    <p>Actions:</p>
+    {% if user==current_user %}
+    <li><a href="{{ url_for('main.edit') }}">Edit Profile</a></li>
+    {% elif user in current_user.connections %}
+    <li><a href="{{ url_for('main.edit') }}">Remove Connections</a></li>
+    {% elif user in current_user.invitations %}
+    <li><a href="{{ url_for('.add_connection', username=user.username)}}">Accept Connection Request</a></li>
+    <!-- Ignore request -->
+    {% elif user in current_user.requests %}
+    <li>Connection Request Pending</li>
+    {% else %}
+    <li><a href="{{ url_for('.add_connection', username=user.username)}}">Send Connection Request</a></li>
+    {% endif %}
+
+    {% if user in current_user.connections %}
+    <p>I realy realy like ponies</p>
+    {% else %}
+    <p>You are unable to see this data as you are not connected to the user</p>
+    {% endif %}
 {% endblock %}

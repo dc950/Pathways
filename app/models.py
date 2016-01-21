@@ -73,6 +73,9 @@ class User(UserMixin, db.Model):
     def password(self):
         raise AttributeError('Password is not a readable attribute')
 
+    def made_request(self, user):
+        return user in self.connection_requests
+
     def send_request(self, user):
         """
         Sends a request TO this user FROM the user in the parameter
@@ -87,7 +90,7 @@ class User(UserMixin, db.Model):
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-    def generate_confirmation_token(self, expiration=3600):
+    def generate_confirmation_token(self, expiration=86400000):
         s = Serializer(current_app.config['SECRET_KEY'], expiration)
         return s.dumps({'confirm': self.id})
 
