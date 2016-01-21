@@ -52,6 +52,8 @@ $(document).ready(function(){
 
     		console.log(value.subjects[0].length);
 
+    		var yHeight;
+
     		value.subjects.append('circle').attr('cx', function(d, i){
 				return xPos + (columnWidth / 2);
 			}).attr('cy', function(d, i){
@@ -81,7 +83,18 @@ $(document).ready(function(){
 			value.subjects.append('text').attr("dx", function(d, i){
 				return xPos + (columnWidth / 2) + 20;
 			}).attr("dy", function(d, i){
-				return titleHeight + ((i+1) * 40) + 5;
+				var n = value.subjects[0].length;
+				var edgeMargin = 60;
+
+				var workingHeight = viewerHeight - titleHeight - (2 * edgeMargin);
+
+				if (n > 1) {
+					var y = (workingHeight / (n-1)) * i;
+				} else {
+					var y = workingHeight / 2;
+				}
+				
+				return y + edgeMargin + titleHeight;
 			}).text(function(d){
 				return d.name;
 			}).attr('class', 'node-label');
@@ -118,7 +131,17 @@ $(document).ready(function(){
     		}
     	});
 
+    	//Qualification Sections
+    	console.log("No. Qual Sections: " + newCircles.length);
+    	$.each(newCircles, function(index, value){
+    		$("#qualification-container")
+    	});
+
 	});
+	
+	
+
+
 });
 
 function getLevelColour(i) {
