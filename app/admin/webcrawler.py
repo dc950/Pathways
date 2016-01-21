@@ -10,8 +10,14 @@ def webcrawler():
     plain_text = source_code.text
     soup = BeautifulSoup(plain_text, "html.parser")
     for link in soup.find_all(href=re.compile("job-profile")):
-        career = Career()
         title = link.string
+        b = False
+        for c in Career.query.all():
+            if c.name == title:
+                b = True
+        if b:
+            continue
+        career = Career()
         print("\n")
         print(title)
         career.name = title

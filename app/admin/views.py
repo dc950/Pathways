@@ -12,7 +12,7 @@ from bs4 import BeautifulSoup
 def admin():
     form = adminForm()
     if form.validate_on_submit():
-        return webcrawler()
+        webcrawler()
     careers = Career.query.all()
     return render_template('admin.html', form=form, careers=careers)
 
