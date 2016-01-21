@@ -1,7 +1,8 @@
 import re
 import requests
 from bs4 import BeautifulSoup
-
+from ..models import Career, Qualification
+from .. import db
 
 def webcrawler():
     url = "https://www.ucas.com/ucas/after-gcses/find-career-ideas/explore-jobs#js=on"
@@ -10,10 +11,19 @@ def webcrawler():
     soup = BeautifulSoup(plain_text, "html.parser")
     for link in soup.find_all(href=re.compile("job-profile")):
         title = link.string
+        b = False
+        for c in Career.query.all():
+            if c.name == title:
+                b = True
+        if b:
+            continue
+        career = Career()
         print("\n")
         print(title)
+        career.name = title
         href = "https://www.ucas.com" + link.get('href')
         print(href)
+        career.url = href
         source_code2 = requests.get("https://www.ucas.com" + link.get('href'))
         plain_text2 = source_code2.text
         soup2 = BeautifulSoup(plain_text2, "html.parser")
@@ -27,6 +37,7 @@ def webcrawler():
                     ++counter
                 else:
                     skillList.append(link2.contents[3].contents[counter].string.strip())
+                    career.add_skill_name(link2.contents[3].contents[counter].string.strip())
             print(skillList)
         print("\nRELATED SUBJECTS")
         for link2 in soup2.find_all('div', {
@@ -37,7 +48,8 @@ def webcrawler():
                 if listofskills == []:
                     ++counter
                 else:
-                    subList.append(link2.contents[3].contents[counter].string.strip())
+                    # subList.append(link2.contents[3].contents[counter].string.strip())
+                    career.add_qualification(Qualification(course_name=link2.contents[3].contents[counter].string.strip()))
             print(subList)
         print("\nDESIRABLE QUALIFICATIONS")
         for link2 in soup2.find_all('div', {
@@ -49,4 +61,7 @@ def webcrawler():
                     ++counter
                 else:
                     qualList.append(link2.contents[3].contents[counter].string.strip())
+                    career.add_qualification(Qualification(course_name=link2.contents[3].contents[counter].string.strip()))
             print(qualList)
+        db.session.add(career)
+        db.session.commit()

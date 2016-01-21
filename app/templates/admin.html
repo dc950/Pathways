@@ -2,7 +2,7 @@
 
 {% block main_content %}
     <div class="page-header">
-        <h1>Admin</h1>
+        <h1>Admin Page</h1>
     </div>
     <div class="col-md-4">
       <form action="" method="post" name="admin">
@@ -10,6 +10,17 @@
       <p>
           <p>{{ form.submit }}</p>
       </p>
+          {% for c in careers %}
+            <a href="{{ c.url }}"><h1>{{ c.name }}</h1></a>
+            <h3>Skills required for job:</h3>
+              {% for s in c.skills %}
+                <p>{{ s.name }}</p>
+              {% endfor %}
+            <h3>Qualifications required for job:</h3>
+              {% for q in c.qualifications %}
+                <p>{{ q.course_name }}</p>
+              {% endfor %}
+          {% endfor %}
   </form>
     </div>
 
