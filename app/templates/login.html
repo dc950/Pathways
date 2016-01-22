@@ -1,22 +1,24 @@
 {% extends "base.html" %}
 
 {% block main_content %}
-    <div class="page-header">
-        <h1>Login</h1>
-    </div>
-    <div class="col-md-4">
+   <div class="page-header">
+      <h1>Login</h1>
+   </div>
+   <div class="col-md-4">
       <form action="" method="post" name="login">
-      {{ form.hidden_tag() }}
-      <p>
-          Email:<br>
-          {{ form.email(size=64) }}<br>
-          Password:<br>
-          {{ form.password(size=60) }}
-      </p>
-      <p>{{ form.remember_me }} Remember Me</p>
-      <p>{{ form.submit }} Submit</p>
-  </form>
-    </div>
-    <p><a href="{{ url_for('auth.register') }}">Click here to register</a> </p>
-
+         {{ form.hidden_tag() }}
+         <br>
+            <p>
+               Email:<br>
+               {{ form.email(size=64) }}<br>
+               <br>               
+               Password:<br>
+               {{ form.password(size=60) }}
+            </p>
+         <p>{{ form.remember_me }} Remember Me</p>
+         <p>{{ form.submit }} Submit</p>
+      </form>
+      <p><a href="{{ url_for('auth.register') }}">Click here to register</a> </p>
+   </div>
+    
 {% endblock %}

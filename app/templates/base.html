@@ -1,115 +1,117 @@
 {% extends "bootstrap/base.html" %}
 
 {% block styles %}
-{{ super() }}
-<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/stylesheet.css') }}">
+   {{ super() }}
+   <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/stylesheet.css') }}">
 {% endblock %}
 
 {% block scripts %}
-{{ super() }}
-<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+   {{ super() }}
+   <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 {% endblock %}
 
 {% block html_attribs %}
-lang="en"
+   lang="en"
 {% endblock %}
 
 {% block title %}
-{% if title %}
-{{ title }} - Pathways
-{% else %}
-Pathways
-{% endif %}
+   {% if title %}
+      {{ title }} - Pathways
+   {% else %}
+      Pathways
+   {% endif %}
 {% endblock %}
 
 {% block metas %}
-<meta charset="UTF-8">
-<meta name="version" content="1.0.0">
-<meta name="author" content="Deaven Howarth" >
-<meta name="description" content="Hogcraft 3.0">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+   <meta charset="UTF-8">
+   <meta name="version" content="1.0.0">
+   <meta name="author" content="Deaven Howarth" >
+   <meta name="description" content="Hogcraft 3.0">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
 {% endblock %}
 
 
 
 {% block navbar %}
-<nav class="navbar navbar-default">
-    <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
+   <nav class="navbar navbar-default">
+      <div class="container-fluid">
+       <!-- Brand and toggle get grouped for better mobile display -->
+         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2" aria-expanded="false">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
+               <span class="sr-only">Toggle navigation</span>
+               <span class="icon-bar"></span>
+               <span class="icon-bar"></span>
+               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Pathways</a>
-        </div>
+            <a class="navbar-brand" href="{{ url_for('main.index') }}">Pathways</a>
+         </div>
 
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+         <!-- Collect the nav links, forms, and other content for toggling -->
+         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             {% if current_user.is_authenticated %}
-            <ul class="nav navbar-nav navbar-right">
-                <il class="dropdown">
-                    <div class="user-info dropdown">
+               <ul class="nav navbar-nav navbar-right">
+                  <il class="dropdown">
+                     <div class="user-info dropdown">
                         <div>{{ current_user.email }}</div>
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ current_user.first_name }} {{ current_user.last_name }} <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">Action</a></li>
-                            <li><a href="#">Another action</a></li>
-                            <li><a href="#">Something else here</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="{{ url_for('main.edit') }}">Edit Profile</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+                           <li><a href="#">Action</a></li>
+                           <li><a href="#">Another action</a></li>
+                           <li><a href="#">Something else here</a></li>
+                           <li role="separator" class="divider"></li>
+                           <li><a href="{{ url_for('main.edit') }}">Edit Profile</a></li>
+                           <li role="separator" class="divider"></li>
+                           <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
                         </ul>
-                    </div>
-                </il>
+                     </div>
+                  </il>
 
-                <il><img class="user-avatar" src="{{ url_for('static', filename='img/default-avatar.png') }}"></il>
-            </ul>
+                  <il><img class="user-avatar" src="{{ url_for('static', filename='img/default-avatar.png') }}"></il>
+               </ul>
             {% else %}
-            <div class="nav navbar-nav navbar-right">
-                 <a href="{{ url_for('auth.login') }}">Login</a> / <a href="{{ url_for('auth.register') }}">Register</a>
-            </div>
+               <div class="nav navbar-nav navbar-right">
+                  <a href="{{ url_for('auth.login') }}">Login</a> / <a href="{{ url_for('auth.register') }}">Register</a>
+               </div>
             {% endif %}
-        </div><!-- /.navbar-collapse -->
+         </div><!-- /.navbar-collapse -->
 
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse nav-bottom" id="bs-example-navbar-collapse-2">
+         <!-- Collect the nav links, forms, and other content for toggling -->
+         <div class="collapse navbar-collapse nav-bottom" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="{{ url_for('main.index') }}">Home <span class="sr-only">(current)</span></a></li>
-                <li><a href="{{ url_for('main.pathway') }}">Your Pathway</a></li>
-                <li><a href="{{ url_for('main.about') }}">About</a></li>
+               <li class="active"><a href="{{ url_for('main.index') }}">Home <span class="sr-only">(current)</span></a></li>
+               <li><a href="{{ url_for('main.pathway') }}">Your Pathway</a></li>
+               <li><a href="{{ url_for('main.about') }}">About</a></li>
             </ul>
             <form class="navbar-form navbar-right" role="search">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Search">
-                </div>
-                <button type="submit" class="btn btn-default">Submit</button>
+               <div class="form-group">
+                  <input type="text" class="form-control" placeholder="Search">
+               </div>
+               <button type="submit" class="btn btn-default">Submit</button>
             </form>
-        </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
-</nav>
+         </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+   </nav>
 {% endblock %}
 
 {% block content %}
-<header>
-    <div class="containter">
-        {% for message in get_flashed_messages() %}
-        <div class="alert alert-warning">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            {{ message }}
-        </div>
-        {% endfor %}
-    </div>
-    {% block header_content %}{% endblock %}
-</header>
-    <main>
-        {% block main_content %}{% endblock %}
-    </main>
-    <footer class="container-fluid">
-        This is the Footer. Reflective Engineering 2015.
-    </footer>
+   <header>
+      <div class="containter">
+         {% for message in get_flashed_messages() %}
+            <div class="alert alert-warning">
+               <button type="button" class="close" data-dismiss="alert">&times;</button>
+               {{ message }}
+            </div>
+         {% endfor %}
+      </div>
+      {% block header_content %}{% endblock %}
+   </header>
+   <main>
+      {% block main_content %}{% endblock %}
+   </main>
+   <div style="clear: both"></div>
+   <footer class="container-fluid">
+      <br>
+      This is the Footer. Reflective Engineering 2015.
+   </footer>
 
 {% endblock %}
