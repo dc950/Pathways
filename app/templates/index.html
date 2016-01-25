@@ -10,12 +10,12 @@
 	<div id="image-block">
 		<div class="vcenter">
 			<h1 id="get-started">Help Build Your Career Pathway</h1>
-			{% if True %}
-			<a class="btn btn-default" id="get-started-button" href="#" role="button">
+			{% if current_user.is_authenticated %}
+			<a class="btn btn-default" id="get-started-button" href="{{ url_for('main.pathway') }}" role="button">
 				Get Started
 			</a>
 			{% else %}
-			<a class="btn btn-default" id="get-started-button" href="#" role="button">
+			<a class="btn btn-default" id="get-started-button" href="{{ url_for('auth.register') }}" role="button">
 				Get Started
 			</a>
 			{% endif %}
