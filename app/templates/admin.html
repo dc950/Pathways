@@ -20,6 +20,8 @@
               {% for q in c.qualifications %}
                 <p>{{ q.course_name }}</p>
               {% endfor %}
+            <h3>Job Description:</h3>
+              {{ c.description }}
           {% endfor %}
   </form>
     </div>
