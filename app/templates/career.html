@@ -14,4 +14,6 @@
     {% for q in career.qualifications %}
         <p>{{ q.course_name }}</p>
     {% endfor %}
+    <br>
+    <p><b><a href="{{ career.url }}">Click here to learn more</a></b></p>
 {% endblock %}

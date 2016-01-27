@@ -21,7 +21,7 @@ def career(careername):
         return redirect(url_for('main.index'))
     return render_template('career.html',
                            career=career_obj,
-                           title=careername + "| pathways")
+                           title=careername)
 
 
 @main.route('/user/<username>')
@@ -33,7 +33,7 @@ def user(username):
     name = user_obj.first_name + " " + user_obj.last_name
     return render_template("user.html",
                            user=user_obj,
-                           title=name + " | pathways")
+                           title=name)
 
 
 @login_required

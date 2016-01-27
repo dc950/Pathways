@@ -2,6 +2,7 @@
 {% extends "base.html" %}
 
 {% block header_content %}
+    <img src="{{ user.avatar(256) }}">
     <h1>{{ user.first_name + " " + user.last_name}}</h1>
 {% endblock %}
 

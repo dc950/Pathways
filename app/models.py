@@ -5,6 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask.ext.login import UserMixin
 from . import login_manager
+from hashlib import md5
 
 
 @login_manager.user_loader
@@ -72,6 +73,9 @@ class User(UserMixin, db.Model):
     @property
     def password(self):
         raise AttributeError('Password is not a readable attribute')
+
+    def avatar(self, size):
+        return 'http://www.gravatar.com/avatar/%s?d=mm&s=%d' % (md5(self.email.encode('utf-8')).hexdigest(), size)
 
     def made_request(self, user):
         return user in self.connection_requests
