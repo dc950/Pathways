@@ -2,7 +2,7 @@ from flask import render_template, session, flash, redirect, url_for, send_from_
 from flask.ext.login import current_user, login_required
 from . import main
 from .. import db
-from ..models import User
+from ..models import User, Career
 from .forms import EditProfileForm
 
 
@@ -11,6 +11,17 @@ from .forms import EditProfileForm
 def index():
     return render_template("index.html",
                            title="Home")
+
+
+@main.route('/career/<careername>')
+def career(careername):
+    career_obj = Career.query.filter_by(name=careername).first()
+    if career is None:
+        flash('Career %s not found.' % careername)
+        return redirect(url_for('main.index'))
+    return render_template('career.html',
+                           career=career_obj,
+                           title=careername + "| pathways")
 
 
 @main.route('/user/<username>')
@@ -27,7 +38,6 @@ def user(username):
 
 @login_required
 @main.route('/user/edit-profile', methods=['GET', 'POST'])
-
 def edit():
     form = EditProfileForm()
     if form.validate_on_submit():
@@ -40,9 +50,11 @@ def edit():
     form.last_name.data = current_user.last_name
     return render_template('edit-profile.html', form=form)
 
+
+@login_required
 @main.route('/user/pathway/edit-qualification')
-def editQualification():
-    return render_template("edit-qualificaiton.html",
+def edit_qualification():
+    return render_template("edit-qualification.html",
                            title="Edit Qualification")
 
 

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block header_content %}
+    <h1>{{ career.name }}</h1>
+{% endblock %}
+
+{% block main_content %}
+    <p>{{ career.description }}</p>
+    <h2>Skills required for this job</h2>
+    {% for s in career.skills %}
+        <p>{{ s.name }}</p>
+    {% endfor %}
+    <h2>Related Qualifications</h2>
+    {% for q in career.qualifications %}
+        <p>{{ q.course_name }}</p>
+    {% endfor %}
+{% endblock %}
