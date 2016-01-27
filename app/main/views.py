@@ -43,9 +43,10 @@ def edit():
     if form.validate_on_submit():
         current_user.first_name = form.first_name.data
         current_user.last_name = form.last_name.data
+        current_user.def_avatar = form.default_avatar.data
         db.session.add(current_user)
         flash('Your profile has been updated')
-        return redirect(url_for('.user', user_id=current_user.id))
+        return redirect(url_for('.user', username=current_user.username))
     form.first_name.data = current_user.first_name
     form.last_name.data = current_user.last_name
     return render_template('edit-profile.html', form=form)
@@ -104,7 +105,7 @@ def test():
 
 @main.route('/js/<path:path>')
 def send_js(path):
-    return send_from_directory('static/js/pathways.js')
+    return send_from_directory('static/js/pathways.js', path)
 
 
 @main.route('/img/<path:path>')

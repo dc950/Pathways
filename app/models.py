@@ -1,5 +1,5 @@
 from app import db
-from flask import current_app, flash
+from flask import current_app, flash, request
 from .email import send_email
 from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
@@ -32,6 +32,8 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     confirmed = db.Column(db.Boolean, default=False)
     username = db.Column(db.String(60), unique=True)
+    avatar_hash = db.Column(db.String(32))
+    def_avatar = db.Column(db.String(16), default='identicon')
 
     skills = db.relationship("Skill", secondary=user_skills)
     qualifications = db.relationship('UserQualification', lazy='dynamic')
@@ -74,8 +76,15 @@ class User(UserMixin, db.Model):
     def password(self):
         raise AttributeError('Password is not a readable attribute')
 
-    def avatar(self, size):
-        return 'http://www.gravatar.com/avatar/%s?d=mm&s=%d' % (md5(self.email.encode('utf-8')).hexdigest(), size)
+    def gravatar(self, size=128, rating='g'):
+        if request.is_secure:
+            url = 'https://www.gravatar.com/avatar'
+        else:
+            url = 'http://www.gravatar.com/avatar'
+        if not self.avatar_hash:
+            self.avatar_hash = md5(self.email.encode('utf-8')).hexdigest()
+        return '{url}/{hash}?s={size}&d={default}&r={rating}'.format(
+                url=url, hash=self.avatar_hash, size=size, default=self.def_avatar, rating=rating)
 
     def made_request(self, user):
         return user in self.connection_requests
