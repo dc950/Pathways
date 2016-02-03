@@ -2,7 +2,7 @@ from flask import render_template, session, flash, redirect, url_for, send_from_
 from flask.ext.login import current_user, login_required
 from . import main
 from .. import db
-from ..models import User
+from ..models import User, UserQualification, Qualification, QualificationType
 from .forms import EditProfileForm
 
 
@@ -27,7 +27,6 @@ def user(username):
 
 @login_required
 @main.route('/user/edit-profile', methods=['GET', 'POST'])
-
 def edit():
     form = EditProfileForm()
     if form.validate_on_submit():
@@ -40,11 +39,29 @@ def edit():
     form.last_name.data = current_user.last_name
     return render_template('edit-profile.html', form=form)
 
-@main.route('/user/pathway/edit-qualification')
-def editQualification():
-    return render_template("edit-qualificaiton.html",
-                           title="Edit Qualification")
+@main.route('/user/pathway/edit-qualification/')
+@main.route('/user/pathway/edit-qualification/<qualification>', methods=['GET', 'POST'])
+@login_required
+def edit_qualification(qualification=None):
+    if qualification is None:
+        all_qual_types = QualificationType.query.all()
+        user_subjects = current_user.qualifications.all()
+        user_qual_types = QualificationType.query.join(Qualification, QualificationType.id==Qualification.qualification_type_id).join(UserQualification, UserQualification.qualifications_id==Qualification.id).filter_by(user_id=current_user.id).all()
+        return render_template("edit-qualification.html",
+                           title="Edit Qualifications",
+                           show_all=True,
+                           subjects=user_subjects,
+                           qualifications=user_qual_types)
+    else:
+        return render_template("edit-qualification.html",
+                           title="Edit Qualification: " + qualification,
+                           show_all=False)
 
+@main.route('/user/pathway/add-qualification/')
+@login_required
+def add_qualification():
+    return render_template("add-qualification.html",
+                            title="Add Qualification")
 
 @login_required
 @main.route('/connections')

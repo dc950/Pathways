@@ -2,9 +2,16 @@
 {% extends "base.html" %}
 
 {% block header_content %}
-    <h1>{{ user.first_name + " " + user.last_name}}</h1>
+    <h1>{{ title }}</h1>
 {% endblock %}
 
 {% block main_content %}
-    <p> This is the profile page for {{user.username}} </p>
+	{% if show_all %}
+		<ul>
+		    {% for qual in qualifications %}
+		    <li><a href="{{ qual.name }}">{{ qual.name }}</a></li>
+		    {% endfor %}
+		</ul>
+	{% else %}
+	{% endif %}
 {% endblock %}

@@ -158,6 +158,12 @@ class User(UserMixin, db.Model):
             uq.grade = grade
         self.qualifications.append(uq)
 
+    def get_qualification_types():
+        """
+        """
+        result = db.engine.execute("<SELECT * FROM users, user_qualifications, qualifications, qualification_types WHERE qualifications.qualification_type_id = qualification_types.id AND user_qualifications.qualifications_id = qualifications.id AND users.id = user_qualifications.user_id;>")
+        return result
+
 
 class Career(db.Model):
     __tablename__ = 'careers'
