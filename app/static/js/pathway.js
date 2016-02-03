@@ -170,7 +170,7 @@ function getLevelColour(i) {
 		case 6:
 			return "blue"
 		default:
-			return "black"
+			return "green"
 	}
 }
 
