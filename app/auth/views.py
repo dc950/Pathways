@@ -43,8 +43,8 @@ def register():
                     password=form.password.data)
         user.generate_username()
         db.session.add(user)
-        user.send_confirmation_email()
         db.session.commit()
+        user.send_confirmation_email()
         return redirect(url_for('auth.login'))
     return render_template('register.html', form=form)
 
@@ -64,5 +64,5 @@ def confirm(token):
 @auth.before_app_request
 def before_request():
     if current_user.is_authenticated and not current_user.confirmed and request.endpoint[:5] != 'auth.':
-        message = Markup("'Note: Your account has not been authenticated yet. <a href='"+url_for('auth.send_token')+"'> Click here </a> to resend the email.'")
+        message = Markup("Note: Your account has not been authenticated yet. <a href='"+url_for('auth.send_token')+"'> Click here </a> to resend the email.")
         flash(message)

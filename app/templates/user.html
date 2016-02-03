@@ -10,6 +10,7 @@
     <p>Actions:</p>
     {% if user==current_user %}
     <li><a href="{{ url_for('main.edit') }}">Edit Profile</a></li>
+    <li><a href="{{ url_for('main.edit_qualification') }}">Edit Qualifications</a></li>
     {% elif user in current_user.connections %}
     <li><a href="{{ url_for('main.edit') }}">Remove Connections</a></li>
     {% elif user in current_user.invitations %}

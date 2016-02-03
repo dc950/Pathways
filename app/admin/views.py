@@ -2,6 +2,7 @@ from flask import render_template, redirect, request, url_for, flash, Markup
 from . import admin
 from .forms import adminForm
 from .webcrawler import webcrawler
+from ..models import Career
 from app import db
 import re
 import requests
@@ -17,7 +18,7 @@ def database():
     form = adminForm()
     if form.validate_on_submit():
         return webcrawler()
-    return render_template('admin-database.html', form=form)
+    return render_template('admin-database.html', form=form, careers=careers)
 
 @admin.route('/admin/users')
 def users():
