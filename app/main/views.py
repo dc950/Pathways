@@ -3,7 +3,7 @@ from flask.ext.login import current_user, login_required
 from . import main
 from .. import db
 from ..models import User, UserQualification, Qualification, QualificationType
-from .forms import EditProfileForm
+from .forms import EditProfileForm, AddQualificationForm, EditQualificationForm
 
 
 @main.route('/')
@@ -22,7 +22,7 @@ def user(username):
     name = user_obj.first_name + " " + user_obj.last_name
     return render_template("user.html",
                            user=user_obj,
-                           title=name + " | pathways")
+                           title=name)
 
 
 @login_required
@@ -43,25 +43,35 @@ def edit():
 @main.route('/user/pathway/edit-qualification/<qualification>', methods=['GET', 'POST'])
 @login_required
 def edit_qualification(qualification=None):
+    """
+    These SQL queries should be moved to the model as function eventually
+    """
+    all_qual_types = QualificationType.query.all()
+    user_subjects = current_user.qualifications.all()
+    user_qual_types = QualificationType.query.join(Qualification, QualificationType.id==Qualification.qualification_type_id).join(UserQualification, UserQualification.qualifications_id==Qualification.id).filter_by(user_id=current_user.id).all()
     if qualification is None:
-        all_qual_types = QualificationType.query.all()
-        user_subjects = current_user.qualifications.all()
-        user_qual_types = QualificationType.query.join(Qualification, QualificationType.id==Qualification.qualification_type_id).join(UserQualification, UserQualification.qualifications_id==Qualification.id).filter_by(user_id=current_user.id).all()
         return render_template("edit-qualification.html",
                            title="Edit Qualifications",
                            show_all=True,
                            subjects=user_subjects,
                            qualifications=user_qual_types)
     else:
+        form = EditQualificationForm()
+        form.qualification_type.data = qualification
         return render_template("edit-qualification.html",
                            title="Edit Qualification: " + qualification,
-                           show_all=False)
+                           show_all=False,
+                           form=form)
 
-@main.route('/user/pathway/add-qualification/')
+@main.route('/user/pathway/add-qualification/', methods=['GET', 'POST'])
 @login_required
 def add_qualification():
+    form = AddQualificationForm()
+    if form.validate_on_submit():
+        flash('Submitted: ' +  form.qualification_type.data)
     return render_template("add-qualification.html",
-                            title="Add Qualification")
+                            title="Add Qualification",
+                            form=form)
 
 @login_required
 @main.route('/connections')
