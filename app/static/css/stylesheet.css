@@ -34,18 +34,32 @@ body {
 
 #image-block {
 	height: 400px;
-	background-image: url(../img/education-stock-image.jpg);
+	/*background-image: url(../img/education-stock-image.jpg);
 	background-repeat: no-repeat;
 	background-size: cover;
-	background-position: center;
+	background-position: center;*/
 	
 	display: flex;
   	align-items: center;
   	justify-content: center;
 }
 
+.video-container
+{
+    /*position:absolute;*/
+    height:100%;
+    width:100%;
+    overflow: hidden;
+}
+
+.video-container video 
+{
+    min-width: 100%;
+    min-height: 100%;
+}
+
 .vcenter {
-    max-width: 50%;
+	max-width: 50%;
     align-items: center;
   	justify-content: center;
 }

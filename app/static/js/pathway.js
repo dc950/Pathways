@@ -136,7 +136,7 @@ $(document).ready(function(){
     	$.each(newCircles, function(index, value){
     		var el = $("<div class='col-md-5 col-sm-5 qualifification-section'></div>");
 			$("#qualification-container").append(el);
-			el.append("<div class='edit-button' role='button'>Edit [X]</div>");
+			el.append("<div class='edit-button' role='button'> <a href='./pathway/edit-qualification/" + value.qualification + "''>Edit [X]</a></div>");
 			el.append("<div>" + value.qualification + "</div>");
 
 			var li = $("<ul></ul>");
@@ -170,7 +170,7 @@ function getLevelColour(i) {
 		case 6:
 			return "blue"
 		default:
-			return "black"
+			return "green"
 	}
 }
 

@@ -8,8 +8,13 @@
 {% block header_content %}
 	<!-- Home page Slideshow -->
 	<div id="image-block">
+		<div class="video-container">
+			<video poster="https://thumbs.gfycat.com/ScarySomberAmericanriverotter-thumb360.jpg" muted="" autoplay="" loop="">
+	    		<source data-ng-src="https://thumbs.gfycat.com/ScarySomberAmericanriverotter-mobile.mp4" type="video/mp4" src="https://thumbs.gfycat.com/ScarySomberAmericanriverotter-mobile.mp4">
+	  		</video>
+  		</div>
 		<div class="vcenter">
-			<h1 id="get-started">Help Build Your Career Pathway</h1>
+			<!-- <h1 id="get-started">Help Build Your Career Pathway</h1>
 			{% if current_user.is_authenticated %}
 			<a class="btn btn-default" id="get-started-button" href="{{ url_for('main.pathway') }}" role="button">
 				Get Started
@@ -18,7 +23,7 @@
 			<a class="btn btn-default" id="get-started-button" href="{{ url_for('auth.register') }}" role="button">
 				Get Started
 			</a>
-			{% endif %}
+			{% endif %} -->
 		</div>
 	</div>
 {% endblock %}
