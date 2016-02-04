@@ -1,11 +1,6 @@
 from flask.ext.wtf import Form
-<<<<<<< HEAD
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, ValidationError, SelectField
-=======
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, DateField, FormField, SelectField, ValidationError
->>>>>>> b253cefb0c8ce9ea7e593b08e885ae047cd848a6
-from wtforms.validators import DataRequired, Email, Length, Regexp, EqualTo
-from ..models import User
+from wtforms import StringField, SubmitField, DateField, FormField, SelectField
+from wtforms.validators import Length
 
 
 class EditProfileForm(Form):

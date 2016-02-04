@@ -2,13 +2,8 @@ from flask import render_template, session, flash, redirect, url_for, send_from_
 from flask.ext.login import current_user, login_required
 from . import main
 from .. import db
-<<<<<<< HEAD
-from ..models import User, Career
-from .forms import EditProfileForm
-=======
-from ..models import User, UserQualification, Qualification, QualificationType
+from ..models import User, UserQualification, Qualification, QualificationType, Career
 from .forms import EditProfileForm, AddQualificationForm, EditQualificationForm
->>>>>>> b253cefb0c8ce9ea7e593b08e885ae047cd848a6
 
 
 @main.route('/')
