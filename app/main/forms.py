@@ -1,5 +1,5 @@
 from flask.ext.wtf import Form
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, DateField, FormField, ValidationError
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, DateField, FormField, SelectField, ValidationError
 from wtforms.validators import DataRequired, Email, Length, Regexp, EqualTo
 from ..models import User
 
@@ -14,7 +14,7 @@ class SubjectGrade(Form):
 	subject_grade = StringField('Grade', validators=[Length(0, 8)])
 
 class AddQualificationForm(Form):
-	qualification_type = StringField('Qualification', validators=[Length(0, 64)])
+	qualification_type = SelectField(u'Programming Language', coerce=int)
 	start_date = DateField('Start Date', format='%Y-%m-%d')
 	end_date = DateField('End Date', format='%Y-%m-%d')
 	institute = StringField('Institute', validators=[Length(0, 64)])
