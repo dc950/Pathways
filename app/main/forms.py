@@ -15,12 +15,12 @@ class SubjectGrade(Form):
 
 class AddQualificationForm(Form):
 	qualification_type = SelectField(u'Programming Language', coerce=int)
-	start_date = DateField('Start Date', format='%Y-%m-%d')
-	end_date = DateField('End Date', format='%Y-%m-%d')
+	"""start_date = DateField('Start Date', format='%Y-%m-%d')
+	end_date = DateField('End Date', format='%Y-%m-%d')"""
 	institute = StringField('Institute', validators=[Length(0, 64)])
 	subject_grade_one = FormField(SubjectGrade, 'Test')
-	subject_grade_two = FormField(SubjectGrade)
-	subject_grade_three = FormField(SubjectGrade)
+	"""subject_grade_two = FormField(SubjectGrade)
+	subject_grade_three = FormField(SubjectGrade)"""
 	submit = SubmitField('Submit')
 
 class EditQualificationForm(Form):
