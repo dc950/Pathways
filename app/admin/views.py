@@ -18,7 +18,7 @@ def index():
 def database():
     form = adminForm()
     if form.validate_on_submit():
-        return webcrawler()
+        webcrawler()
     return render_template('admin-database.html', form=form)
 
 
