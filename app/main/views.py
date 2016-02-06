@@ -37,8 +37,9 @@ def user(username):
                            title=name)
 
 
-@login_required
+
 @main.route('/user/edit-profile', methods=['GET', 'POST'])
+@login_required
 def edit():
     form = EditProfileForm()
     if form.validate_on_submit():
@@ -90,8 +91,9 @@ def add_qualification():
                             form=form)
 
 
-@login_required
+
 @main.route('/connections')
+@login_required
 def connections():
     users = User.query.all()
     return render_template('connections.html',

@@ -113,7 +113,7 @@ class User(UserMixin, db.Model):
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-    def generate_confirmation_token(self, expiration=86400000):
+    def generate_confirmation_token(self, expiration=86400):
         s = Serializer(current_app.config['SECRET_KEY'], expiration)
         return s.dumps({'confirm': self.id})
 
@@ -133,6 +133,16 @@ class User(UserMixin, db.Model):
         self.confirmed = True
         db.session.add(self)
         return True
+
+    def send_new_password_email(self):
+        token = self.generate_new_password_token()
+        send_email(self.email, 'Change your password', 'auth/email/change-password', user=self, token=token)
+        flash('A confirmation email has been sent to your email')
+
+    def generate_new_password_token(self, expiration=1800):
+        s = Serializer(current_app.config['SECRET_KEY'], expiration)
+        return s.dumps({'new_password': self.id})
+
 
     def generate_username(self):
         u_name = (self.first_name + self.last_name).lower()

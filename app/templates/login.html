@@ -18,6 +18,7 @@
          <p>{{ form.remember_me }} Remember Me</p>
          <p>{{ form.submit }}</p>
       </form>
+      <p><a href="{{ url_for('auth.forgotten_password') }}">Forgotten your password?</a></p>
       <p><a href="{{ url_for('auth.register') }}">Click here to register</a> </p>
    </div>
     

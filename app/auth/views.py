@@ -1,10 +1,11 @@
-from flask import render_template, redirect, request, url_for, flash, Markup
+from flask import render_template, redirect, request, url_for, flash, Markup, current_app
 from flask.ext.login import login_user, logout_user, login_required, current_user
 from . import auth
 from ..models import User
 from ..email import send_email
-from .forms import LoginForm, RegistrationForm
+from .forms import LoginForm, RegistrationForm, ChangePasswordForm, ForgottenPasswordForm
 from app import db
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
 
 @auth.route('/login', methods=['GET', 'POST'])
@@ -49,6 +50,14 @@ def register():
     return render_template('register.html', form=form)
 
 
+@auth.route('/forgotten-password', methods=['GET', 'POST'])
+def forgotten_password():
+    form = ForgottenPasswordForm()
+    if form.validate_on_submit():
+        return send_new_password_email(email=form.email.data)
+    return render_template('forgotten-password.html', form=form)
+
+
 @auth.route('/confirm/<token>')
 @login_required
 def confirm(token):
@@ -59,6 +68,50 @@ def confirm(token):
     else:
         flash('The confirmation link is invalid or had expired')
     return redirect(url_for('main.index'))
+
+
+@auth.route('/send-new-password-email')
+def send_new_password_email(email=None):
+    if email is not None:
+        user = User.query.filter_by(email=email).first()
+        if user:
+            user.send_new_password_email()
+            flash('An email has been sent to your account with further details on how to proceed')
+            return redirect(url_for('auth.login'))
+        else:
+            flash('No user with that associated account was found.  Please register to create an account')
+            return redirect(url_for('auth.register'))
+    else:
+        # Request was made from a user.
+        current_user.send_new_password_email()
+        flash('An email has been sent to your account with further details on how to proceed')
+        return redirect(url_for('main.index'))
+
+
+@auth.route('/change-password/<token>', methods=['GET', 'POST'])
+def change_password(token):
+    s = Serializer(current_app.config['SECRET_KEY'])
+    try:
+        data = s.loads(token)
+    except:
+        flash("The url you used is either invalid or has expired.")
+        return redirect(url_for('main.index'))
+    # Find the user from the token
+    uid = data.get('new_password')
+    user = User.query.filter_by(id=uid).first()
+    # If the user is not found, there's a problem...
+    if not user:
+        flash("The url you used is either invalid or has expired.")
+        return redirect(url_for('main.index'))
+    form = ChangePasswordForm()
+
+    if form.validate_on_submit():
+        user.password = form.password.data
+        if current_user.is_authenticated:
+            logout_user()
+        flash("Your password has been changed successfully.  Please login with your new password to continue")
+        return redirect(url_for('auth.login'))
+    return render_template('new_password.html', form=form)
 
 
 @auth.before_app_request
