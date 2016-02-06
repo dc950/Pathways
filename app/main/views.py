@@ -4,6 +4,7 @@ from . import main
 from .. import db
 from ..models import User, UserQualification, Qualification, QualificationType, Career
 from .forms import EditProfileForm, AddQualificationForm, EditQualificationForm
+from ..decorators import admin_required, permission_required
 
 
 @main.route('/')
@@ -76,6 +77,7 @@ def edit_qualification(qualification=None):
                            show_all=False,
                            form=form)
 
+
 @main.route('/user/pathway/add-qualification/', methods=['GET', 'POST'])
 @login_required
 def add_qualification():
@@ -127,6 +129,7 @@ def add_connection(username):
 
 
 @main.route('/test')
+@admin_required
 def test():
     return render_template("test.html",
                            title="Test")

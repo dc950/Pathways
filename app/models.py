@@ -3,7 +3,7 @@ from flask import current_app, flash, request
 from .email import send_email
 from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
-from flask.ext.login import UserMixin
+from flask.ext.login import UserMixin, AnonymousUserMixin
 from . import login_manager
 from hashlib import md5
 
@@ -32,6 +32,7 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     confirmed = db.Column(db.Boolean, default=False)
     username = db.Column(db.String(60), unique=True)
+    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     avatar_hash = db.Column(db.String(32))
     def_avatar = db.Column(db.String(16), default='identicon')
 
@@ -47,6 +48,15 @@ class User(UserMixin, db.Model):
 
     def __repr__(self):
         return '<User %r>' % (self.first_name + self.last_name)
+
+    def __init__(self, **kwargs):
+        super(User, self).__init__(**kwargs)
+        if self.role is None:
+            if self.email == current_app.config['PATHWAYS_ADMIN']:
+                self.role = Role.query.filter_by(permissions=0xff).first()
+                self.confirmed = True
+            else:
+                self.role = Role.query.filter_by(default=True).first()
 
     @property
     def connections(self):
@@ -137,6 +147,7 @@ class User(UserMixin, db.Model):
                 return
             version += 1
 
+    # SKILLS AND QUALIFICATIONS
     def add_skill(self, skill):
         """
         Adds the skill to the user
@@ -171,11 +182,23 @@ class User(UserMixin, db.Model):
             uq.grade = grade
         self.qualifications.append(uq)
 
-    def get_qualification_types():
-        """
-        """
-        result = db.engine.execute("<SELECT * FROM users, user_qualifications, qualifications, qualification_types WHERE qualifications.qualification_type_id = qualification_types.id AND user_qualifications.qualifications_id = qualifications.id AND users.id = user_qualifications.user_id;>")
-        return result
+    # PERMISSIONS
+    def can(self, permissions):
+        return self.role is not None and (self.role.permissions & permissions) == permissions
+
+    def is_administrator(self):
+        return self.can(Permission.ADMINISTER)
+
+
+class AnonymousUser(AnonymousUserMixin):
+
+    def can(self, permissions):
+        return False
+
+    def is_administrator(self):
+        return False
+
+login_manager.anonymous_user = AnonymousUser
 
 
 class Career(db.Model):
@@ -322,3 +345,44 @@ class CareerSkill(db.Model):
     @property
     def name(self):
         return self.skill.name
+
+
+class Role(db.Model):
+    __tablename__ = 'roles'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), unique=True)
+    default = db.Column(db.Boolean, default=False, index=True)
+    permissions = db.Column(db.Integer)
+    users = db.relationship('User', backref='role', lazy='dynamic')
+
+    def __repr__(self):
+        return '<Role %r>' % self.name
+
+    @staticmethod
+    def insert_roles():
+        roles = {
+            'User': (Permission.ADD_USERS |
+                     Permission.HAVE_AVATAR, True),
+            'Mentor': (Permission.ADD_USERS |
+                       Permission.HAVE_AVATAR |
+                       Permission.MENTOR |
+                       Permission.MODERATE_CONTENT, False),
+            'Admin': (0xff, False)
+        }
+
+        for r in roles:
+            role = Role.query.filter_by(name=r).first()
+            if role is None:
+                role = Role(name=r)
+            role.permissions = roles[r][0]
+            role.default = roles[r][1]
+            db.session.add(role)
+        db.session.commit()
+
+
+class Permission:
+    HAVE_AVATAR = 0x01
+    ADD_USERS = 0x02
+    MENTOR = 0x04
+    MODERATE_CONTENT = 0x08
+    ADMINISTER = 0x80

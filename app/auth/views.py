@@ -63,6 +63,7 @@ def confirm(token):
 
 @auth.before_app_request
 def before_request():
-    if current_user.is_authenticated and not current_user.confirmed and request.endpoint[:5] != 'auth.':
-        message = Markup("Note: Your account has not been authenticated yet. <a href='"+url_for('auth.send_token')+"'> Click here </a> to resend the email.")
-        flash(message)
+    if request.endpoint:
+        if current_user.is_authenticated and not current_user.confirmed and request.endpoint[:5] != 'auth.':
+            message = Markup("Note: Your account has not been authenticated yet. <a href='"+url_for('auth.send_token')+"'> Click here </a> to resend the email.")
+            flash(message)

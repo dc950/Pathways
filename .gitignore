@@ -143,4 +143,4 @@ local.properties
 *.sqlite
 *.db
 *.sqlite-journal
-# migrations/
+.migrations/
