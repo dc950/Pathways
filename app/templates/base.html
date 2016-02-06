@@ -52,14 +52,25 @@
                <ul class="nav navbar-nav navbar-right">
                   <il class="dropdown">
                      <div class="user-info dropdown">
-                        <div>{{ current_user.email }}</div>
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ current_user.first_name }} {{ current_user.last_name }} <span class="caret"></span></a>
+                        <div>{{ current_user.email }} </div>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            {{ current_user.first_name }} {{ current_user.last_name }}
+                            {% if current_user.invitations|length > 0 %} <button class="btn btn-info">{{ current_user.invitations|length }}</button> {% endif %}
+                            <span class="caret"></span>
+                        </a>
                         <ul class="dropdown-menu">
                            <li><a href="{{ url_for('main.add_qualification') }}">Add Qualification</a></li>
                            <li><a href="{{ url_for('main.edit_qualification') }}">Edit Qualifications</a></li>
                            <li role="separator" class="divider"></li>
                            <li><a href="{{ url_for('main.edit') }}">Edit Profile</a></li>
                            <li role="separator" class="divider"></li>
+                            {% if current_user.invitations|length > 0 %}
+                                <li>Connection Invites</li>
+                                {% for c in current_user.invitations %}
+                                    <li><a href="{{ url_for('main.user', username=c.username) }}">{{ c.first_name }} {{ c.last_name }}</a></li>
+                                {% endfor %}
+                                <li role="separator" class="divider"></li>
+                            {% endif %}
                            <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
                         </ul>
                      </div>
