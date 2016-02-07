@@ -11,9 +11,11 @@ class EditProfileForm(Form):
         ('retro', 'Retro')])
     submit = SubmitField('Submit')
 
+
 class SubjectGrade(Form):
     subject_name = StringField('Subject', validators=[Length(0, 32)])
     subject_grade = StringField('Grade', validators=[Length(0, 8)])
+
 
 class AddQualificationForm(Form):
     qualification_type = SelectField(u'Programming Language', coerce=int)
@@ -25,6 +27,7 @@ class AddQualificationForm(Form):
     subject_grade_three = FormField(SubjectGrade)"""
     submit = SubmitField('Submit')
 
+
 class EditQualificationForm(Form):
     qualification_type = StringField('Qualification', validators=[Length(0, 64)])
     start_date = DateField('Start Date', format='%Y-%m-%d')
@@ -32,3 +35,8 @@ class EditQualificationForm(Form):
     institute = StringField('Institute', validators=[Length(0, 64)])
     subject_grade_one = FormField(SubjectGrade)
     submit = SubmitField('Submit')
+
+
+class SearchForm(Form):
+    term = StringField('Search', validators=[Length(1, 64)])
+    submit = SubmitField('Search')

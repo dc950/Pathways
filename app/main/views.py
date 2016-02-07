@@ -3,8 +3,9 @@ from flask.ext.login import current_user, login_required
 from . import main
 from .. import db
 from ..models import User, UserQualification, Qualification, QualificationType, Career
-from .forms import EditProfileForm, AddQualificationForm, EditQualificationForm
+from .forms import EditProfileForm, AddQualificationForm, EditQualificationForm, SearchForm
 from ..decorators import admin_required, permission_required
+from .search import search_user
 
 
 @main.route('/')
@@ -130,6 +131,34 @@ def add_connection(username):
     return redirect(url_for('.user', username=username))
 
 
+@main.route('/search', methods=['GET', 'POST'])
+def search_click():
+    search_form = SearchForm()
+    if search_form.validate_on_submit():
+        term=search_form.term.data
+        return redirect(url_for('main.search', term=term))
+    flash('Form not validating on submit')
+    return redirect(url_for('main.index'))
+
+
+@main.route('/search/<term>')
+def search(term):
+    print("in search, term is "+str(term))
+
+    users = search_user(term)
+    return render_template("search.html",
+                           users=users,
+                           term=term)
+
+
+
+
+'''
+@main.before_request
+def before_request():
+    g.search_form = SearchForm()
+'''
+
 @main.route('/test')
 @admin_required
 def test():
@@ -145,7 +174,6 @@ def send_js(path):
 @main.route('/img/<path:path>')
 def send_img(path):
     return send_from_directory('img', path)
-
 
 '''
 /
