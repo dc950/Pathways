@@ -17,6 +17,7 @@ def index():
 @admin_required
 def database():
     form = adminForm()
+    careers = Career.query.all()
     if form.validate_on_submit():
         webcrawler()
     return render_template('admin-database.html', form=form)
