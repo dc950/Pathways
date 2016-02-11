@@ -16,7 +16,7 @@
 
 {% block title %}
    {% if title %}
-      {{ title }} - Pathways
+      {{ title }} | Pathways
    {% else %}
       Pathways
    {% endif %}
@@ -65,7 +65,7 @@
                      </div>
                   </il>
 
-                  <il><img class="user-avatar" src="{{ url_for('static', filename='img/default-avatar.png') }}"></il>
+                  <il><img class="user-avatar" src="{{ current_user.gravatar(64) }}"></il>
                </ul>
             {% else %}
             <div class="nav navbar-nav navbar-right">

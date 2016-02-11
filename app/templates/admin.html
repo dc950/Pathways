@@ -11,7 +11,7 @@
           <p>{{ form.submit }}</p>
       </p>
           {% for c in careers %}
-            <a href="{{ c.url }}"><h1>{{ c.name }}</h1></a>
+            <a href="{{ url_for('main.career', careername=c.name) }}"><h1>{{ c.name }}</h1></a>
             <h3>Skills required for job:</h3>
               {% for s in c.skills %}
                 <p>{{ s.name }}</p>

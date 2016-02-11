@@ -2,6 +2,7 @@
 {% extends "base.html" %}
 
 {% block header_content %}
+    <img src="{{ user.gravatar(256) }}">
     <h1>{{ user.first_name + " " + user.last_name}}</h1>
 {% endblock %}
 
@@ -22,8 +23,8 @@
     <li><a href="{{ url_for('.add_connection', username=user.username)}}">Send Connection Request</a></li>
     {% endif %}
 
-    {% if user in current_user.connections %}
-    <p>I realy realy like ponies</p>
+    {% if user == current_user or user in current_user.connections %}
+    <p>I really like ponies</p>
     {% else %}
     <p>You are unable to see this data as you are not connected to the user</p>
     {% endif %}

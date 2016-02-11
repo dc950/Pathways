@@ -2,7 +2,7 @@ from flask import render_template, session, flash, redirect, url_for, send_from_
 from flask.ext.login import current_user, login_required
 from . import main
 from .. import db
-from ..models import User, UserQualification, Qualification, QualificationType
+from ..models import User, UserQualification, Qualification, QualificationType, Career
 from .forms import EditProfileForm, AddQualificationForm, EditQualificationForm
 
 
@@ -11,6 +11,17 @@ from .forms import EditProfileForm, AddQualificationForm, EditQualificationForm
 def index():
     return render_template("index.html",
                            title="Home")
+
+
+@main.route('/career/<careername>')
+def career(careername):
+    career_obj = Career.query.filter_by(name=careername).first()
+    if career is None:
+        flash('Career %s not found.' % careername)
+        return redirect(url_for('main.index'))
+    return render_template('career.html',
+                           career=career_obj,
+                           title=careername)
 
 
 @main.route('/user/<username>')
@@ -32,12 +43,14 @@ def edit():
     if form.validate_on_submit():
         current_user.first_name = form.first_name.data
         current_user.last_name = form.last_name.data
+        current_user.def_avatar = form.default_avatar.data
         db.session.add(current_user)
         flash('Your profile has been updated')
-        return redirect(url_for('.user', user_id=current_user.id))
+        return redirect(url_for('.user', username=current_user.username))
     form.first_name.data = current_user.first_name
     form.last_name.data = current_user.last_name
     return render_template('edit-profile.html', form=form)
+
 
 @main.route('/user/pathway/edit-qualification/')
 @main.route('/user/pathway/edit-qualification/<qualification>', methods=['GET', 'POST'])
@@ -73,6 +86,7 @@ def add_qualification():
     return render_template("add-qualification.html",
                             title="Add Qualification",
                             form=form)
+
 
 @login_required
 @main.route('/connections')
@@ -120,7 +134,7 @@ def test():
 
 @main.route('/js/<path:path>')
 def send_js(path):
-    return send_from_directory('static/js/pathways.js')
+    return send_from_directory('static/js/pathways.js', path)
 
 
 @main.route('/img/<path:path>')

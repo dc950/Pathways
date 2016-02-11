@@ -142,4 +142,5 @@ local.properties
 #Ignore database files
 *.sqlite
 *.db
-migrations/
+*.sqlite-journal
+# migrations/
