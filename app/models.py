@@ -143,7 +143,6 @@ class User(UserMixin, db.Model):
         s = Serializer(current_app.config['SECRET_KEY'], expiration)
         return s.dumps({'new_password': self.id})
 
-
     def generate_username(self):
         u_name = (self.first_name + self.last_name).lower()
         if User.query.filter_by(username=u_name).first() is None:
@@ -198,6 +197,30 @@ class User(UserMixin, db.Model):
 
     def is_administrator(self):
         return self.can(Permission.ADMINISTER)
+
+    @staticmethod
+    def generate_fake(count=100):
+        from sqlalchemy.exc import IntegrityError
+        from random import seed
+        import forgery_py
+
+        fout = open('fake_users.txt', 'w')
+        seed()
+        for i in range(count):
+            email = forgery_py.internet.email_address()
+            password = forgery_py.lorem_ipsum.word()
+            u = User(email=email,
+                     first_name=forgery_py.name.first_name(),
+                     last_name=forgery_py.name.last_name(),
+                     password=password,
+                     confirmed=True)
+            u.generate_username()
+            db.session.add(u)
+            try:
+                db.session.commit()
+                print((email + " : " + password), file=fout)
+            except IntegrityError:
+                db.session.rollback()
 
 
 class AnonymousUser(AnonymousUserMixin):
