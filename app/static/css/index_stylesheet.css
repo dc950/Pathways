@@ -7,4 +7,24 @@
 	-webkit-box-shadow: 0px 10px 24px 7px rgba(0,0,0,0.75);
 	-moz-box-shadow: 0px 10px 24px 7px rgba(0,0,0,0.75);
 	box-shadow: 0px 10px 24px 7px rgba(0,0,0,0.75);
+
+	border-radius: 0px 0px 0px 0px;
+    -moz-border-radius: 0px 0px 0px 0px;
+    -webkit-border-radius: 0px 0px 0px 0px;
+}
+
+#image-break-one {
+	background-image: url(../img/comp_stock.jpg);
+	background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: 100vw 100vh;
+}
+
+#image-break-two {
+	background-image: url(../img/hw_campus.jpg);
+	background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: 100vw 100vh;
 }
