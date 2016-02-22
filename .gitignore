@@ -143,4 +143,7 @@ local.properties
 *.sqlite
 *.db
 *.sqlite-journal
-# migrations/
+.migrations/
+
+# Ignore fake_users
+fake_users.txt

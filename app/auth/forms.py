@@ -23,3 +23,15 @@ class RegistrationForm(Form):
     def validate_email(self, field):
         if User.query.filter_by(email=field.data).first():
             raise ValidationError('Email already in use')
+
+
+class ChangePasswordForm(Form):
+    password = PasswordField('Password', validators=[
+        DataRequired(), EqualTo('password2', message='Passwords must match.')])
+    password2 = PasswordField('Confirm Password', validators=[DataRequired()])
+    submit = SubmitField('Change Password')
+
+
+class ForgottenPasswordForm(Form):
+    email = StringField('Email', validators=[DataRequired(), Length(1, 64), Email()])
+    submit = SubmitField('Confirm')

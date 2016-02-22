@@ -1,0 +1,20 @@
+{% extends"base.html" %}
+
+{% block header_content %}
+   <h1>Search results for {{ term }}</h1>
+{% endblock %}
+
+{% block main_content %}
+<div class="col-md-8">
+    {% for u in users %}
+        <div class="row">
+            <div class="col-md-1">
+                <a href="{{ url_for('main.user', username=u.username) }}"><img src="{{ u.gravatar(64) }}"></a>
+            </div>
+            <div class="col-md-8">
+                <h3><a href="{{ url_for('main.user', username=u.username) }}">{{ u.first_name }} {{ u.last_name }}</a></h3>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

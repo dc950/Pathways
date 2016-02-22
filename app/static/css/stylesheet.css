@@ -101,7 +101,11 @@ main {
 	padding: 25px;
 }
 
-main .blurb .row{
+main .blurb .row {
+	display: flex;
+  	align-items: center;
+  	justify-content: center;
+
 	background-color: white;
 	padding: 0px;
 	margin: 50px 0;
@@ -153,6 +157,13 @@ main .blurb .row div img {
 	border: 0px solid #000000;
 }
 
+.selling-point {
+	color: white;
+	font-size: 350%;
+	-webkit-text-stroke: 0.5px black;
+	text-align: center;
+	font-family: coolvetica;
+}
 footer {
 	background-color: #303030;
 	height: 200px;

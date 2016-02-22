@@ -1,27 +1,30 @@
 from flask import render_template, redirect, request, url_for, flash, Markup
 from . import admin
-from .forms import adminForm
+from .forms import *
 from .webcrawler import webcrawler
-from ..models import Career
-from app import db
-import re
-import requests
-from bs4 import BeautifulSoup
+from .qualifications import *
+from ..models import Permission, Career
+from ..decorators import permission_required, admin_required
 
-@admin.route('/admin/index')
-@admin.route('/admin/')
+
+@admin.route('/')
+@admin.route('/index/')
 def index():
     return render_template('admin-index.html')
 
-@admin.route('/admin/database', methods=['GET', 'POST'])
-def database():
-    form = adminForm()
-    careers = Career.query.all()
-    if form.validate_on_submit():
-        return webcrawler()
-    return render_template('admin-database.html', form=form, careers=careers)
 
-@admin.route('/admin/users')
+@admin.route('/database', methods=['GET', 'POST'])
+def database():
+    form1 = qualTypesForm()
+    form2 = qualTypesForm()
+    careers = Career.query.all()
+    if form1.validate_on_submit():
+        qualifications()
+        subjects()
+    return render_template('admin-database.html', form2=form2, form1=form1)
+
+
+@admin.route('/users')
 def users():
     return render_template('admin-users.html')
 
