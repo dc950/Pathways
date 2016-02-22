@@ -86,7 +86,11 @@ def add_qualification():
     form = AddQualificationForm()
     form.qualification_type.choices = [(q.id, q.name) for q in QualificationType.query.all()]
     if form.validate_on_submit():
-        flash('Submitted: ' +  form.qualification_type.data)
+        """flash('Submitted: ' +  form.qualification_type.data)"""
+        current_user.add_qualification()
+        print("Submitted qualification")
+    else:
+        print("Invalid submission")
     return render_template("add-qualification.html",
                             title="Add Qualification",
                             form=form)

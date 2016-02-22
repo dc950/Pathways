@@ -7,9 +7,15 @@
 {% block main_content %}
     <div class="col-md-4">
       <form action="" method="post" name="admin">
-        {{ form.hidden_tag() }}
+        {{ form1.hidden_tag() }}
           <p>
-              <p>{{ form.submit }}</p>
+              <p>{{ form1.submit }}</p>
+          </p>
+      </form>
+      <form action="" method="post" name="admin">
+        {{ form2.hidden_tag() }}
+          <p>
+              <p>{{ form2.submit }}</p>
           </p>
       </form>
     </div>

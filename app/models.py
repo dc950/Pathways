@@ -326,6 +326,7 @@ class QualificationType(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), unique=True)
     level = db.Column(db.Integer)
+        
 
 
 class UserQualification(db.Model):

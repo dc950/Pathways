@@ -5,3 +5,6 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField, Valid
 
 class adminForm(Form):
     submit = SubmitField('Load webcrawler into database')
+
+class qualTypesForm(Form):
+	submit = SubmitField('Load Qual Types')
