@@ -21,8 +21,8 @@ class AddQualificationForm(Form):
     qualification_type = SelectField(u'Programming Language', coerce=int)
     """start_date = DateField('Start Date', format='%Y-%m-%d')
     end_date = DateField('End Date', format='%Y-%m-%d')"""
-    """institute = StringField('Institute', validators=[Length(1, 64)])
-    subject_grade_one = FormField(SubjectGrade, 'Test')"""
+    """institute = StringField('Institute', validators=[Length(1, 64)])"""
+    subjects = SelectField(u'Subject', coerce=int)
     """subject_grade_two = FormField(SubjectGrade)
     subject_grade_three = FormField(SubjectGrade)"""
     submit = SubmitField('Submit')

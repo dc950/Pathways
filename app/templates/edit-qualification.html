@@ -8,12 +8,31 @@
 
 {% block main_content %}
 	{% if show_all %}
-		<ul>
-		    {% for qual in qualifications %}
-		    <li><a href="{{ qual.name }}">{{ qual.name }}</a></li>
-		    {% endfor %}
-		    <li><a href="{{ url_for('main.add_qualification') }}">Add Qualification</a></li>
-		</ul>
+		<div class="panel panel-default table-responsive">
+  			<table class="table">
+  				<thead class="panel-heading">
+  					<tr>
+  						<th>Subject<span class="glyphicon glyphicon-chevron-down" /></th>
+  						<th>Grade<span class="glyphicon glyphicon-chevron-down" /></th>
+  						<th>Qualification<span class="glyphicon glyphicon-chevron-down" /></th>
+  						<th>Institute<span class="glyphicon glyphicon-chevron-down" /></th>
+  						<th class="text-center"><span class="glyphicon glyphicon-th-list" /></th>
+  					</tr>
+  				</thead>
+  				<tbody>
+				    {% for subs in subjects %}
+				    <tr class="">
+				    	<td class="">{{ subs.course_name }}</td>
+					    <td class="">{{ subs.grade }}</td>
+					    <td class="">{{ subs.qualification.qualification_type.name }}</td>
+					    <td class="">Heriot Watt University</td>
+					    <td class="text-center"><span class="glyphicon glyphicon-pencil" /> <span class="glyphicon glyphicon-remove" /></td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			<div class="panel-footer"><a href="{{ url_for('main.add_qualification') }}">Add New Qualification</a></div>
+		</div>
 	{% else %}
 		<div class="col-md-4">
 	      {{ wtf.quick_form(form) }}

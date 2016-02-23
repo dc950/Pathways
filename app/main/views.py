@@ -1,4 +1,4 @@
-from flask import render_template, session, flash, redirect, url_for, send_from_directory
+from flask import render_template, session, flash, redirect, url_for, send_from_directory, Flask, request, jsonify
 from flask.ext.login import current_user, login_required
 from . import main
 from .. import db
@@ -63,7 +63,7 @@ def edit_qualification(qualification=None):
     These SQL queries should be moved to the model as function eventually
     """
     all_qual_types = QualificationType.query.all()
-    user_subjects = current_user.qualifications.all()
+    user_subjects = UserQualification.query.join(Qualification, UserQualification.qualifications_id==Qualification.id).all()
     user_qual_types = QualificationType.query.join(Qualification, QualificationType.id==Qualification.qualification_type_id).join(UserQualification, UserQualification.qualifications_id==Qualification.id).filter_by(user_id=current_user.id).all()
     if qualification is None:
         return render_template("edit-qualification.html",
@@ -84,13 +84,36 @@ def edit_qualification(qualification=None):
 @login_required
 def add_qualification():
     form = AddQualificationForm()
+
     form.qualification_type.choices = [(q.id, q.name) for q in QualificationType.query.all()]
+    form.subjects.choices = [(s.id, s.course_name) for s in Qualification.query.filter_by(qualification_type_id = 1)]
+
+    opt_param = request.args.get("qual_id")
+
+    if opt_param is None:
+        print ("Argument not provided")
+    else:
+        print (opt_param)
+        form.qualification_type.default = opt_param
+        form.qualification_type.choices = [(q.id, q.name) for q in QualificationType.query.all()]
+        results = [(s.id, s.course_name) for s in Qualification.query.filter_by(qualification_type_id = opt_param)]
+        form.process()
+        return jsonify(results)
+
     if form.validate_on_submit():
-        """flash('Submitted: ' +  form.qualification_type.data)"""
-        current_user.add_qualification()
+        flash(form.subjects.data)
+        nq = UserQualification()
+        nq.user_id = current_user.id
+        nq.qualifications_id = form.subjects.data
+        nq.grade = 'A*'
+
+        db.session.add(nq)
+        db.session.commit()
+
         print("Submitted qualification")
     else:
         print("Invalid submission")
+
     return render_template("add-qualification.html",
                             title="Add Qualification",
                             form=form)
