@@ -136,7 +136,8 @@ main .blurb .row p {
 
 main .blurb .row img {
 	padding: 0;
-	width: 100%
+	height: 300px;
+	width: 300px;
 }
 
 main .blurb .row div {
@@ -146,7 +147,7 @@ main .blurb .row div {
   	justify-content: center
 }
 
-main .blurb .row div img { 
+/*main .blurb .row div img { 
 	height: 300px;
 	width: 300px;
 	padding: 0 !important;
@@ -155,7 +156,7 @@ main .blurb .row div img {
     -moz-border-radius: 200px 200px 200px 200px;
     -webkit-border-radius: 200px 200px 200px 200px;
 	border: 0px solid #000000;
-}
+}*/
 
 .selling-point {
 	color: white;

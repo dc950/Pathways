@@ -1,11 +1,24 @@
 $(document).ready(function(){
 
 	var test = [1, 2, 3, 4, 5, 6];
+
+	/*$.ajax({
+		  	method: "GET",
+		  	data: { request_json: 1 },
+		  	dataType: 'json',
+          	contentType: 'application/json; charset=utf-8',
+          	success: function (data) {
+            	console.log(data);
+            	test = data;
+        	}
+		})*/
+
+	//console.log(test);
 	
-	treeJSON = d3.json("../static/js/data.json", function(error, treeData) {
-		console.log("data.json loaded");
+	//treeJSON = d3.json("../static/js/data.json", function(error, treeData) {
+	treeJSON = d3.json("?request_json=1", function(error, treeData) {
+		console.log("Loading error: " + error);
 		console.log(treeData);
-		console.log(Object.keys(treeData));
 
 		var viewerWidth = $("#pathway-container").width();
     	var viewerHeight = $("#pathway-container").height();
