@@ -302,6 +302,12 @@ class Qualification(db.Model):
     course_name = db.Column(db.String(128))
     qualification_type_id = db.Column(db.Integer, db.ForeignKey('qualification_types.id'))
     qualification_type = db.relationship("QualificationType")
+    maxucaspoints = db.Column(db.String(1024))
+    minucaspoints = db.Column(db.String(1024))
+    alevelgrades = db.Column(db.String(1024))
+    highers = db.Column(db.String(1024))
+    internationalbaccalaureate = db.Column(db.String(1024))
+    advancedhighers = db.Column(db.String(1024))
 
     @property
     def level(self):
@@ -380,16 +386,16 @@ class CareerSkill(db.Model):
     def name(self):
         return self.skill.name
 
-class UniCourses(Qualification):
-    __tablename__= 'unicourses'
-    ucaspoints = db.Column(db.String(1024))
-    alevelgrades = db.Column(db.String(1024))
-    highers = db.Column(db.String(1024))
-    internationalbaccalaureate = db.Column(db.String(1024))
-    advancedhighers = db.Column(db.String(1024))
-
-    def __repr__(self):
-        return '<UniCourses %r>' % self.coursename
+# class UniCourses(Qualification):
+#     __tablename__= 'unicourses'
+#     ucaspoints = db.Column(db.String(1024))
+#     alevelgrades = db.Column(db.String(1024))
+#     highers = db.Column(db.String(1024))
+#     internationalbaccalaureate = db.Column(db.String(1024))
+#     advancedhighers = db.Column(db.String(1024))
+#
+#     def __repr__(self):
+#         return '<UniCourses %r>' % self.coursename
 
 class Role(db.Model):
     __tablename__ = 'roles'
