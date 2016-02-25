@@ -86,7 +86,7 @@ def qualifications():
 
 	""" 14 """
 	qt = QualificationType()
-	qt.name = "Doctorate"
+	qt.name = "PhD"
 	qt.level = 8
 	db.session.add(qt)
 
@@ -166,6 +166,30 @@ def subjects():
 		s = Qualification()
 		s.course_name = name
 		s.qualification_type_id = 8
+		db.session.add(s)
+
+	for name in ["Histroy", "Biological Sciences", "Nursing", "Primary Education", "Psychology", "Computer Science", "Sociology",
+	"Social Studies", "Computer Systems", "Information Systems", "Maths", "Law", "Business Studies"]:
+
+		s = Qualification()
+		s.course_name = name
+		s.qualification_type_id = 12
+		db.session.add(s)
+
+	for name in ["Histroy", "Biological Sciences", "Nursing", "Primary Education", "Psychology", "Computer Science", "Sociology",
+	"Social Studies", "Computer Systems", "Information Systems", "Maths", "Law", "Business Studies"]:
+
+		s = Qualification()
+		s.course_name = name
+		s.qualification_type_id = 13
+		db.session.add(s)
+
+	for name in ["Histroy", "Biological Sciences", "Nursing", "Primary Education", "Psychology", "Computer Science", "Sociology",
+	"Social Studies", "Computer Systems", "Information Systems", "Maths", "Law", "Business Studies"]:
+
+		s = Qualification()
+		s.course_name = name
+		s.qualification_type_id = 14
 		db.session.add(s)
 
 	db.session.commit()

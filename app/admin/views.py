@@ -9,11 +9,13 @@ from ..decorators import permission_required, admin_required
 
 @admin.route('/')
 @admin.route('/index/')
+@admin_required
 def index():
     return render_template('admin-index.html')
 
 
 @admin.route('/database', methods=['GET', 'POST'])
+@admin_required
 def database():
     form1 = qualTypesForm()
     form2 = qualTypesForm()
@@ -25,6 +27,7 @@ def database():
 
 
 @admin.route('/users')
+@admin_required
 def users():
     return render_template('admin-users.html')
 

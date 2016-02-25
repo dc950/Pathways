@@ -87,7 +87,8 @@ def add_qualification():
     form = AddQualificationForm()
 
     form.qualification_type.choices = [(q.id, q.name) for q in QualificationType.query.all()]
-    form.subjects.choices = [(s.id, s.course_name) for s in Qualification.query.filter_by(qualification_type_id = 1)]
+    form.subjects.choices = [(s.id, s.course_name) for s in Qualification.query.all()]
+    """form.subjects2.query_factory = Qualification.query.all"""
 
     opt_param = request.args.get("qual_id")
 
@@ -95,14 +96,15 @@ def add_qualification():
         print ("Argument not provided")
     else:
         print (opt_param)
-        form.qualification_type.default = opt_param
-        form.qualification_type.choices = [(q.id, q.name) for q in QualificationType.query.all()]
+        """form.subjects2.query_factory = Qualification.query.filter_by(qualification_type_id = opt_param).all"""
+
         results = [(s.id, s.course_name) for s in Qualification.query.filter_by(qualification_type_id = opt_param)]
-        form.process()
+        """form.subjects.choices = results
+        form.process()"""
+
         return jsonify(results)
 
     if form.validate_on_submit():
-        flash(form.subjects.data)
         nq = UserQualification()
         nq.user_id = current_user.id
         nq.qualifications_id = form.subjects.data
@@ -111,9 +113,7 @@ def add_qualification():
         db.session.add(nq)
         db.session.commit()
 
-        print("Submitted qualification")
-    else:
-        print("Invalid submission")
+        return redirect(url_for('main.edit_qualification'))
 
     return render_template("add-qualification.html",
                             title="Add Qualification",
@@ -136,6 +136,7 @@ def about():
 
 
 @main.route('/user/pathway', methods=['GET', 'POST'])
+@login_required
 def pathway():
     user_subjects = UserQualification.query.join(Qualification, UserQualification.qualifications_id==Qualification.id).filter_by().all()
     user_qual_types = QualificationType.query.join(Qualification, QualificationType.id==Qualification.qualification_type_id).join(UserQualification, UserQualification.qualifications_id==Qualification.id).filter_by(user_id=current_user.id).all()

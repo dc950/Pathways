@@ -318,7 +318,7 @@ class Qualification(db.Model):
             return self.qualification_type.name
 
     def __repr__(self):
-        return '<Qualification %r>' % (self.level + self.name)
+        return self.course_name
 
 
 class QualificationType(db.Model):

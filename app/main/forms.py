@@ -1,6 +1,8 @@
 from flask.ext.wtf import Form
 from wtforms import StringField, SubmitField, DateField, FormField, SelectField
 from wtforms.validators import Length
+from ..models import User, UserQualification, Qualification, QualificationType, Career
+from wtforms.ext.sqlalchemy.fields import QuerySelectField
 
 
 class EditProfileForm(Form):
@@ -18,13 +20,12 @@ class SubjectGrade(Form):
 
 
 class AddQualificationForm(Form):
-    qualification_type = SelectField(u'Programming Language', coerce=int)
+    qualification_type = SelectField(u'Qualification', coerce=int)
     """start_date = DateField('Start Date', format='%Y-%m-%d')
     end_date = DateField('End Date', format='%Y-%m-%d')"""
     """institute = StringField('Institute', validators=[Length(1, 64)])"""
-    subjects = SelectField(u'Subject', coerce=int)
-    """subject_grade_two = FormField(SubjectGrade)
-    subject_grade_three = FormField(SubjectGrade)"""
+    subjects = SelectField(u'Subject 1', coerce=int)
+    """subjects2 = QuerySelectField(u'Subject 2')"""
     submit = SubmitField('Submit')
 
 

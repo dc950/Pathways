@@ -16,7 +16,7 @@ $(document).ready(function(){
 
             	$("#subjects").empty();
             	$.each(data, function(value, key){
-            		$("#subjects").append($("<option></option>").attr("value", value).text(key));
+            		$("#subjects").append($("<option></option>").attr("value", parseInt(value)).text(key));
             	});
         	}
 		})
