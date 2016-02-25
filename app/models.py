@@ -303,3 +303,14 @@ class CareerSkill(db.Model):
     @property
     def name(self):
         return self.skill.name
+
+class UniCourses(Qualification):
+    __tablename__= 'unicourses'
+    ucaspoints = db.Column(db.String(1024))
+    alevelgrades = db.Column(db.String(1024))
+    highers = db.Column(db.String(1024))
+    internationalbaccalaureate = db.Column(db.String(1024))
+    advancedhighers = db.Column(db.String(1024))
+
+    def __repr__(self):
+        return '<UniCourses %r>' % self.coursename
