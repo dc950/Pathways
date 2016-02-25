@@ -142,4 +142,8 @@ local.properties
 #Ignore database files
 *.sqlite
 *.db
-migrations/
+*.sqlite-journal
+.migrations/
+
+# Ignore fake_users
+fake_users.txt

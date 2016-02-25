@@ -1,30 +1,56 @@
 {% extends "base.html" %}
 
 <!-- Add page specific <head></head> elements here -->
-{% block head_extension %}
+{% block styles %}
+	{{ super() }}
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/index_stylesheet.css') }}">
 {% endblock %}
 
 <!-- Page header 100% width -->
 {% block header_content %}
 	<!-- Home page Slideshow -->
-	<div id="image-block">
-		<div class="vcenter">
-			<h1 id="get-started">Help Build Your Career Pathway</h1>
-			{% if current_user.is_authenticated %}
-			<a class="btn btn-default" id="get-started-button" href="{{ url_for('main.pathway') }}" role="button">
+	<div class="video-container">
+		<video poster="https://thumbs.gfycat.com/ScarySomberAmericanriverotter-thumb360.jpg" muted="" autoplay="" loop="">
+    		<source data-ng-src="https://thumbs.gfycat.com/ScarySomberAmericanriverotter-mobile.mp4" type="video/mp4" src="https://thumbs.gfycat.com/ScarySomberAmericanriverotter-mobile.mp4">
+  		</video>
+  		<div class="vcenter">
+			<h1 id="get-started"><i>Start building your career roadmap with Pathways&trade;</i></h1>
+			<div>
+				<a class="btn btn-default" id="get-started-button" href="{{ url_for('main.pathway') }}" role="button">
 				Get Started
-			</a>
-			{% else %}
-			<a class="btn btn-default" id="get-started-button" href="{{ url_for('auth.register') }}" role="button">
-				Get Started
-			</a>
-			{% endif %}
+				</a>
+			</div>
 		</div>
 	</div>
 {% endblock %}
 
 <!-- Main content block for page -->
 {% block main_content %}
-    <p>This is section 2!</p>
+	<div class="blurb">
+		<div class="row">
+			<p class="col-md-6 sp">Build a road map of your past and present qualifications</p>
+			<div class="col-md-6">
+				<img  class="img-responsive" src="{{ url_for('static', filename='img/education-stock-image.jpg') }}">
+			</div>
+		</div>
+		<div class="row" id="image-break-one">
+			<!--<img  class="col-md-6 img-responsive" src="{{ url_for('static', filename='img/comp_stock.jpg') }}">-->
+		</div>
+		<div class="row">
+			<p class="col-md-6">Blash blah blash blah blah</p>
+			<div>
+				<img  class="col-md-6 img-responsive" src="https://placeholdit.imgix.net/~text?txtsize=28&bg=0099ff&txtclr=ffffff&txt=FoShizzleMyNizzle&w=300&h=300&fm=png">
+			</div>
+		</div>
+		<div class="row" id="image-break-two">
+			<!--<img  class="col-md-6 img-responsive" src="{{ url_for('static', filename='img/comp_stock.jpg') }}">-->
+		</div>
+		<div class="row">
+			<p class="col-md-6">Blash blah blash blah blah</p>
+			<div>
+				<img  class="col-md-6 img-responsive" src="https://placeholdit.imgix.net/~text?txtsize=28&bg=0099ff&txtclr=ffffff&txt=FoShizzleMyNizzle&w=300&h=300&fm=png">
+			</div>
+		</div>
+	</div>
 {% endblock %}
 

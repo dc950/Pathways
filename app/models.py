@@ -1,10 +1,11 @@
 from app import db
-from flask import current_app, flash
+from flask import current_app, flash, request
 from .email import send_email
 from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
-from flask.ext.login import UserMixin
+from flask.ext.login import UserMixin, AnonymousUserMixin
 from . import login_manager
+from hashlib import md5
 
 
 @login_manager.user_loader
@@ -31,6 +32,9 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     confirmed = db.Column(db.Boolean, default=False)
     username = db.Column(db.String(60), unique=True)
+    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
+    avatar_hash = db.Column(db.String(32))
+    def_avatar = db.Column(db.String(16), default='identicon')
 
     skills = db.relationship("Skill", secondary=user_skills)
     qualifications = db.relationship('UserQualification', lazy='dynamic')
@@ -44,6 +48,15 @@ class User(UserMixin, db.Model):
 
     def __repr__(self):
         return '<User %r>' % (self.first_name + self.last_name)
+
+    def __init__(self, **kwargs):
+        super(User, self).__init__(**kwargs)
+        if self.role is None:
+            if self.email == current_app.config['PATHWAYS_ADMIN']:
+                self.role = Role.query.filter_by(permissions=0xff).first()
+                self.confirmed = True
+            else:
+                self.role = Role.query.filter_by(default=True).first()
 
     @property
     def connections(self):
@@ -73,6 +86,16 @@ class User(UserMixin, db.Model):
     def password(self):
         raise AttributeError('Password is not a readable attribute')
 
+    def gravatar(self, size=128, rating='g'):
+        if request.is_secure:
+            url = 'https://www.gravatar.com/avatar'
+        else:
+            url = 'http://www.gravatar.com/avatar'
+        if not self.avatar_hash:
+            self.avatar_hash = md5(self.email.encode('utf-8')).hexdigest()
+        return '{url}/{hash}?s={size}&d={default}&r={rating}'.format(
+                url=url, hash=self.avatar_hash, size=size, default=self.def_avatar, rating=rating)
+
     def made_request(self, user):
         return user in self.connection_requests
 
@@ -90,7 +113,7 @@ class User(UserMixin, db.Model):
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-    def generate_confirmation_token(self, expiration=86400000):
+    def generate_confirmation_token(self, expiration=86400):
         s = Serializer(current_app.config['SECRET_KEY'], expiration)
         return s.dumps({'confirm': self.id})
 
@@ -111,6 +134,15 @@ class User(UserMixin, db.Model):
         db.session.add(self)
         return True
 
+    def send_new_password_email(self):
+        token = self.generate_new_password_token()
+        send_email(self.email, 'Change your password', 'auth/email/change-password', user=self, token=token)
+        flash('A confirmation email has been sent to your email')
+
+    def generate_new_password_token(self, expiration=1800):
+        s = Serializer(current_app.config['SECRET_KEY'], expiration)
+        return s.dumps({'new_password': self.id})
+
     def generate_username(self):
         u_name = (self.first_name + self.last_name).lower()
         if User.query.filter_by(username=u_name).first() is None:
@@ -124,6 +156,7 @@ class User(UserMixin, db.Model):
                 return
             version += 1
 
+    # SKILLS AND QUALIFICATIONS
     def add_skill(self, skill):
         """
         Adds the skill to the user
@@ -157,6 +190,48 @@ class User(UserMixin, db.Model):
         if grade:
             uq.grade = grade
         self.qualifications.append(uq)
+
+    # PERMISSIONS
+    def can(self, permissions):
+        return self.role is not None and (self.role.permissions & permissions) == permissions
+
+    def is_administrator(self):
+        return self.can(Permission.ADMINISTER)
+
+    @staticmethod
+    def generate_fake(count=100):
+        from sqlalchemy.exc import IntegrityError
+        from random import seed
+        import forgery_py
+
+        fout = open('fake_users.txt', 'w')
+        seed()
+        for i in range(count):
+            email = forgery_py.internet.email_address()
+            password = forgery_py.lorem_ipsum.word()
+            u = User(email=email,
+                     first_name=forgery_py.name.first_name(),
+                     last_name=forgery_py.name.last_name(),
+                     password=password,
+                     confirmed=True)
+            u.generate_username()
+            db.session.add(u)
+            try:
+                db.session.commit()
+                print((email + " : " + password), file=fout)
+            except IntegrityError:
+                db.session.rollback()
+
+
+class AnonymousUser(AnonymousUserMixin):
+
+    def can(self, permissions):
+        return False
+
+    def is_administrator(self):
+        return False
+
+login_manager.anonymous_user = AnonymousUser
 
 
 class Career(db.Model):
@@ -314,3 +389,43 @@ class UniCourses(Qualification):
 
     def __repr__(self):
         return '<UniCourses %r>' % self.coursename
+
+class Role(db.Model):
+    __tablename__ = 'roles'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), unique=True)
+    default = db.Column(db.Boolean, default=False, index=True)
+    permissions = db.Column(db.Integer)
+    users = db.relationship('User', backref='role', lazy='dynamic')
+
+    def __repr__(self):
+        return '<Role %r>' % self.name
+
+    @staticmethod
+    def insert_roles():
+        roles = {
+            'User': (Permission.ADD_USERS |
+                     Permission.HAVE_AVATAR, True),
+            'Mentor': (Permission.ADD_USERS |
+                       Permission.HAVE_AVATAR |
+                       Permission.MENTOR |
+                       Permission.MODERATE_CONTENT, False),
+            'Admin': (0xff, False)
+        }
+
+        for r in roles:
+            role = Role.query.filter_by(name=r).first()
+            if role is None:
+                role = Role(name=r)
+            role.permissions = roles[r][0]
+            role.default = roles[r][1]
+            db.session.add(role)
+        db.session.commit()
+
+
+class Permission:
+    HAVE_AVATAR = 0x01
+    ADD_USERS = 0x02
+    MENTOR = 0x04
+    MODERATE_CONTENT = 0x08
+    ADMINISTER = 0x80

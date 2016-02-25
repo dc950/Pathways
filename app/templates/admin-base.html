@@ -1,0 +1,85 @@
+{% extends "bootstrap/base.html" %}
+
+{% block styles %}
+   {{ super() }}
+   <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/stylesheet.css') }}">
+{% endblock %}
+
+{% block scripts %}
+   {{ super() }}
+   <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% endblock %}
+
+{% block html_attribs %}
+   lang="en"
+{% endblock %}
+
+{% block title %}
+   {% if title %}
+      {{ title }} - Pathways
+   {% else %}
+      Pathways
+   {% endif %}
+{% endblock %}
+
+{% block metas %}
+   <meta charset="UTF-8">
+   <meta name="version" content="1.0.0">
+   <meta name="author" content="Deaven Howarth" >
+   <meta name="description" content="Hogcraft 3.0">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+{% endblock %}
+
+
+
+{% block navbar %}
+   <nav class="navbar navbar-default">
+      <div class="container-fluid">
+       <!-- Brand and toggle get grouped for better mobile display -->
+         <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse" aria-expanded="false">
+               <span class="sr-only">Toggle navigation</span>
+               <span class="icon-bar"></span>
+               <span class="icon-bar"></span>
+               <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{{ url_for('admin.index') }}">Pathways Admin</a>
+         </div>
+
+         <!-- Collect the nav links, forms, and other content for toggling -->
+         <div class="collapse navbar-collapse nav-bottom" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="{{ url_for('admin.index') }}">Home<span class="sr-only">(current)</span></a></li>
+                <li class=""><a href="{{ url_for('admin.database') }}">Database<span class="sr-only">(current)</span></a></li>
+                <li class=""><a href="{{ url_for('admin.users') }}">Users<span class="sr-only">(current)</span></a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+               <li class=""><a href="{{ url_for('main.index') }}">Live Site</a></li>
+            </ul>
+         </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+   </nav>
+{% endblock %}
+
+{% block content %}
+   <header>
+      <div class="containter">
+         {% for message in get_flashed_messages() %}
+            <div class="alert alert-warning">
+               <button type="button" class="close" data-dismiss="alert">&times;</button>
+               {{ message }}
+            </div>
+         {% endfor %}
+      </div>
+      {% block header_content %}{% endblock %}
+   </header>
+   <main>
+      {% block main_content %}{% endblock %}
+   </main>
+   <div style="clear: both"></div>
+   <footer class="container-fluid">
+      <br>
+      This is the Footer. Reflective Engineering 2015.
+   </footer>
+
+{% endblock %}

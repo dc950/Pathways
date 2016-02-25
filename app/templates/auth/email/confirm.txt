@@ -2,7 +2,7 @@ Dear {{ user.first_name }} {{ user.last_name }}
 
 Welcome to Pathways
 
-To confirm your account, please click the following link
+To confirm your account, please go to the following link
 
 {{ url_for('auth.confirm', token=token, _external = True) }}
 

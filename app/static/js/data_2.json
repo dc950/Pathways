@@ -19,33 +19,20 @@
 		"level" : 3,
 		"subjects" : [{
 			"name" : "Maths",
-			"grade" : "A"
+			"grade" : "D"
 		}, {
-			"name" : "Physics",
-			"grade" : "A"
+			"name" : "English",
+			"grade" : "E"
 		}, {
-			"name" : "ICT",
-			"grade" : "A"
-		}, {
-			"name" : "Computing",
-			"grade" : "A"
-		}, {
-
-			"name" : "Further Maths",
-			"grade" : "A"
+			"name" : "Science",
+			"grade" : "F"
 		}]
 	},
-	"A2-Level" : {
+	"Meh" : {
 		"level" : 4,
 		"subjects" : [{
-			"name" : "Maths",
-			"grade" : "A"
-		}, {
-			"name" : "ICT",
-			"grade" : "A"
-		}, {
-			"name" : "Computing",
-			"grade" : "A"
+			"name" : "Computer Science",
+			"grade" : "1st"
 		}]
 	},
 	"BSc" : {
@@ -62,17 +49,10 @@
 			"grade" : "1st"
 		}]
 	},
-	"Possible PhD" : {
-		"level" : 7,
+	"Test" : {
+		"level" : 2,
 		"subjects" : [{
-			"name" : "Computer Science",
-			"grade" : "1st"
-		}]
-	},
-	"Possible Job" : {
-		"level" : 8,
-		"subjects" : [{
-			"name" : "Games Developer",
+			"name" : "Test",
 			"grade" : "1st"
 		}]
 	}
