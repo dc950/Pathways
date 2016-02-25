@@ -132,7 +132,7 @@ def connections():
 @main.route('/about')
 def about():
     return render_template("about.html",
-                           title="Test")
+                           title="About Us")
 
 
 @main.route('/user/pathway', methods=['GET', 'POST'])
@@ -150,7 +150,7 @@ def pathway():
         return jsonify(**results)
 
     return render_template("pathway.html",
-                           title="Test",
+                           title="Your Pathway",
                            subjects=user_subjects)
 
 
