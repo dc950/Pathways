@@ -1,6 +1,8 @@
 from flask.ext.wtf import Form
 from wtforms import StringField, SubmitField, DateField, FormField, SelectField
 from wtforms.validators import Length
+from ..models import User, UserQualification, Qualification, QualificationType, Career
+from wtforms.ext.sqlalchemy.fields import QuerySelectField
 
 
 class EditProfileForm(Form):
@@ -13,18 +15,17 @@ class EditProfileForm(Form):
 
 
 class SubjectGrade(Form):
-    subject_name = StringField('Subject', validators=[Length(0, 32)])
-    subject_grade = StringField('Grade', validators=[Length(0, 8)])
+    subject_name = StringField('Subject', validators=[Length(1, 64)])
+    subject_grade = StringField('Grade', validators=[Length(1, 64)])
 
 
 class AddQualificationForm(Form):
-    qualification_type = SelectField(u'Programming Language', coerce=int)
+    qualification_type = SelectField(u'Qualification', coerce=int)
     """start_date = DateField('Start Date', format='%Y-%m-%d')
     end_date = DateField('End Date', format='%Y-%m-%d')"""
-    institute = StringField('Institute', validators=[Length(0, 64)])
-    subject_grade_one = FormField(SubjectGrade, 'Test')
-    """subject_grade_two = FormField(SubjectGrade)
-    subject_grade_three = FormField(SubjectGrade)"""
+    """institute = StringField('Institute', validators=[Length(1, 64)])"""
+    subjects = SelectField(u'Subject 1', coerce=int)
+    """subjects2 = QuerySelectField(u'Subject 2')"""
     submit = SubmitField('Submit')
 
 

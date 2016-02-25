@@ -8,22 +8,38 @@
 {% block header_content %}
 {% endblock %}
 
+{% block nav_overwrite %}
+  <li><a href="{{ url_for('main.index') }}">Home <span class="sr-only">(current)</span></a></li>
+    <li><a href="{{ url_for('main.pathway') }}">Your Pathway</a></li>
+    {% if current_user.is_authenticated %}
+      <li><a href="{{ url_for('main.user', username=current_user.username) }}">Your Profile</a></li>
+      <li><a href="{{ url_for('main.connections') }}">Connections</a></li>
+    {% endif %}
+    <li class="active"><a href="{{ url_for('main.about') }}">About</a></li>
+{% endblock %}
+
 <!-- Main content block for page -->
 {% block main_content %}
    <p>Welcome to Pathways.</p>
 
-   <p>We’re here to help you plot out your career path from start to finish, using a combination of your education, work experience and personal interests we can show you a range of possible career and field options that would be open to you.</p>
+   <p>We’re here to help you plot out your career path from start to finish. We use a combination of your education, work experience and personal interests to can show you a range of possible careers and field options that would be open to you.</p>
+   
+   <p> Pathways can be used in two ways, you can give us your education so far and we'll come up with possible next steps for you, or you can tell us your planned career and we'll tell you how to get there. </p>
 
-   <p>We take into account the latest qualification data from a range of sources so that we can offer you up-to-date information about degree and career choice.</p>
+   <p>We use the latest qualification data from a range of sources, including UCAS, so that we can offer you up-to-date information on degree and career choices.</p>
 
-	<p>Pathways was developed by Reflective Engineering in collaboration with Locke Martin Civil and Heriot-Watt University.</p>
-
-	<p>Connect to us:<br>
-	   Twitter: @Pathways<br>
-	   Email: hello@pathways.com<br>
-	   Website: reflectiveengineering.co.uk<br>
-	   Facebook: facebook.com/pages/pathways<br>
-	   Google+: googleplus.com/nooneusesthiswebsite
+   <p>To get started just <a href="{{ url_for('auth.register') }}">register </a> an account with us. We'll ask you to give us some details on your education, interests, etc. Once these have been entered we'll create a pathway for you, showing your previous and current achievements and possible
+       future ones. You'll then be able to edit your pathway as you wish. </p> </br>
+	<p>Pathways was developed by Reflective Engineering in collaboration with <a href="http://civil.lockheedmartin.co.uk/">Locke Martin Civil</a> and <a href="http://www.hw.ac.uk/">Heriot-Watt University.</a></p> 
+   
+   </br>
+   
+	<p>Have any questions? Contact us at:<br>
+      Email: <a href="mailto:hello@pathways.com">hello@pathways.com</a><br>	   
+	   Facebook: <a href="www.facebook.com/pages/pathways">facebook.com/pages/pathways </a><br>
+	   Twitter: <a href="www.twitter.com/pathways">@Pathways</a><br>
+	   Website: <a href="http://www2.macs.hw.ac.uk/~osk5/Pathways/CompanySite/contact.html">reflectiveengineering.co.uk </a><br>
+	   
 	</p>
 
 {% endblock %}

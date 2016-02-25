@@ -10,12 +10,21 @@
 <!-- Page header 100% width -->
 {% block header_content %}
 	<div id="pathway-container">
-		<svg class="overlay"></svg>
+		<svg class="overlay img-fluid"></svg>
 	</div>
+{% endblock %}
+
+{% block nav_overwrite %}
+  <li><a href="{{ url_for('main.index') }}">Home <span class="sr-only">(current)</span></a></li>
+    <li class="active"><a href="{{ url_for('main.pathway') }}">Your Pathway</a></li>
+    {% if current_user.is_authenticated %}
+      <li><a href="{{ url_for('main.user', username=current_user.username) }}">Your Profile</a></li>
+      <li><a href="{{ url_for('main.connections') }}">Connections</a></li>
+    {% endif %}
+    <li><a href="{{ url_for('main.about') }}">About</a></li>
 {% endblock %}
 
 <!-- Main content block for page -->
 {% block main_content %}
-    <p>This is section 2!</p>
     <div class="row" id="qualification-container"></div>
 {% endblock %}

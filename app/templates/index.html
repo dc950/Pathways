@@ -6,6 +6,16 @@
 	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/index_stylesheet.css') }}">
 {% endblock %}
 
+{% block nav_overwrite %}
+	<li class="active"><a href="{{ url_for('main.index') }}">Home <span class="sr-only">(current)</span></a></li>
+    <li><a href="{{ url_for('main.pathway') }}">Your Pathway</a></li>
+    {% if current_user.is_authenticated %}
+	    <li><a href="{{ url_for('main.user', username=current_user.username) }}">Your Profile</a></li>
+	    <li><a href="{{ url_for('main.connections') }}">Connections</a></li>
+    {% endif %}
+    <li><a href="{{ url_for('main.about') }}">About</a></li>
+{% endblock %}
+
 <!-- Page header 100% width -->
 {% block header_content %}
 	<!-- Home page Slideshow -->
@@ -30,10 +40,11 @@
 		<div class="row">
 			<p class="col-md-6 sp">Build a road map of your past and present qualifications</p>
 			<div class="col-md-6">
-				<img  class="img-responsive" src="{{ url_for('static', filename='img/education-stock-image.jpg') }}">
+				<img  class="img-fluid img-circle" src="{{ url_for('static', filename='img/education-stock-image.jpg') }}">
 			</div>
 		</div>
 		<div class="row" id="image-break-one">
+			<h1 class="selling-point"><i>Start building your career roadmap with Pathways&trade;</i></h1>
 			<!--<img  class="col-md-6 img-responsive" src="{{ url_for('static', filename='img/comp_stock.jpg') }}">-->
 		</div>
 		<div class="row">
@@ -43,6 +54,7 @@
 			</div>
 		</div>
 		<div class="row" id="image-break-two">
+			<h1 class="selling-point"><i>Blah blash blas something about goals or something</i></h1>
 			<!--<img  class="col-md-6 img-responsive" src="{{ url_for('static', filename='img/comp_stock.jpg') }}">-->
 		</div>
 		<div class="row">

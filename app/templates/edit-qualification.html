@@ -2,18 +2,56 @@
 {% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
+{% block nav_overwrite %}
+  <li><a href="{{ url_for('main.index') }}">Home <span class="sr-only">(current)</span></a></li>
+    <li><a href="{{ url_for('main.pathway') }}">Your Pathway</a></li>
+    {% if current_user.is_authenticated %}
+      <li><a href="{{ url_for('main.user', username=current_user.username) }}">Your Profile</a></li>
+      <li><a href="{{ url_for('main.connections') }}">Connections</a></li>
+    {% endif %}
+    <li><a href="{{ url_for('main.about') }}">About</a></li>
+{% endblock %}
+
 {% block header_content %}
     <h1>{{ title }}</h1>
 {% endblock %}
 
 {% block main_content %}
 	{% if show_all %}
-		<ul>
-		    {% for qual in qualifications %}
-		    <li><a href="{{ qual.name }}">{{ qual.name }}</a></li>
-		    {% endfor %}
-		    <li><a href="{{ url_for('main.add_qualification') }}">Add Qualification</a></li>
-		</ul>
+		<div class="panel panel-default table-responsive">
+  			<table class="table">
+  				<thead class="panel-heading">
+  					<tr>
+  						<th>Subject</th>
+  						<th>Grade</th>
+  						<th>Qualification</th>
+  						<th>Institute</th>
+  						<th class="text-center">
+  							<div class="dropdown">
+  							    <div class="dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Actions <span class="caret"></span></div>
+							    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+							    	<li><a class="dropdown-item" href="#">Action</a></li>
+							    	<li><a class="dropdown-item" href="#">Another action</a></li>
+							    	<li><a class="dropdown-item" href="#">Something else here</a></li>
+							    </ul>
+							</div>
+  						</th>
+  					</tr>
+  				</thead>
+  				<tbody>
+				    {% for subs in subjects %}
+				    <tr class="">
+				    	<td class="">{{ subs.course_name }}</td>
+				    	<td class="">{{ subs.qualification.qualification_type.name }}</td>
+					    <td class="">{{ subs.grade }}</td>
+					    <td class="">Heriot Watt University</td>
+					    <td class="text-center"><span class="glyphicon glyphicon-pencil" /> <span class="glyphicon glyphicon-remove" /></td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			<div class="panel-footer"><a href="{{ url_for('main.add_qualification') }}">Add New Qualification</a></div>
+		</div>
 	{% else %}
 		<div class="col-md-4">
 	      {{ wtf.quick_form(form) }}
