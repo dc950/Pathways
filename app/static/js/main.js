@@ -21,4 +21,12 @@ $(document).ready(function(){
         	}
 		})
 	});
+
+	$("#learn-more").click(function(){
+		target = $("#selling-point-one");
+
+		$('html, body').animate({
+          scrollTop: $(window).height() - $("nav").height()
+        }, 1000);
+	})
 });

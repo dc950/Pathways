@@ -19,6 +19,16 @@ body {
 /*----  Base Template ----*/
 /*----  Navigation Bar ----*/
 
+.nav-active {
+	-webkit-box-shadow: inset 0px -3px 0px 0px rgba(0,0,0,0.58);
+	-moz-box-shadow: inset 0px -3px 0px 0px rgba(0,0,0,0.58);
+	box-shadow: inset 0px -3px 0px 0px rgba(0,0,0,0.58);
+}
+
+nav {
+	border: 0px !important;
+}
+
 
 .nav-bottom {
 	margin: 0;
@@ -105,6 +115,11 @@ body {
 	-moz-border-radius: 10px 10px 10px 10px;
 	-webkit-border-radius: 10px 10px 10px 10px;
 	border: 0px solid #000000;
+}
+
+.get-started-button:hover {
+	background-color: red;
+	text-decoration: none;
 }
 
 

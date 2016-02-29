@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block nav_overwrite %}
-	<li class="active"><a href="{{ url_for('main.index') }}">Home <span class="sr-only">(current)</span></a></li>
+	<li class="nav-active"><a href="{{ url_for('main.index') }}">Home <span class="sr-only">(current)</span></a></li>
     <li><a href="{{ url_for('main.pathway') }}">Your Pathway</a></li>
     {% if current_user.is_authenticated %}
 	    <li><a href="{{ url_for('main.user', username=current_user.username) }}">Your Profile</a></li>
@@ -25,12 +25,12 @@
   		</video>
   		<div class="vcenter">
 			<h1 id="get-started"><i>Start building your career roadmap with Pathways&trade;</i></h1>
-			<div class="get-started-button">
+			<a href="#blurb" class="get-started-button">
 				Get Started
-			</div>
-			<div class="get-started-button">
+			</a>
+			<a href="#" id="learn-more" class="get-started-button">
 				Learn More
-			</div>
+			</a>
 			<span style="font-size: 60px;line-height: 1.33;display:block;text-align:center;color:white;" class="glyphicon glyphicon-menu-down" />
 		</div>
 	</div>
@@ -39,7 +39,7 @@
 <!-- Main content block for page -->
 {% block main_content %}
 	<div class="blurb">
-		<div class="row">
+		<div id="selling-point-one" class="row">
 			<p class="col-md-6 sp">Build a road map of your past and present qualifications</p>
 			<div class="col-md-6">
 				<img  class="img-fluid img-circle" src="{{ url_for('static', filename='img/education-stock-image.jpg') }}">
