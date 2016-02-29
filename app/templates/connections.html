@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 
 {% block header_content %}
-<h1>Connections</h1>
+   <div class="header">
+      <h1>Connections</h1>
+   </div>
 {% endblock %}
 
 {% block nav_overwrite %}
@@ -11,12 +13,16 @@
 {% endblock %}
 
 {% block main_content %}
-    <p>Connections</p><br>
+    <h2><small>Connections</small></h2>
     {% for user in current_user.connections %}
-    <li><a href="{{ url_for('.user', username=user.username) }}">{{ user.first_name }} {{ user.last_name }}</a></li>
+       <div class="side-padding">
+          <li><a href="{{ url_for('.user', username=user.username) }}">{{ user.first_name }} {{ user.last_name }}</a></li>
+       </div>
     {% endfor %}
-    <br><p>All users</p><br>
+    <br><h2><small>All users</small></h2>
     {% for user in users %}
-    <li><a href="{{ url_for('.user', username=user.username) }}">{{ user.first_name }} {{ user.last_name }}</a></li>
+       <div class="side-padding">
+          <li><a href="{{ url_for('.user', username=user.username) }}">{{ user.first_name }} {{ user.last_name }}</a></li>
+       </div>
     {% endfor %}
 {% endblock %}
