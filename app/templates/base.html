@@ -86,7 +86,7 @@
 
             {% endif %}
          </div><!-- /.navbar-collapse -->
-
+			{% if current_user.is_authenticated %}
          <!-- Collect the nav links, forms, and other content for toggling -->
          <div class="collapse navbar-collapse nav-bottom" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
@@ -102,6 +102,7 @@
                <!--<button type="submit" class="btn btn-default">Submit</button>-->
             </form>
          </div><!-- /.navbar-collapse -->
+         {% endif %}
       </div><!-- /.container-fluid -->
    </nav>
 {% endblock %}
