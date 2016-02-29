@@ -1,5 +1,7 @@
 $(document).ready(function(){
 
+	var nav_offset = $("nav").height();
+
 	var test = [1, 2, 3, 4, 5, 6];
 
 	/*$.ajax({
@@ -58,10 +60,10 @@ $(document).ready(function(){
     		var xPos = (columnWidth * index) + marginWidth;
     		
 
-    		baseSvg.append("rect").attr("x", xPos).attr("y", 0).attr("width", columnWidth).attr("height", titleHeight)
+    		baseSvg.append("rect").attr("x", xPos).attr("y", nav_offset).attr("width", columnWidth).attr("height", titleHeight)
     		.attr("fill", getLevelColour(value.level));
 
-    		baseSvg.append("text").attr("dx", xPos).attr("dy", 20).text(value.qualification);
+    		baseSvg.append("text").attr("dx", xPos).attr("dy", 20 +  + nav_offset).text(value.qualification);
 
     		console.log(value.subjects[0].length);
 
@@ -73,12 +75,12 @@ $(document).ready(function(){
 				var n = value.subjects[0].length;
 				var edgeMargin = 60;
 
-				var workingHeight = viewerHeight - titleHeight - (2 * edgeMargin);
+				var workingHeight = viewerHeight - titleHeight - (2 * edgeMargin) - nav_offset;
 
 				if (n > 1) {
-					var y = (workingHeight / (n-1)) * i;
+					var y = (workingHeight / (n-1)) * i + nav_offset;
 				} else {
-					var y = workingHeight / 2;
+					var y = workingHeight / 2 + nav_offset;
 				}
 
 				return y + edgeMargin + titleHeight;
@@ -99,12 +101,12 @@ $(document).ready(function(){
 				var n = value.subjects[0].length;
 				var edgeMargin = 60;
 
-				var workingHeight = viewerHeight - titleHeight - (2 * edgeMargin);
+				var workingHeight = viewerHeight - titleHeight - (2 * edgeMargin) - nav_offset;
 
 				if (n > 1) {
-					var y = (workingHeight / (n-1)) * i;
+					var y = (workingHeight / (n-1)) * i + nav_offset;
 				} else {
-					var y = workingHeight / 2;
+					var y = workingHeight / 2 + nav_offset;
 				}
 				
 				return y + edgeMargin + titleHeight;
