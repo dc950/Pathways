@@ -139,6 +139,11 @@ class User(UserMixin, db.Model):
         send_email(self.email, 'Change your password', 'auth/email/change-password', user=self, token=token)
         flash('A confirmation email has been sent to your email')
 
+    def send_new_delete_acc_email(self):
+        token = self.generate_new_password_token()
+        send_email(self.email, 'To delete your account', 'auth/email/change-password', user=self, token=token)
+        flash('A confirmation email has been sent to your email')
+
     def generate_new_password_token(self, expiration=1800):
         s = Serializer(current_app.config['SECRET_KEY'], expiration)
         return s.dumps({'new_password': self.id})

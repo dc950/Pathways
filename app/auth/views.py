@@ -114,6 +114,50 @@ def change_password(token):
     return render_template('new_password.html', form=form)
 
 
+
+@auth.route('/delete-account/<token>', methods=['GET', 'POST'])
+def delete_account(token):
+    s = Serializer(current_app.config['SECRET_KEY'])
+    try:
+        data = s.loads(token)
+    except:
+        flash("The url you used is either invalid or has expired.")
+        return redirect(url_for('main.index'))
+    # Find the user from the token
+    uid = data.get('current_password')
+    user = User.query.filter_by(id=uid).first()
+    # If the user is not found, there's a problem...
+    if not user:
+        flash("The url you used is either invalid or has expired.")
+        return redirect(url_for('main.index'))
+    form = DeleteAccountForm()
+
+    if form.validate_on_submit():
+
+        if current_user.is_authenticated:
+            logout_user()
+        flash("Your account has successfully been deleted.")
+        return redirect(url_for('main.index'))
+    return render_template('new_password.html', form=form)
+
+@auth.route('/send-new-delete_acc-email')
+def send_new_delete_acc_email(email=None):
+    if email is not None:
+        user = User.query.filter_by(email=email).first()
+        if user:
+            user.send_new_delete_acc_email()
+            flash('An email has been sent to your account with further details on how to proceed')
+            return redirect(url_for('auth.login'))
+        else:
+            flash('No user with that associated account was found.  Please register to create an account')
+            return redirect(url_for('auth.register'))
+    else:
+        # Request was made from a user.
+        current_user.send_new_password_email()
+        flash('An email has been sent to your account with further details on how to proceed')
+        return redirect(url_for('main.index'))
+
+
 @auth.before_app_request
 def before_request():
     if request.endpoint:
