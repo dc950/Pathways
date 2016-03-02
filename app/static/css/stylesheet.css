@@ -37,11 +37,21 @@ nav {
 
 .user-avatar {
 	height: 50px;
+	padding-right: 5px;
+	padding-top: 5px;
 }
 
 .user-info {
 	display: inline-block;
 	vertical-align: middle;
+}
+
+.search {
+   padding-right: 5px;
+}
+
+.aligndamnit {
+   text-align: center;
 }
 
 /*----  Index Template ----*/
