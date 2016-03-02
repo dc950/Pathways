@@ -43,6 +43,7 @@ def user(username):
 @main.route('/user/edit-profile', methods=['GET', 'POST'])
 @login_required
 def edit():
+    user_skills = current_user.skills
     form = EditProfileForm()
     if form.validate_on_submit():
         current_user.first_name = form.first_name.data
@@ -53,7 +54,7 @@ def edit():
         return redirect(url_for('.user', username=current_user.username))
     form.first_name.data = current_user.first_name
     form.last_name.data = current_user.last_name
-    return render_template('edit-profile.html', form=form)
+    return render_template('edit-profile.html', form=form, skills=user_skills)
 
 
 @main.route('/user/pathway/edit-qualification/')

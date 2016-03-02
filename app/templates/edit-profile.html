@@ -21,6 +21,11 @@
             {{ wtf.quick_form(form) }}
         </div>
     </div>
+    <ul class="list-skills">
+      {% for s in skills %}
+        <li>{{ s.name }}</li>
+      {% endfor %}
+    </ul>
     <div class="row">
     <a href="{{ url_for('auth.send_new_password_email') }}"><button class="btn">Change Password</button></a>
     </div>

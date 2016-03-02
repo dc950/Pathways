@@ -285,3 +285,25 @@ footer {
 .node-level-6 {
 	fill: green !important;
 }*/
+
+/*----  Edit Profile ----*/
+.list-skills {
+	list-style-type: none;
+	margin: 10px 10px 10px 0;
+	padding: 0;
+}
+
+.list-skills li {
+	display: inline-block;
+	margin: 3px 3px 3px 0;
+
+	color: #fff;
+	background-color: #3783c5;
+
+	padding: 3px;
+
+	border-radius: 3px 3px 3px 3px;
+    -moz-border-radius: 3px 3px 3px 3px;
+    -webkit-border-radius: 3px 3px 3px 3px;
+	border: 1px solid #204d74;
+}
