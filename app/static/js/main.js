@@ -23,6 +23,7 @@ $(document).ready(function(){
 	});
 
 
+	var newWords = [];
 	$("#skillsform-skills").on({
 		keyup: function(e){
 			if(e.which==188 || e.which == 13) {
