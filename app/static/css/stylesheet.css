@@ -29,8 +29,11 @@ nav {
 	border: 0px !important;
 }
 
-.nav-button {
+.button {
 	padding: 8px;
+	background-color: #DCDCDC;
+	border-radius: 10px;
+	color: black;
 }	
 
 .nav-bottom {
