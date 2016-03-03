@@ -29,9 +29,9 @@
 <!-- Main content block for page -->
 {% block main_content %}
 	<div>
-		Add New Qualification.
+		<a href="{{ url_for('main.add_qualification') }}"> Add New Qualification</a>
 	</div>
 	<div>
-		Edit Qualifications.
+		<a href="{{ url_for('main.edit_qualification') }}">Edit Qualifications</a></li>
 	</div>
 {% endblock %}
