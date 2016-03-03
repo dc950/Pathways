@@ -7,19 +7,26 @@
 {% endblock %}
 
 {% block main_content %}
-    <div class="col-md-4">
-      <form action="" method="post" name="admin">
-        {{ form1.hidden_tag() }}
-          <p>
-              <p>{{ form1.submit }}</p>
-          </p>
-      </form>
-      <form action="" method="post" name="admin">
-        {{ form2.hidden_tag() }}
-          <p>
-              <p>{{ form2.submit }}</p>
-          </p>
-      </form>
+    <div class="row">
+        <div class="col-md-4">
+          <form action="" method="post" name="admin">
+            {{ form1.hidden_tag() }}
+              <p>
+                  <p>{{ form1.submit }}</p>
+              </p>
+          </form>
+          <form action="" method="post" name="admin">
+            {{ form2.hidden_tag() }}
+              <p>
+                  <p>{{ form2.submit }}</p>
+              </p>
+          </form>
+        </div>
     </div>
+    <h3>Careers</h3>
+    <button class="btn-default" href="{{ url_for('admin.get_careers') }}">Update Careers</button>
+    {% for c in careers %}
+    <p><a href="{{ url_for('main.career', careername=c.name) }}">{{ c.name }}</a></p>
+    {% endfor %}
 
 {% endblock %}

@@ -241,23 +241,51 @@ class Career(db.Model):
     description = db.Column(db.String(1024))
     url = db.Column(db.String(1024))
     #  Salary Information
-    qualifications = db.relationship('CareerQualification', lazy='dynamic')
+    subjects = db.relationship('CareerSubject', lazy='dynamic')
     skills = db.relationship('CareerSkill', lazy='dynamic')
 
     def __repr__(self):
         return '<Career %r>' % self.name
 
-    def add_qualification(self, qualification, points=1):
+    def add_subject(self, subject, points=1):
         """
-        Adds the qualification to the career
-        :param qualification: the Qualification object to be added
+        Adds the subject to the career
+        :param subject: the subject object of the subject to be added
         :param points: The points for the qualification with relation to how important it is for the career
         """
-        cq = CareerQualification()
-        cq.qualification = qualification
+
+        if subject in self.subjects:
+            # Subject already assigned
+            return
+
+        cs = CareerSubject(subject=subject)
         if points:
-            cq.points = points
-        self.qualifications.append(cq)
+            cs.points = points
+        self.subjects.append(cs)
+
+    def add_subject_name(self, subject_name, points=1):
+        """
+        Adds the subject to the career when given the name
+        :param subject: the string name of the subject to be added
+        :param points: The points for the qualification with relation to how important it is for the career
+        """
+
+        #Find if the subject exists:
+        subject_query = Subject.query.filter_by(name=subject_name).first()
+        subject = None
+        if subject_query is None:
+            subject = Subject(name=subject_name)
+        else:
+            subject = subject_query
+
+        if subject in self.subjects:
+            # Subject already assigned
+            return
+
+        cs = CareerSubject(subject=subject)
+        if points:
+            cs.points = points
+        self.subjects.append(cs)
 
     def add_skill(self, skill, points=1):
         """
@@ -296,12 +324,47 @@ class Skill(db.Model):
         return '<Skill %r>' % self.name
 
 
+class Field(db.Model):
+    __tablename__ = 'fields'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(128), unique=True)
+    # interests and skills?
+
+
+class Subject(db.Model):
+    __tablename__ = 'subjects'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(128), unique=True)
+    field_id = db.Column(db.Integer, db.ForeignKey('fields.id'))
+    field = db.relationship("Field", backref='subjects')
+
+# class UniQualification(db.model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     qualification_type_id = db.Column(db.Integer, db.ForeignKey('qualification_types.id'))
+#     qualification_type = db.relationship("QualificationType")
+
+
 class Qualification(db.Model):
     __tablename__ = 'qualifications'
     id = db.Column(db.Integer, primary_key=True)
-    course_name = db.Column(db.String(128))
+    subject_id = db.Column(db.Integer, db.ForeignKey('subjects.id'))
+    subject = db.relationship('Subject', backref='qualifications')
     qualification_type_id = db.Column(db.Integer, db.ForeignKey('qualification_types.id'))
     qualification_type = db.relationship("QualificationType")
+
+    @property
+    def name(self):
+        if self.subject is None:
+            raise AttributeError('This Qualification has no related Subject')
+        else:
+            return self.subject.name
+
+    @property
+    def field(self):
+        if self.subject is None:
+            raise AttributeError('This Qualification has no related Subject')
+        else:
+            return self.subject.field.name
 
     @property
     def level(self):
@@ -317,8 +380,13 @@ class Qualification(db.Model):
         else:
             return self.qualification_type.name
 
+    @staticmethod
+    def filter_name_type(name, qualification_type):
+        subject = Subject.query.filter_by(name=name).first()
+        return Qualification.query.filter_by(subject=subject).filter_by(qualification_type=qualification_type)
+
     def __repr__(self):
-        return self.course_name
+        return self.name
 
 
 class QualificationType(db.Model):
@@ -326,7 +394,8 @@ class QualificationType(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), unique=True)
     level = db.Column(db.Integer)
-        
+    ucas_points = db.Column(db.Integer)
+
 
 
 class UserQualification(db.Model):
@@ -337,8 +406,8 @@ class UserQualification(db.Model):
     qualification = db.relationship("Qualification")
 
     @property
-    def course_name(self):
-        return self.qualification.course_name
+    def name(self):
+        return self.qualification.name
 
     @property
     def qualification_name(self):
@@ -349,24 +418,16 @@ class UserQualification(db.Model):
         return self.qualification.level
 
 
-class CareerQualification(db.Model):
-    __tablename__ = 'career_qualifications'
+class CareerSubject(db.Model):
+    __tablename__ = 'career_subjects'
     career_id = db.Column(db.Integer, db.ForeignKey('careers.id'), primary_key=True)
-    qualifications_id = db.Column(db.Integer, db.ForeignKey('qualifications.id'), primary_key=True)
+    subject_id = db.Column(db.Integer, db.ForeignKey('subjects.id'), primary_key=True)
     points = db.Column(db.Integer)
-    qualification = db.relationship("Qualification")
+    subject = db.relationship("Subject")
 
     @property
-    def course_name(self):
-        return self.qualification.course_name
-
-    @property
-    def qualification_name(self):
-        return self.qualification.qualification_name
-
-    @property
-    def level(self):
-        return self.qualification.level
+    def name(self):
+        return self.subject.name
 
 
 class CareerSkill(db.Model):
