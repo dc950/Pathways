@@ -3,7 +3,7 @@ from flask.ext.login import login_user, logout_user, login_required, current_use
 from . import auth
 from ..models import User
 from ..email import send_email
-from .forms import LoginForm, RegistrationForm, ChangePasswordForm, ForgottenPasswordForm
+from .forms import LoginForm, RegistrationForm, ChangePasswordForm, ForgottenPasswordForm, DeleteAccountForm
 from app import db
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
@@ -124,7 +124,7 @@ def delete_account(token):
         flash("The url you used is either invalid or has expired.")
         return redirect(url_for('main.index'))
     # Find the user from the token
-    uid = data.get('current_password')
+    uid = data.get('delete_account')
     user = User.query.filter_by(id=uid).first()
     # If the user is not found, there's a problem...
     if not user:
@@ -133,12 +133,12 @@ def delete_account(token):
     form = DeleteAccountForm()
 
     if form.validate_on_submit():
-
         if current_user.is_authenticated:
             logout_user()
+            User.query.filter_by(id=uid).delete()
         flash("Your account has successfully been deleted.")
         return redirect(url_for('main.index'))
-    return render_template('new_password.html', form=form)
+    return render_template('delete_account.html', form=form)
 
 @auth.route('/send-new-delete_acc-email')
 def send_new_delete_acc_email(email=None):
@@ -153,9 +153,17 @@ def send_new_delete_acc_email(email=None):
             return redirect(url_for('auth.register'))
     else:
         # Request was made from a user.
-        current_user.send_new_password_email()
+        current_user.send_new_delete_acc_email()
         flash('An email has been sent to your account with further details on how to proceed')
         return redirect(url_for('main.index'))
+
+@auth.route('/users')
+def displayusers():
+    users = User.query.all()
+    for user in users:
+        return render_template('delete_account.html', displayusers)
+
+
 
 
 @auth.before_app_request

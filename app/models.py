@@ -140,13 +140,17 @@ class User(UserMixin, db.Model):
         flash('A confirmation email has been sent to your email')
 
     def send_new_delete_acc_email(self):
-        token = self.generate_new_password_token()
-        send_email(self.email, 'To delete your account', 'auth/email/change-password', user=self, token=token)
+        token = self.generate_delete_account_token()
+        send_email(self.email, 'To delete your account', 'auth/email/delete-account', user=self, token=token)
         flash('A confirmation email has been sent to your email')
 
     def generate_new_password_token(self, expiration=1800):
         s = Serializer(current_app.config['SECRET_KEY'], expiration)
         return s.dumps({'new_password': self.id})
+
+    def generate_delete_account_token(self, expiration=1800):
+        s = Serializer(current_app.config['SECRET_KEY'], expiration)
+        return s.dumps({'delete_account': self.id})
 
     def generate_username(self):
         u_name = (self.first_name + self.last_name).lower()

@@ -32,8 +32,13 @@ class ChangePasswordForm(Form):
     submit = SubmitField('Change Password')
 
 class DeleteAccountForm(Form):
-    password = PasswordField('Password', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[
+        DataRequired(), EqualTo('password2', message='Passwords must match.')])
+    password2 = PasswordField('Confirm Password', validators=[DataRequired()])
     submit = SubmitField('Delete Account')
+
+class ShowUsernames(Form):
+    submit = SubmitField('Show all usernames')
 
 
 class ForgottenPasswordForm(Form):
