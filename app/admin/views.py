@@ -3,7 +3,7 @@ from . import admin
 from .forms import *
 from .webcrawler import webcrawler
 from .uniwebcrawler import uniwebcrawler
-from .qualifications import qualifications
+#from .qualifications import qualifications
 from ..models import Permission, Career
 from ..decorators import permission_required, admin_required
 
@@ -36,9 +36,9 @@ def get_careers():
     return redirect(url_for('admin.index'))
 
 
-@admin.route('/insert-qualifications')
-def insert_qualifications():
-    qualifications()
+#@admin.route('/insert-qualifications')
+#def insert_qualifications():
+#    qualifications()
 
 
 @admin.route('/load-uni-courses')

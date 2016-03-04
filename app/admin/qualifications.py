@@ -1,130 +1,155 @@
 from ..models import QualificationType, Qualification, Subject, Field
+from .webcrawler import webcrawler
+from .uniwebcrawler import uniwebcrawler
 from .. import db
-
-def Setup():
-    DefineFields()
-    noQT = DefineQualificationTypes()
-    noS = DefineSubjects()
-    DefineQualifications()
-
-def DefineQualifications():
-    print("Test")
+import sqlalchemy as sa
+from sqlalchemy.orm.session import make_transient
 
 gcse = QualificationType()
+btec2 = QualificationType()
+a_level = QualificationType()
+btec3 = QualificationType()
+higher = QualificationType()
+btec4 = QualificationType()
+cert_higher_ed = QualificationType()
 higher = QualificationType()
 adv_higher = QualificationType()
+diploma = QualificationType()
+btec5 = QualificationType()
+foundation_degree = QualificationType()
 bachelors_degree = QualificationType()
 masters_degree = QualificationType()
 phd = QualificationType()
 
+def Setup(clear):
+    if clear is True:
+        QualificationsClear()
+
+    DefineFields()
+    print("****   Define Fields Complete   ****")
+    DefineQualificationTypes()
+    print("****   Define Qualification Types Complete   ****")
+    DefineSubjects()
+    print("****   Define Subjects Complete   ****")
+    webcrawler()
+    print("****   Career Crawler Complete   ****")
+    uniwebcrawler()
+    print("****   University Crawler Complete   ****")
+    DefineQualifications()
+
+def QualificationsClear():
+    QualificationType.query.delete()
+    Field.query.delete()
+    Subject.query.delete()
+    Qualification.query.delete()
+
+def DefineQualifications():
+    print("Test")
+
 def DefineQualificationTypes():
 
-    QualificationType.query.delete()
 
     """ 1 Added """
     global gcse
-    gcse = QualificationType()
     gcse.name = "GCSE"
     gcse.level = 2
     db.session.add(gcse)
+    make_transient(gcse)
 
     """ 2 """
     global btec2
-    btec2 = QualificationType()
     btec2.name = "BTEC Level 2"
     btec2.level = 2
     db.session.add(btec2)
+    make_transient(btec2)
 
     """ 3 """
     global a_level
-    a_level = QualificationType()
     a_level.name = "A-Level"
     a_level.level = 3
     db.session.add(a_level)
+    make_transient(a_level)
 
     """ 4 """
     global btec3
-    btec3 = QualificationType()
     btec3.name = "BTEC Level 3"
     btec3.level = 3
     db.session.add(btec3)
+    make_transient(btec3)
 
     """ 5 Added """
     global higher
-    higher = QualificationType()
     higher.name = "Scottish Higher"
     higher.level = 3
     db.session.add(higher)
+    make_transient(higher)
 
     """ 6 """
     global btec4
-    btec4 = QualificationType()
     btec4.name = "BTEC Level 4"
     btec4.level = 4
     db.session.add(btec4)
+    make_transient(btec4)
 
     """ 7 """
     global cert_higher_ed
-    cert_higher_ed = QualificationType()
     cert_higher_ed.name = "Certificate of Higher Education"
     cert_higher_ed.level = 4
     db.session.add(cert_higher_ed)
+    make_transient(cert_higher_ed)
 
     """ 8 Added """
     global adv_higher
-    adv_higher = QualificationType()
     adv_higher.name = "Scottish Advanced Higher"
     adv_higher.level = 4
     db.session.add(adv_higher)
+    make_transient(adv_higher)
 
     """ 9 """
     global diploma
-    diploma = QualificationType()
     diploma.name = "Diploma"
     diploma.level = 4
     db.session.add(diploma)
+    make_transient(diploma)
 
     """ 10 """
     global btec5
-    btec5 = QualificationType()
     btec5.name = "BTEC Level 5"
     btec5.level = 5
     db.session.add(btec5)
+    make_transient(btec5)
 
     """ 11 """
     global foundation_degree
-    foundation_degree = QualificationType()
     foundation_degree.name = "Foundation Degree"
     foundation_degree.level = 5
     db.session.add(foundation_degree)
+    make_transient(foundation_degree)
 
     """ 12 """
     global bachelors_degree
-    bachelors_degree = QualificationType()
     bachelors_degree.name = "Bachelor's Degree"
     bachelors_degree.level = 6
     db.session.add(bachelors_degree)
+    make_transient(bachelors_degree)
 
     """ 13 """
     global masters_degree
-    masters_degree = QualificationType()
     masters_degree.name = "Master's Degree"
     masters_degree.level = 7
     db.session.add(masters_degree)
+    make_transient(masters_degree)
 
     """ 14 """
     global phd
-    phd = QualificationType()
     phd.name = "PhD"
     phd.level = 8
     db.session.add(phd)
+    make_transient(phd)
 
     db.session.commit()
 
 def DefineSubjects():
-
-    Subject.query.delete()
-#    Qualification.query.delete()
 
     for name in ["English", "English Language", "English Lit", "Mathematics", "Welsh", "Welsh Second Language","Welsh Language",
                  "Irish", "Science", "Biology", "Chemistry", "Physics", "Core Science", "Double Science", "Triple Science",
@@ -237,8 +262,7 @@ def DefineSubjects():
     db.session.commit()
 
 def DefineFields():
-    Field.query.delete()
-
+    
     l = ["Human History", "Linguistics", "Literature", "Performing Arts", "Visual Arts", "Philosophy", "Religious Studies",
     "Anthropology", "Ethnic & Cultural Studies", "Archaeology", "Area Studies", "Economics", "Gender Studies", "Geography",
     "Organisational Studies", "Political Science", "Psychology", "Sociology", "Biology", "Chemistry", "Physics", "Earth Sciences",
