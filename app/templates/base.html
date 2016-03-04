@@ -38,12 +38,14 @@
       <div class="container-fluid">
        <!-- Brand and toggle get grouped for better mobile display -->
          <div class="navbar-header">
+         
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse" aria-expanded="false">
                <span class="sr-only">Toggle navigation</span>
                <span class="icon-bar"></span>
                <span class="icon-bar"></span>
                <span class="icon-bar"></span>
             </button>
+       
             <a class="navbar-brand" href="{{ url_for('main.index') }}">Pathways</a>
          </div>
 
@@ -81,7 +83,8 @@
                </ul>
             {% else %}
             <div class="nav navbar-nav navbar-right">
-                <a href="{{ url_for('auth.login') }}">Login</a> / <a href="{{ url_for('auth.register') }}">Register</a>
+             <!-- <a href="{{ url_for('auth.login') }}"><button class="btn">Login</button></a> <a href="{{ url_for('auth.register') }}"><button class="btn">Register</button></a> -->
+                <a href="{{ url_for('auth.login') }}" class="button">Login</a> <a href="{{ url_for('auth.register') }}" class="button">Register</a>
             </div>
 
             {% endif %}
@@ -99,15 +102,17 @@
                 <li><a href="{{ url_for('main.connections') }}">Connections</a></li>
               {% endif %}
             </ul>
-            <form class="navbar-form navbar-right" role="search" method="POST" action="{{ url_for('main.search_click') }}">
-               {{ search_form.hidden_tag() }}
-                <div class="form-group">
-                  <!--<input type="text" class="form-control" placeholder="Search">-->
-                   {{ search_form.term(size=32) }}
-               </div>
-                {{ search_form.submit }}
-               <!--<button type="submit" class="btn btn-default">Submit</button>-->
-            </form>
+            <div class="search">
+               <form class="navbar-form navbar-right" role="search" method="POST" action="{{ url_for('main.search_click') }}">
+                  {{ search_form.hidden_tag() }}
+                   <div class="form-group">
+                     <!--<input type="text" class="form-control" placeholder="Search">-->
+                      {{ search_form.term(size=32) }}
+                  </div>
+                   {{ search_form.submit }}
+                  <!--<button type="submit" class="btn btn-default">Submit</button>-->
+               </form>
+            </div>
          </div><!-- /.navbar-collapse -->
          {% endif %}
       </div><!-- /.container-fluid -->
@@ -136,7 +141,7 @@
          <br>
          <small>
             <p> Pathways &copy; 2016 is developed by <a href="http://www2.macs.hw.ac.uk/~osk5/Pathways/CompanySite/indexpage.html">Reflective Engineering</a> in collaboration with <a href="http://civil.lockheedmartin.co.uk/">Locke Martin Civil</a> and <a href="http://www.hw.ac.uk/">Heriot-Watt University.</a> </p>
-            <p> Find out more <a href="{{ url_for('main.about') }}">about us.</a> Need help? Contact us: </p>          
+            <p> Need help? Contact us: </p>          
             <!--<a href="mailto:hello@pathways.com"> <img src="{{ url_for('static', filename='img/email.jpg') }}" alt="Through Email" style="width:42px;height:42px;border:0;"> </a>-->
             <a class="social-icon" href="http://www.facebook.com/pages/pathways"> <img src="{{ url_for('static', filename='img/social/facebook.png') }}" alt="Facebook"> </a>
             <a class="social-icon" href="http://www.twitter.com/pathways"> <img src="{{ url_for('static', filename='img/social/twitter.png') }}" alt="Twitter"> </a>

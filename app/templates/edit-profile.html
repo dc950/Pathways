@@ -27,6 +27,8 @@
       {% endfor %}
     </ul>
     <div class="row">
-    <a href="{{ url_for('auth.send_new_password_email') }}"><button class="btn">Change Password</button></a>
+        <div class="pw-button">
+        <a href="{{ url_for('auth.send_new_password_email') }}"><button class="btn">Change Password</button></a>
+        </div>
     </div>
 {% endblock %}
