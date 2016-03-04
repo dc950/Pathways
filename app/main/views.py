@@ -208,7 +208,7 @@ def test():
     return render_template("test.html",
                            title="Test")
 
-@main.route('/generate=pathway')
+@main.route('/generate-pathway')
 def generate_pathway():
     generate_future_pathway()
     return redirect(url_for('main.index'))

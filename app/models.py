@@ -338,6 +338,19 @@ class Subject(db.Model):
     field_id = db.Column(db.Integer, db.ForeignKey('fields.id'))
     field = db.relationship("Field", backref='subjects')
 
+    @staticmethod
+    def newSubject(name):
+        """
+        Will return a new subject or if one already exists, it will return that one
+        :param name: The name of the subject
+        :return: A subject object with that name to be used.
+        """
+        subject = Subject.query.filter_by(name=name).first()
+        if subject:
+            return subject
+        else:
+            return Subject(name=name)
+
 # class UniQualification(db.model):
 #     id = db.Column(db.Integer, primary_key=True)
 #     qualification_type_id = db.Column(db.Integer, db.ForeignKey('qualification_types.id'))

@@ -22,7 +22,6 @@ def database():
     careers = Career.query.all()
     if form1.validate_on_submit():
         qualifications()
-        subjects()
     careers = Career.query.all()
     return render_template('admin-database.html', form2=form2, form1=form1, careers=careers)
 
