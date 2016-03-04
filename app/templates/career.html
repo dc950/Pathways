@@ -10,9 +10,9 @@
     {% for s in career.skills %}
         <p>{{ s.name }}</p>
     {% endfor %}
-    <h2>Related Qualifications</h2>
-    {% for q in career.qualifications %}
-        <p>{{ q.course_name }}</p>
+    <h2>Related Subjects</h2>
+    {% for s in career.subjects %}
+        <p>{{ s.name }}</p>
     {% endfor %}
     <br>
     <p><b><a href="{{ career.url }}">Click here to learn more</a></b></p>

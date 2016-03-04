@@ -1,5 +1,5 @@
 import unittest
-from app.models import User, Qualification, QualificationType, Career, CareerQualification, Skill, Subject
+from app.models import User, Qualification, QualificationType, Career, CareerSubject, Skill, Subject
 from app import db, create_app
 
 
@@ -15,14 +15,11 @@ class CareerModelTestCase(unittest.TestCase):
         db.drop_all()
         self.app_context.pop()
 
-    def test_qualification_relationship(self):
-        qt = QualificationType(name="Higher", level=6)
-        s = Subject(name="Computing")
-        q = Qualification(subject=s, qualification_type=qt)
+    def test_subject_relationship(self):
         c = Career(name="Web Developer", description="Worst job ever")
-        c.add_qualification(q, 5)
-        self.assertEqual(c.qualifications[0].name, "Computing")
-        self.assertEqual(c.qualifications[0].points, 5)
+        c.add_subject_name("Computing", 5)
+        self.assertEqual(c.subjects[0].name, "Computing")
+        self.assertEqual(c.subjects[0].points, 5)
 
     def test_add_skills(self):
         s = Skill(name="css")

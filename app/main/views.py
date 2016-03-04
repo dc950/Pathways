@@ -2,6 +2,7 @@ import json
 from flask import render_template, session, flash, redirect, url_for, send_from_directory, Flask, request, jsonify, Response
 from flask.ext.login import current_user, login_required
 from . import main
+from .pathway_generator import generate_future_pathway
 from .. import db
 from ..models import User, UserQualification, Qualification, QualificationType, Career
 from .forms import EditProfileForm, AddQualificationForm, EditQualificationForm, SearchForm
@@ -208,6 +209,10 @@ def test():
     return render_template("test.html",
                            title="Test")
 
+@main.route('/generate-pathway')
+def generate_pathway():
+    generate_future_pathway()
+    return redirect(url_for('main.index'))
 
 @main.route('/js/<path:path>')
 def send_js(path):
