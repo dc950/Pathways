@@ -81,7 +81,7 @@ def webcrawler():
                     ++counter
                 else:
                     qualList.append(link2.contents[3].contents[counter].string.strip())
-                    career.add_subject_name(link2.contents[3].contents[counter].string.strip())
+                    # career.add_subject_name(link2.contents[3].contents[counter].string.strip())
             print(qualList)
         db.session.add(career)
         db.session.commit()
