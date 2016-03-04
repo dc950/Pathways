@@ -1,4 +1,4 @@
-from ..models import Career, User, Qualification, Skill, UserQualification
+from ..models import Career, User, Qualification, Skill, UserQualification, QualificationType
 from flask.ext.login import current_user
 import random
 
@@ -7,12 +7,18 @@ import random
 
 
 def generate_future_pathway():
-    uqs = UserQualification.query.filter_by(user_id=current_user.id).all()
 
-    uqs = random.sample(uqs, 3)
-    qualifications = []
-    for i in uqs:
-        qualifications.append(Qualification.query.filter_by(qualification_id=i.qualification_id)).all()
-
-    print(qualifications)
-    return qualifications
+    # Temporary solution until fields are done.
+    # selects a few random uni courses and careers as options
+    qualification_type = QualificationType.query.filter_by(name="Bachelor's Degree").first()
+    print("QualificationType: "+str(qualification_type.id))
+    all_courses = Qualification.query.filter_by(qualification_type=qualification_type).all()
+    print("All courses:"+str(all_courses))
+    courses = random.sample(all_courses, 5)
+    all_careers = Career.query.all()
+    branches = []
+    for c in courses:
+        careers = random.sample(all_careers, 2)
+        branch = {'course': c, 'careers': careers}
+        branches.append(branch)
+    print(str(branches))
