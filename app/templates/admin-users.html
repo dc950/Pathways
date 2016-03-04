@@ -7,8 +7,6 @@
 {% block main_content %}
     <br><p>All users</p><br>
     <ul>
-      {% for user in users %}
-      <li><a href="{{ url_for('.user', username=user.username) }}">{{ user.first_name }} {{ user.last_name }}</a></li>
-      {% endfor %}
+      <p>{{ displayusers() }}</p>
     </ul>
 {% endblock %}

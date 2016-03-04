@@ -139,9 +139,18 @@ class User(UserMixin, db.Model):
         send_email(self.email, 'Change your password', 'auth/email/change-password', user=self, token=token)
         flash('A confirmation email has been sent to your email')
 
+    def send_new_delete_acc_email(self):
+        token = self.generate_delete_account_token()
+        send_email(self.email, 'To delete your account', 'auth/email/delete-account', user=self, token=token)
+        flash('A confirmation email has been sent to your email')
+
     def generate_new_password_token(self, expiration=1800):
         s = Serializer(current_app.config['SECRET_KEY'], expiration)
         return s.dumps({'new_password': self.id})
+
+    def generate_delete_account_token(self, expiration=1800):
+        s = Serializer(current_app.config['SECRET_KEY'], expiration)
+        return s.dumps({'delete_account': self.id})
 
     def generate_username(self):
         u_name = (self.first_name + self.last_name).lower()
@@ -364,6 +373,12 @@ class Qualification(db.Model):
     subject = db.relationship('Subject', backref='qualifications')
     qualification_type_id = db.Column(db.Integer, db.ForeignKey('qualification_types.id'))
     qualification_type = db.relationship("QualificationType")
+    maxucaspoints = db.Column(db.String(1024))
+    minucaspoints = db.Column(db.String(1024))
+    alevelgrades = db.Column(db.String(1024))
+    highers = db.Column(db.String(1024))
+    internationalbaccalaureate = db.Column(db.String(1024))
+    advancedhighers = db.Column(db.String(1024))
 
     @property
     def name(self):
@@ -454,6 +469,16 @@ class CareerSkill(db.Model):
     def name(self):
         return self.skill.name
 
+# class UniCourses(Qualification):
+#     __tablename__= 'unicourses'
+#     ucaspoints = db.Column(db.String(1024))
+#     alevelgrades = db.Column(db.String(1024))
+#     highers = db.Column(db.String(1024))
+#     internationalbaccalaureate = db.Column(db.String(1024))
+#     advancedhighers = db.Column(db.String(1024))
+#
+#     def __repr__(self):
+#         return '<UniCourses %r>' % self.coursename
 
 class Role(db.Model):
     __tablename__ = 'roles'

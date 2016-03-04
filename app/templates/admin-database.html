@@ -6,23 +6,15 @@
 
 {% block main_content %}
     <div class="row">
-        <div class="col-md-4">
-          <form action="" method="post" name="admin">
-            {{ form1.hidden_tag() }}
-              <p>
-                  <p>{{ form1.submit }}</p>
-              </p>
-          </form>
-          <form action="" method="post" name="admin">
-            {{ form2.hidden_tag() }}
-              <p>
-                  <p>{{ form2.submit }}</p>
-              </p>
-          </form>
-        </div>
+        <a href="{{ url_for('admin.insert_qualifications') }}">Load qualifications</a>
+    </div>
+    <div class="row">
+        <a href="{{ url_for('admin.uni_courses') }}"> Load uni course</a>
     </div>
     <h3>Careers</h3>
-    <button class="btn-default" href="{{ url_for('admin.get_careers') }}">Update Careers</button>
+    <div class="row">x
+        <a href="{{ url_for('admin.get_careers') }}">Update Careers</a>
+    <div class="row">
     {% for c in careers %}
     <p><a href="{{ url_for('main.career', careername=c.name) }}">{{ c.name }}</a></p>
     {% endfor %}

@@ -93,7 +93,7 @@ def qualifications():
 
     db.session.commit()
 
-    Qualification.query.delete()
+    # Qualification.query.delete()
 
     for name in ["English", "English Language", "English Lit", "Mathematics", "Welsh", "Welsh Second Language","Welsh Language",
                  "Irish", "Science", "Biology", "Chemistry", "Physics", "Core Science", "Double Science", "Triple Science",

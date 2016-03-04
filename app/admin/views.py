@@ -2,7 +2,8 @@ from flask import render_template, redirect, request, url_for, flash, Markup
 from . import admin
 from .forms import *
 from .webcrawler import webcrawler
-from .qualifications import *
+from .uniwebcrawler import uniwebcrawler
+from .qualifications import qualifications
 from ..models import Permission, Career
 from ..decorators import permission_required, admin_required
 
@@ -17,13 +18,8 @@ def index():
 @admin.route('/database', methods=['GET', 'POST'])
 # @admin_required
 def database():
-    form1 = qualTypesForm()
-    form2 = qualTypesForm()
     careers = Career.query.all()
-    if form1.validate_on_submit():
-        qualifications()
-    careers = Career.query.all()
-    return render_template('admin-database.html', form2=form2, form1=form1, careers=careers)
+    return render_template('admin-database.html', careers=careers)
 
 
 @admin.route('/users')
@@ -39,3 +35,13 @@ def get_careers():
     flash("Careers Loaded")
     return redirect(url_for('admin.index'))
 
+
+@admin.route('/insert-qualifications')
+def insert_qualifications():
+    qualifications()
+
+
+@admin.route('/load-uni-courses')
+def uni_courses():
+    uniwebcrawler()
+    return redirect(url_for("admin.database"))
