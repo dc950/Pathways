@@ -53,102 +53,102 @@ def DefineQualificationTypes():
 
 
     """ 1 Added """
-    gcse = QualificationType()
+    global gcse
     gcse.name = "GCSE"
     gcse.level = 2
     db.session.add(gcse)
-    make_transient(gcse)
+    #make_transient(gcse)
 
     """ 2 """
-    btec2 = QualificationType()
+    global btec2
     btec2.name = "BTEC Level 2"
     btec2.level = 2
     db.session.add(btec2)
-    make_transient(btec2)
+    #make_transient(btec2)
 
     """ 3 """
-    a_level = QualificationType()
+    global a_level
     a_level.name = "A-Level"
     a_level.level = 3
     db.session.add(a_level)
-    make_transient(a_level)
+    #make_transient(a_level)
 
     """ 4 """
-    btec3 = QualificationType()
+    global btec3
     btec3.name = "BTEC Level 3"
     btec3.level = 3
     db.session.add(btec3)
-    make_transient(btec3)
+    #make_transient(btec3)
 
     """ 5 Added """
-    higher = QualificationType()
+    global higher
     higher.name = "Scottish Higher"
     higher.level = 3
     db.session.add(higher)
-    make_transient(higher)
+    #make_transient(higher)
 
     """ 6 """
-    btec4 = QualificationType()
+    global btec4
     btec4.name = "BTEC Level 4"
     btec4.level = 4
     db.session.add(btec4)
-    make_transient(btec4)
+    #make_transient(btec4)
 
     """ 7 """
-    cert_higher_ed = QualificationType()
+    global cert_higher_ed
     cert_higher_ed.name = "Certificate of Higher Education"
     cert_higher_ed.level = 4
     db.session.add(cert_higher_ed)
-    make_transient(cert_higher_ed)
+    #make_transient(cert_higher_ed)
 
     """ 8 Added """
-    adv_higher = QualificationType()
+    global adv_higher
     adv_higher.name = "Scottish Advanced Higher"
     adv_higher.level = 4
     db.session.add(adv_higher)
-    make_transient(adv_higher)
+    #make_transient(adv_higher)
 
     """ 9 """
-    diploma = QualificationType()
+    global diploma
     diploma.name = "Diploma"
     diploma.level = 4
     db.session.add(diploma)
-    make_transient(diploma)
+    #make_transient(diploma)
 
     """ 10 """
-    btec5 = QualificationType()
+    global btec5
     btec5.name = "BTEC Level 5"
     btec5.level = 5
     db.session.add(btec5)
-    make_transient(btec5)
+    #make_transient(btec5)
 
     """ 11 """
-    foundation_degree = QualificationType()
+    global foundation_degree
     foundation_degree.name = "Foundation Degree"
     foundation_degree.level = 5
     db.session.add(foundation_degree)
-    make_transient(foundation_degree)
+    #make_transient(foundation_degree)
 
     """ 12 """
-    bachelors_degree = QualificationType()
+    global bachelors_degree
     bachelors_degree.name = "Bachelor's Degree"
     bachelors_degree.level = 6
     db.session.add(bachelors_degree)
-    make_transient(bachelors_degree)
+    #make_transient(bachelors_degree)
 
     """ 13 """
-    masters_degree = QualificationType()
+    global masters_degree
     masters_degree.name = "Master's Degree"
     masters_degree.level = 7
     db.session.add(masters_degree)
-    make_transient(masters_degree)
+    #make_transient(masters_degree)
 
     """ 14 """
-    phd = QualificationType()
+    global phd
     phd.name = "PhD"
     phd.level = 8
     db.session.add(phd)
-    make_transient(phd)
+    #make_transient(phd)
 
     db.session.commit()
 
