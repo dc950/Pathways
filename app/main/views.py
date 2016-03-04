@@ -44,6 +44,7 @@ def user(username):
 @main.route('/user/edit-profile', methods=['GET', 'POST'])
 @login_required
 def edit():
+    user_skills = current_user.skills
     form = EditProfileForm()
     if form.validate_on_submit():
         current_user.first_name = form.first_name.data
@@ -54,7 +55,7 @@ def edit():
         return redirect(url_for('.user', username=current_user.username))
     form.first_name.data = current_user.first_name
     form.last_name.data = current_user.last_name
-    return render_template('edit-profile.html', form=form)
+    return render_template('edit-profile.html', form=form, skills=user_skills)
 
 
 @main.route('/user/pathway/edit-qualification/')
@@ -140,16 +141,16 @@ def about():
 @login_required
 def pathway():
     user_subjects = UserQualification.query.join(Qualification, UserQualification.qualifications_id==Qualification.id).filter_by().all()
-    user_qual_types = QualificationType.query.join(Qualification, QualificationType.id==Qualification.qualification_type_id).join(UserQualification, UserQualification.qualifications_id==Qualification.id).filter_by(user_id=current_user.id).all()
+    #user_qual_types = QualificationType.query.join(Qualification, QualificationType.id==Qualification.qualification_type_id).join(UserQualification, UserQualification.qualifications_id==Qualification.id).filter_by(user_id=current_user.id).all()
 
     opt_param = request.args.get("request_json")
     print(opt_param)
-    if opt_param is "1":
-        results = dict((t.name, dict(level=t.level, subjects=[
-                dict(name=s.course_name, grade=s.grade) for s in UserQualification.query.join(Qualification, UserQualification.qualifications_id==Qualification.id).filter_by(qualification_type=t).all()
-            ])) for t in user_qual_types)
-        print("*** test ***\n")
-        return jsonify(**results)
+    #if opt_param is "1":
+    #    results = dict((t.name, dict(level=t.level, subjects=[
+    #            dict(name=s.course_name, grade=s.grade) for s in UserQualification.query.join(Qualification, UserQualification.qualifications_id==Qualification.id).filter_by(qualification_type=t).all()
+    #        ])) for t in user_qual_types)
+    #    print("*** test ***\n")
+    #    return jsonify(**results)
 
     return render_template("pathway.html",
                            title="Your Pathway",

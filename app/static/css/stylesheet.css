@@ -19,6 +19,22 @@ body {
 /*----  Base Template ----*/
 /*----  Navigation Bar ----*/
 
+.nav-active {
+	-webkit-box-shadow: inset 0px -3px 0px 0px rgba(0,0,0,0.58);
+	-moz-box-shadow: inset 0px -3px 0px 0px rgba(0,0,0,0.58);
+	box-shadow: inset 0px -3px 0px 0px rgba(0,0,0,0.58);
+}
+
+nav {
+	border: 0px !important;
+}
+
+.button {
+	padding: 8px;
+	background-color: #DCDCDC;
+	border-radius: 10px;
+	color: black;
+}	
 
 .nav-bottom {
 	margin: 0;
@@ -27,11 +43,17 @@ body {
 
 .user-avatar {
 	height: 50px;
+	padding-right: 5px;
+	padding-top: 5px;
 }
 
 .user-info {
 	display: inline-block;
 	vertical-align: middle;
+}
+
+.search {
+   padding-right: 5px;
 }
 
 /*----  Index Template ----*/
@@ -90,9 +112,26 @@ body {
 	font-family: coolvetica;
 }
 
-#get-started-button {
-	background-color: green;
-	padding: 25px 50px;
+.get-started-button {
+	color: white;
+	font-family: coolvetica;
+	font-size: 20pt;
+
+	width: 200px;
+
+	padding: 10px 10px;
+	margin: 15px 0;
+	background-color: rgba(255, 255, 255, 0.32);
+
+	border-radius: 10px 10px 10px 10px;
+	-moz-border-radius: 10px 10px 10px 10px;
+	-webkit-border-radius: 10px 10px 10px 10px;
+	border: 0px solid #000000;
+}
+
+.get-started-button:hover {
+	background-color: red;
+	text-decoration: none;
 }
 
 
@@ -164,7 +203,10 @@ main .blurb .row div {
 	-webkit-text-stroke: 0.5px black;
 	text-align: center;
 	font-family: coolvetica;
+	padding-left: 5px;
+	padding-right: 5px;
 }
+
 footer {
 	background-color: #303030;
 	height: 200px;
@@ -174,11 +216,31 @@ footer {
 	box-shadow: inset 0 7px 9px -7px rgba(0,0,0,0.4);
 }
 
+.header {
+   padding-left: 30px;
+   padding-bottom: 10px;
+   font-family: Palatino Linotype;
+}
+
+.side-padding {
+   padding-left: 30px;
+}
+
+.social-icon img {
+	width:42px;
+	height:42px;
+	border:0
+}
+
+.pw-button {
+	padding-top: 10px;
+	padding-left: 15px;
+}
+
 /*----  Pathways Template ----*/
 /*----  Pathway Container ----*/
 #pathway-container {
-	background-color: red;
-	height: 350px;
+	height: 100%;
 }
 
 .overlay{
@@ -243,3 +305,25 @@ footer {
 .node-level-6 {
 	fill: green !important;
 }*/
+
+/*----  Edit Profile ----*/
+.list-skills {
+	list-style-type: none;
+	margin: 10px 10px 10px 0;
+	padding: 0;
+}
+
+.list-skills li {
+	display: inline-block;
+	margin: 3px 3px 3px 0;
+
+	color: #fff;
+	background-color: #3783c5;
+
+	padding: 3px;
+
+	border-radius: 3px 3px 3px 3px;
+    -moz-border-radius: 3px 3px 3px 3px;
+    -webkit-border-radius: 3px 3px 3px 3px;
+	border: 1px solid #204d74;
+}

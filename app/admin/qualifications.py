@@ -1,91 +1,119 @@
-from ..models import QualificationType, Qualification, Subject
+from ..models import QualificationType, Qualification, Subject, Field
 from .. import db
 
-def qualifications():
-    print("***** This is a test *****")
+def Setup():
+    DefineFields()
+    noQT = DefineQualificationTypes()
+    noS = DefineSubjects()
+    DefineQualifications()
 
+def DefineQualifications():
+    print("Test")
+
+gcse = QualificationType()
+higher = QualificationType()
+adv_higher = QualificationType()
+bachelors_degree = QualificationType()
+masters_degree = QualificationType()
+phd = QualificationType()
+
+def DefineQualificationTypes():
 
     QualificationType.query.delete()
 
     """ 1 Added """
+    global gcse
     gcse = QualificationType()
     gcse.name = "GCSE"
     gcse.level = 2
     db.session.add(gcse)
 
     """ 2 """
+    global btec2
     btec2 = QualificationType()
     btec2.name = "BTEC Level 2"
     btec2.level = 2
     db.session.add(btec2)
 
     """ 3 """
+    global a_level
     a_level = QualificationType()
     a_level.name = "A-Level"
     a_level.level = 3
     db.session.add(a_level)
 
     """ 4 """
+    global btec3
     btec3 = QualificationType()
     btec3.name = "BTEC Level 3"
     btec3.level = 3
     db.session.add(btec3)
 
     """ 5 Added """
+    global higher
     higher = QualificationType()
     higher.name = "Scottish Higher"
     higher.level = 3
     db.session.add(higher)
 
     """ 6 """
+    global btec4
     btec4 = QualificationType()
     btec4.name = "BTEC Level 4"
     btec4.level = 4
     db.session.add(btec4)
 
     """ 7 """
+    global cert_higher_ed
     cert_higher_ed = QualificationType()
     cert_higher_ed.name = "Certificate of Higher Education"
     cert_higher_ed.level = 4
     db.session.add(cert_higher_ed)
 
     """ 8 Added """
+    global adv_higher
     adv_higher = QualificationType()
     adv_higher.name = "Scottish Advanced Higher"
     adv_higher.level = 4
     db.session.add(adv_higher)
 
     """ 9 """
+    global diploma
     diploma = QualificationType()
     diploma.name = "Diploma"
     diploma.level = 4
     db.session.add(diploma)
 
     """ 10 """
+    global btec5
     btec5 = QualificationType()
     btec5.name = "BTEC Level 5"
     btec5.level = 5
     db.session.add(btec5)
 
     """ 11 """
+    global foundation_degree
     foundation_degree = QualificationType()
     foundation_degree.name = "Foundation Degree"
     foundation_degree.level = 5
     db.session.add(foundation_degree)
 
     """ 12 """
+    global bachelors_degree
     bachelors_degree = QualificationType()
     bachelors_degree.name = "Bachelor's Degree"
     bachelors_degree.level = 6
     db.session.add(bachelors_degree)
 
     """ 13 """
+    global masters_degree
     masters_degree = QualificationType()
     masters_degree.name = "Master's Degree"
     masters_degree.level = 7
     db.session.add(masters_degree)
 
     """ 14 """
+    global phd
     phd = QualificationType()
     phd.name = "PhD"
     phd.level = 8
@@ -93,7 +121,10 @@ def qualifications():
 
     db.session.commit()
 
-    # Qualification.query.delete()
+def DefineSubjects():
+
+    Subject.query.delete()
+#    Qualification.query.delete()
 
     for name in ["English", "English Language", "English Lit", "Mathematics", "Welsh", "Welsh Second Language","Welsh Language",
                  "Irish", "Science", "Biology", "Chemistry", "Physics", "Core Science", "Double Science", "Triple Science",
@@ -204,3 +235,23 @@ def qualifications():
         db.session.add(q)
 
     db.session.commit()
+
+def DefineFields():
+    Field.query.delete()
+
+    l = ["Human History", "Linguistics", "Literature", "Performing Arts", "Visual Arts", "Philosophy", "Religious Studies",
+    "Anthropology", "Ethnic & Cultural Studies", "Archaeology", "Area Studies", "Economics", "Gender Studies", "Geography",
+    "Organisational Studies", "Political Science", "Psychology", "Sociology", "Biology", "Chemistry", "Physics", "Earth Sciences",
+    "Space Science", "Mathematics", "Computer Science", "Systems Science", "Agiculture", "Architecture & Design", "Business",
+    "Divinity", "Education", "Engineering & Technology", "Environmental Studies", "Family & Consumer Science",
+    "Human Physical Performance & Recreation", "Journalism, Media Studies & Communication", "Law", "Library & Museum Studies",
+    "Medicine", "Military Science", "Public Administration", "Social Work", "Transportation"]
+
+    for name in l:
+        f = Field()
+        f.name = name
+        db.session.add(f)
+
+    db.session.commit()
+
+    return len(l)

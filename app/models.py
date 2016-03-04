@@ -424,6 +424,19 @@ class QualificationType(db.Model):
     level = db.Column(db.Integer)
     ucas_points = db.Column(db.Integer)
 
+    @staticmethod
+    def newType(name):
+        """
+        Will return a new subject or if one already exists, it will return that one
+        :param name: The name of the subject
+        :return: A subject object with that name to be used.
+        """
+        type = QualificationType.query.filter_by(name=name).first()
+        if subject:
+            return type
+        else:
+            return QualificationType(name=name)
+
 
 
 class UserQualification(db.Model):
