@@ -20,8 +20,9 @@ def uniwebcrawler():
                 continue
             qualification = Qualification()
             subject = Subject.newSubject(coursetitle)
-            #
+            qualification_type = QualificationType.newType("Bachelor's Degree")
             qualification.subject = subject
+            qualification.type = qualification_type
             print(coursetitle)
             for link2 in link.find_all('a'):
                 print(link2.get('href'))

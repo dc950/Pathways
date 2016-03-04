@@ -432,7 +432,7 @@ class QualificationType(db.Model):
         :return: A subject object with that name to be used.
         """
         type = QualificationType.query.filter_by(name=name).first()
-        if subject:
+        if type:
             return type
         else:
             return QualificationType(name=name)
