@@ -1,8 +1,16 @@
-from ..models import QualificationType, Qualification
+from ..models import QualificationType, Qualification, Subject, Field
 from .. import db
 
-def qualifications():
-	print("***** This is a test *****")
+def Setup():
+	DefineFields()
+	noQT = DefineQualificationTypes()
+	noS = DefineSubjects()
+	DefineQualifications()
+
+def DefineQualifications():
+	print("Test")
+
+def DefineQualificationTypes():
 
 	QualificationType.query.delete()
 
@@ -92,11 +100,11 @@ def qualifications():
 
 	db.session.commit()
 
-def subjects():
+def DefineSubjects():
 
-	Qualification.query.delete()
-
-	for name in ["English", "English Language", "English Lit", "Mathematics", "Welsh", "Welsh Second Language","Welsh Language",
+	Subject.query.delete()
+#	GCSE
+	s = ["English", "English Language", "English Lit", "Mathematics", "Welsh", "Welsh Second Language","Welsh Language",
 	"Irish", "Science", "Biology", "Chemistry", "Physics", "Core Science", "Double Science", "Triple Science", 
 	"Additional Science",
 
@@ -126,14 +134,9 @@ def subjects():
 	"Accounting", "Additional Mathematics", "Astronomy", "Construction", "Construction & the Built Environment",
 	"Environmental Science", "Geology", "General Studies", "Human Physiology & Health", "IFS Personal Finance", "Journalism",
 	"Learning for Life & Work", "Motorsport", "Motor Vehicle & Road User Studies", "Personal & Social Education",
-	"Physical Education", "Preparation for Working Life", "Rural & Agricultural Science", "Statistics"]:
-
-		s = Qualification()
-		s.course_name = name
-		s.qualification_type_id = 1
-		db.session.add(s)
-
-	for name in ["Accounting", "Administration", "Architectural Technology", "Art & Design", "Automotive Engineering", "Biology",
+	"Physical Education", "Preparation for Working Life", "Rural & Agricultural Science", "Statistics",
+#	Scottish Highers
+	"Accounting", "Administration", "Architectural Technology", "Art & Design", "Automotive Engineering", "Biology",
 	"Biotechnology", "Building & Architectural Technology", "Building Services", "Business Management", "Care", "Chemistry",
 	"Civil Engineering", "Classical Greek", "Classical Studies", "Chinese Language & Culture", "Computing", "Construction",
 	"Dance", "Drama", "Early Education & Childcare", "Early Years Care & Education", "Economics", "Electrical Engineering",
@@ -146,14 +149,9 @@ def subjects():
 	"Mechatronics", "Media Studies", "Modern Studies", "Music", "Personal & Social Education", "Philosophy", "Photography",
 	"Physical Education", "Physics", "Politics", "Product Design", "Psychology", "Religious Education",
 	"Religious, Moral & Philosophical Studies", "Russian", "Sociology", "Spanish", "Technological Studies", "Travel & Tourism",
-	"Urdu"]:
-
-		s = Qualification()
-		s.course_name = name
-		s.qualification_type_id = 5
-		db.session.add(s)
-
-	for name in ["Accounting", "Administration", "Applied Mathematics: Mechanics", "Applied Mathematics: Statistics",
+	"Urdu",
+#	Scottish Advanced Highers
+	"Accounting", "Administration", "Applied Mathematics: Mechanics", "Applied Mathematics: Statistics",
 	"Art & Design Enquiry: Design", "Art & Design Enquiry: Expressive", "Art & Design: Research & Appreciation", "Biology",
 	"Building & Architectural Technology", "Business Management", "Chemistry", "Civil Engineering", "Classical Greek",
 	"Classical Studies", "Computing", "Drama", "Economics", "Electronics", "English", "French", "Gaelic", "Gaidhlig", "Geography",
@@ -161,35 +159,42 @@ def subjects():
 	"Home Economics — Health & Food Technology", "Home Economics — Lifestyle & Consumer Technology", "Information Systems",
 	"Italian", "Latin", "Managing Environmental Resources", "Mathematics", "Mechatronics", "Media Studies", "Modern Studies",
 	"Music", "Philosophy", "Physical Education", "Physics", "Politics", "Product Design", "Psychology",
-	"Religious, Moral & Philosophical Studies", "Russian", "Sociology", "Spanish", "Technological Studies"]:
+	"Religious, Moral & Philosophical Studies", "Russian", "Sociology", "Spanish", "Technological Studies",
 
-		s = Qualification()
-		s.course_name = name
-		s.qualification_type_id = 8
-		db.session.add(s)
+	"Histroy", "Biological Sciences", "Nursing", "Primary Education", "Psychology", "Computer Science", "Sociology",
+	"Social Studies", "Computer Systems", "Information Systems", "Maths", "Law", "Business Studies"]
 
-	for name in ["Histroy", "Biological Sciences", "Nursing", "Primary Education", "Psychology", "Computer Science", "Sociology",
-	"Social Studies", "Computer Systems", "Information Systems", "Maths", "Law", "Business Studies"]:
+	l = list(set(s))
 
-		s = Qualification()
-		s.course_name = name
-		s.qualification_type_id = 12
-		db.session.add(s)
+	for name in l:
 
-	for name in ["Histroy", "Biological Sciences", "Nursing", "Primary Education", "Psychology", "Computer Science", "Sociology",
-	"Social Studies", "Computer Systems", "Information Systems", "Maths", "Law", "Business Studies"]:
-
-		s = Qualification()
-		s.course_name = name
-		s.qualification_type_id = 13
-		db.session.add(s)
-
-	for name in ["Histroy", "Biological Sciences", "Nursing", "Primary Education", "Psychology", "Computer Science", "Sociology",
-	"Social Studies", "Computer Systems", "Information Systems", "Maths", "Law", "Business Studies"]:
-
-		s = Qualification()
-		s.course_name = name
-		s.qualification_type_id = 14
+		s = Subject()
+		s.name = name
+#		s.qualification_type_id = 1
 		db.session.add(s)
 
 	db.session.commit()
+
+	return len(l)
+
+def DefineFields():
+	Field.query.delete()
+
+	l = ["Human History", "Linguistics", "Literature", "Performing Arts", "Visual Arts", "Philosophy", "Religious Studies",
+	"Anthropology", "Ethnic & Cultural Studies", "Archaeology", "Area Studies", "Economics", "Gender Studies", "Geography",
+	"Organisational Studies", "Political Science", "Psychology", "Sociology", "Biology", "Chemistry", "Physics", "Earth Sciences",
+	"Space Science", "Mathematics", "Computer Science", "Systems Science", "Agiculture", "Architecture & Design", "Business",
+	"Divinity", "Education", "Engineering & Technology", "Environmental Studies", "Family & Consumer Science",
+	"Human Physical Performance & Recreation", "Journalism, Media Studies & Communication", "Law", "Library & Museum Studies",
+	"Medicine", "Military Science", "Public Administration", "Social Work", "Transportation"]
+
+	for name in l:
+		f = Field()
+		f.name = name
+		db.session.add(f)
+
+	db.session.commit()
+
+	return len(l)
+
+

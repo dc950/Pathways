@@ -1,5 +1,5 @@
 import unittest
-from app.models import User, Qualification, QualificationType, Career, CareerQualification, Skill
+from app.models import User, Qualification, QualificationType, Career, CareerQualification, Skill, Subject
 from app import db, create_app
 
 
@@ -17,10 +17,11 @@ class CareerModelTestCase(unittest.TestCase):
 
     def test_qualification_relationship(self):
         qt = QualificationType(name="Higher", level=6)
-        q = Qualification(course_name="Computing", qualification_type=qt)
+        s = Subject(name="Computing")
+        q = Qualification(subject=s, qualification_type=qt)
         c = Career(name="Web Developer", description="Worst job ever")
         c.add_qualification(q, 5)
-        self.assertEqual(c.qualifications[0].course_name, "Computing")
+        self.assertEqual(c.qualifications[0].name, "Computing")
         self.assertEqual(c.qualifications[0].points, 5)
 
     def test_add_skills(self):

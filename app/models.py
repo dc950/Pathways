@@ -6,6 +6,7 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask.ext.login import UserMixin, AnonymousUserMixin
 from . import login_manager
 from hashlib import md5
+from sqlalchemy import and_
 
 
 @login_manager.user_loader
@@ -296,12 +297,47 @@ class Skill(db.Model):
         return '<Skill %r>' % self.name
 
 
+class Field(db.Model):
+    __tablename__ = 'fields'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(128), unique=True)
+    # interests and skills?
+
+
+class Subject(db.Model):
+    __tablename__ = 'subjects'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(128), unique=True)
+    field_id = db.Column(db.Integer, db.ForeignKey('fields.id'))
+    field = db.relationship("Field", backref='subjects')
+
+# class UniQualification(db.model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     qualification_type_id = db.Column(db.Integer, db.ForeignKey('qualification_types.id'))
+#     qualification_type = db.relationship("QualificationType")
+
+
 class Qualification(db.Model):
     __tablename__ = 'qualifications'
     id = db.Column(db.Integer, primary_key=True)
-    course_name = db.Column(db.String(128))
+    subject_id = db.Column(db.Integer, db.ForeignKey('subjects.id'))
+    subject = db.relationship('Subject', backref='qualifications')
     qualification_type_id = db.Column(db.Integer, db.ForeignKey('qualification_types.id'))
     qualification_type = db.relationship("QualificationType")
+
+    @property
+    def name(self):
+        if self.subject is None:
+            raise AttributeError('This Qualification has no related Subject')
+        else:
+            return self.subject.name
+
+    @property
+    def field(self):
+        if self.subject is None:
+            raise AttributeError('This Qualification has no related Subject')
+        else:
+            return self.subject.field.name
 
     @property
     def level(self):
@@ -317,8 +353,13 @@ class Qualification(db.Model):
         else:
             return self.qualification_type.name
 
+    @staticmethod
+    def filter_name_type(name, qualification_type):
+        subject = Subject.query.filter_by(name=name).first()
+        return Qualification.query.filter_by(subject=subject).filter_by(qualification_type=qualification_type)
+
     def __repr__(self):
-        return self.course_name
+        return self.name
 
 
 class QualificationType(db.Model):
@@ -326,7 +367,8 @@ class QualificationType(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), unique=True)
     level = db.Column(db.Integer)
-        
+    ucas_points = db.Column(db.Integer)
+
 
 
 class UserQualification(db.Model):
@@ -337,8 +379,8 @@ class UserQualification(db.Model):
     qualification = db.relationship("Qualification")
 
     @property
-    def course_name(self):
-        return self.qualification.course_name
+    def name(self):
+        return self.qualification.name
 
     @property
     def qualification_name(self):
@@ -357,8 +399,8 @@ class CareerQualification(db.Model):
     qualification = db.relationship("Qualification")
 
     @property
-    def course_name(self):
-        return self.qualification.course_name
+    def name(self):
+        return self.qualification.name
 
     @property
     def qualification_name(self):

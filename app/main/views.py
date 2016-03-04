@@ -140,16 +140,16 @@ def about():
 @login_required
 def pathway():
     user_subjects = UserQualification.query.join(Qualification, UserQualification.qualifications_id==Qualification.id).filter_by().all()
-    user_qual_types = QualificationType.query.join(Qualification, QualificationType.id==Qualification.qualification_type_id).join(UserQualification, UserQualification.qualifications_id==Qualification.id).filter_by(user_id=current_user.id).all()
+    #user_qual_types = QualificationType.query.join(Qualification, QualificationType.id==Qualification.qualification_type_id).join(UserQualification, UserQualification.qualifications_id==Qualification.id).filter_by(user_id=current_user.id).all()
 
     opt_param = request.args.get("request_json")
     print(opt_param)
-    if opt_param is "1":
-        results = dict((t.name, dict(level=t.level, subjects=[
-                dict(name=s.course_name, grade=s.grade) for s in UserQualification.query.join(Qualification, UserQualification.qualifications_id==Qualification.id).filter_by(qualification_type=t).all()
-            ])) for t in user_qual_types)
-        print("*** test ***\n")
-        return jsonify(**results)
+    #if opt_param is "1":
+    #    results = dict((t.name, dict(level=t.level, subjects=[
+    #            dict(name=s.course_name, grade=s.grade) for s in UserQualification.query.join(Qualification, UserQualification.qualifications_id==Qualification.id).filter_by(qualification_type=t).all()
+    #        ])) for t in user_qual_types)
+    #    print("*** test ***\n")
+    #    return jsonify(**results)
 
     return render_template("pathway.html",
                            title="Your Pathway",
