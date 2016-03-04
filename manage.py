@@ -3,7 +3,7 @@
 import os
 from app import create_app, db
 from app.models import User, Skill, Career, Qualification, QualificationType, Role, Permission, Subject, Field
-from app.admin.qualifications import DefineQualificationTypes, DefineSubjects, DefineFields, Setup
+from app.admin.qualifications import DefineQualificationTypes, DefineSubjects, DefineFields, Setup, QualificationsClear
 
 from flask.ext.script import Manager, Shell
 from flask.ext.migrate import Migrate, MigrateCommand
@@ -16,11 +16,13 @@ migrate = Migrate(app, db)
 
 def make_shell_context():
     return dict(app=app, db=db, User=User, Skill=Skill, Career=Career, Qualification=Qualification, DefineFields=DefineFields,
-			QualificationType=QualificationType, Role=Role, Permission=Permission, DefineSubjects=DefineSubjects(), 
-			DefineQualificationTypes=DefineQualificationTypes, Subject=Subject, Field=Field, Setup=Setup)
+            QualificationType=QualificationType, Role=Role, Permission=Permission, DefineSubjects=DefineSubjects, 
+            DefineQualificationTypes=DefineQualificationTypes, Subject=Subject, Field=Field, Setup=Setup,
+            QualificationsClear=QualificationsClear)
 
 manager.add_command("shell", Shell(make_context=make_shell_context))
 manager.add_command('db', MigrateCommand)
+#manager.add_command("setup", Setup)
 
 
 @manager.command

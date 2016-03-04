@@ -38,7 +38,7 @@ def get_careers():
 
 @admin.route('/insert-qualifications')
 def insert_qualifications():
-    Setup()
+    Setup(False)
 
 
 @admin.route('/load-uni-courses')
