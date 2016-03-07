@@ -4,8 +4,10 @@ from wtforms.validators import Length
 from ..models import User, UserQualification, Qualification, QualificationType, Career
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 
+
 class SkillsForm(Form):
     skills = TextAreaField();
+
 
 class EditProfileForm(Form):
     first_name = StringField('First Name', validators=[Length(0, 64)])
@@ -44,3 +46,8 @@ class EditQualificationForm(Form):
 class SearchForm(Form):
     term = StringField('Search', validators=[Length(1, 64)])
     submit = SubmitField('Search')
+
+
+class CommentForm(Form):
+    body = StringField('Comment', validators=[Length(1, 256)])
+    submit = SubmitField("Submit")

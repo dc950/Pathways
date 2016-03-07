@@ -37,7 +37,22 @@
     </div>
 
     {% if user == current_user or user in current_user.connections %}
-       <p>I really like ponies</p>
+       <h3>Page comments</h3>
+        {% for c in comments %}
+            <p><a href="{{ url_for('main.user', username=c.author.username) }}"><img src="{{ c.author.gravatar(32) }}">
+                {{ c.author.first_name }} {{ c.author.last_name }}</a>: {{ c.body }}</p>
+        {% endfor %}
+        <form action="" method="post" name="comment">
+         {{ form.hidden_tag() }}
+         <br>
+            <p>
+               {{ form.body(size=64) }}<br>
+         <p>{{ form.submit }}</p>
+      </form>
+
+
+
+
     {% else %}
        <p>You are unable to see this data as you are not connected to the user</p>
     {% endif %}

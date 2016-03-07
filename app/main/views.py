@@ -5,8 +5,8 @@ from flask.ext.login import current_user, login_required
 from . import main
 from .pathway_generator import generate_future_pathway
 from .. import db
-from ..models import User, UserQualification, Qualification, QualificationType, Career, Subject
-from .forms import EditProfileForm, AddQualificationForm, EditQualificationForm, SearchForm
+from ..models import User, UserQualification, Qualification, QualificationType, Career, Subject, Comment
+from .forms import EditProfileForm, AddQualificationForm, EditQualificationForm, SearchForm, CommentForm
 from ..decorators import admin_required, permission_required
 from .search import search_user
 
@@ -29,16 +29,22 @@ def career(careername):
                            title=careername)
 
 
-@main.route('/user/<username>')
+@main.route('/user/<username>', methods=['GET', 'POST'])
 def user(username):
     user_obj = User.query.filter_by(username=username).first()
     if user_obj is None:
         flash('User %s not found.' % username)
         return redirect(url_for('main.index'))
+    form = CommentForm()
+    if form.validate_on_submit():
+        Comment.add_comment(current_user, user_obj, form.body.data)
     name = user_obj.first_name + " " + user_obj.last_name
+    comments = Comment.query.filter_by(profile=user_obj)
     return render_template("user.html",
                            user=user_obj,
-                           title=name)
+                           title=name,
+                           comments=comments,
+                           form=form)
 
 
 
