@@ -4,7 +4,7 @@ from flask.ext.login import current_user, login_required
 from . import main
 from .pathway_generator import generate_future_pathway
 from .. import db
-from ..models import User, UserQualification, Qualification, QualificationType, Career
+from ..models import User, UserQualification, Qualification, QualificationType, Career, Subject
 from .forms import EditProfileForm, AddQualificationForm, EditQualificationForm, SearchForm
 from ..decorators import admin_required, permission_required
 from .search import search_user
@@ -100,13 +100,14 @@ def add_qualification():
         print (opt_param)
         """form.subjects2.query_factory = Qualification.query.filter_by(qualification_type_id = opt_param).all"""
 
-        results = [(s.id, s.qualification.subject.name) for s in Qualification.query.filter_by(qualification_type_id = opt_param)]
-        """form.subjects.choices = results
-        form.process()"""
+        results = [(s.id, s.subject.name) for s in Qualification.query.filter_by(qualification_type_id=opt_param).all()]
+        form.subjects.choices = results
+        form.process()
 
         return jsonify(results)
 
     if form.validate_on_submit():
+
         nq = UserQualification()
         nq.user_id = current_user.id
         nq.qualifications_id = form.subjects.data
