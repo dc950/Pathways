@@ -17,7 +17,7 @@
   						<th>Subject</th>
   						<th>Grade</th>
   						<th>Qualification</th>
-  						<th>Institute</th>
+  						<!--<th>Institute</th>-->
   						<th class="text-center">
   							<div class="dropdown">
   							    <div class="dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Actions <span class="caret"></span></div>
@@ -33,10 +33,10 @@
   				<tbody>
 				    {% for subs in subjects %}
 				    <tr class="">
-				    	<td class="">{{ subs.course_name }}</td>
-				    	<td class="">{{ subs.qualification.qualification_type.name }}</td>
-					    <td class="">{{ subs.grade }}</td>
-					    <td class="">Heriot Watt University</td>
+				    	<td class="">{{ subs.name }}</td>
+				    	<td class="">{{ subs.grade }}</td>
+					    <td class="">{{ subs.qualification.qualification_type.name }}</td>
+					    <!--<td class="">Heriot Watt University</td>-->
 					    <td class="text-center"><span class="glyphicon glyphicon-pencil" /> <span class="glyphicon glyphicon-remove" /></td>
 					</tr>
 					{% endfor %}
