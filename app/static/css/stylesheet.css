@@ -243,3 +243,12 @@ footer {
 .node-level-6 {
 	fill: green !important;
 }*/
+
+.admin-user-list {
+	float: left;
+	margin-right: 100px;
+}
+
+.admin-delete {
+	float: right;
+}

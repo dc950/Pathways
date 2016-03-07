@@ -1,0 +1,14 @@
+<p> Dear {{ user.first_name }} {{ user.last_name }}</p>
+
+<p>Your profile avatar has been deemed highly inappropriate and has been changed to the default avatar.</p>
+
+<p>To change your profile picture, please go to <a href = {{ url_for('main.edit',  _external = True) }}> this link </a>.</p>
+
+<p>Alternatively, copy and paste the following link into your browser's address bar</p>
+<p>{{ url_for('main.edit',  _external = True) }}</p>
+
+<p>If your avatar is deemed to be inappropriate again then your account will be banned.</p>
+
+<p>Sincerely,</p>
+
+<p>The Reflective Pathways Team</p>

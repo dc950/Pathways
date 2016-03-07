@@ -157,15 +157,6 @@ def send_new_delete_acc_email(email=None):
         flash('An email has been sent to your account with further details on how to proceed')
         return redirect(url_for('main.index'))
 
-@auth.route('/users')
-def displayusers():
-    users = User.query.all()
-    for user in users:
-        return render_template('delete_account.html', displayusers)
-
-
-
-
 @auth.before_app_request
 def before_request():
     if request.endpoint:
