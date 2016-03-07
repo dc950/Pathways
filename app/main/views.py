@@ -1,4 +1,5 @@
 import json
+import app
 from flask import render_template, session, flash, redirect, url_for, send_from_directory, Flask, request, jsonify, Response
 from flask.ext.login import current_user, login_required
 from . import main
@@ -143,7 +144,7 @@ def about():
 @login_required
 def pathway():
     user_subjects = UserQualification.query.join(Qualification, UserQualification.qualifications_id==Qualification.id).filter_by().all()
-    user_qual_types = QualificationType.query.join(Qualification, QualificationType.id==Qualification.qualification_type_id).join(UserQualification, UserQualification.qualifications_id==Qualification.id).filter_by(user_id=current_user.id).all()
+    user_qual_types = QualificationType.query.join(Qualification, QualificationType.id==Qualification.qualification_type_id).join(UserQualification, UserQualification.qualifications_id==Qualification.id).filter_by(user_id=current_user.id).order_by(QualificationType.level).all()
     #user_qual_types = QualificationType.query.join(Qualification, QualificationType.id==Qualification.qualification_type_id).all()
 
     opt_param = request.args.get("request_json")

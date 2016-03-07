@@ -22,6 +22,8 @@ $(document).ready(function(){
 		console.log("Loading error: " + error);
 		console.log(treeData);
 
+
+
 		var viewerWidth = $("#pathway-container").width();
     	var viewerHeight = $("#pathway-container").height();
 
@@ -41,7 +43,7 @@ $(document).ready(function(){
 		$.each(treeData, function(index, value){
     		//console.log(index);
 
-    		var circles = baseSvg.selectAll('circle').data(value.subjects);
+    		var circles = baseSvg.selectAll('circle').data(value.subjects).sort(value.level);
 
 	        newCircles[j] = {qualification: index ,level: value.level, subjects: circles.enter()};
 	        j++;			
@@ -65,7 +67,7 @@ $(document).ready(function(){
 
     		baseSvg.append("text").attr("dx", xPos).attr("dy", 20 +  + nav_offset).text(value.qualification);
 
-    		console.log(value.subjects[0].length);
+    		//console.log(value.subjects[0].length);
 
     		var yHeight;
 
