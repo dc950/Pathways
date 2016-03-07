@@ -37,7 +37,7 @@ def users():
     user2 = User.query.filter_by(username=username2).first()
     if form1.validate_on_submit():
         if user:
-            flash("An email has been sent to your email address with more instructions on how to delete your account.")
+            flash("An email has been sent to " + username + " regarding their deleted account.")
             return redirect(url_for('admin.delete_this_user', username=username))
         else:
             flash('Username doesnt exist')

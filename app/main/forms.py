@@ -10,11 +10,10 @@ class SkillsForm(Form):
 class EditProfileForm(Form):
     first_name = StringField('First Name', validators=[Length(0, 64)])
     last_name = StringField('Last Name', validators=[Length(0, 64)])
-    email = StringField('Email', validators=[Length(0, 64)])
+    email = StringField('If you would like to change your email, please edit the text box below.', validators=[Length(0, 64)])
     default_avatar = SelectField('Default avatar style.  For a custom avatar got to www.gravatar.com', choices=[
         ('mm', 'Default image'), ('identicon', 'Identicon'), ('monsterid', 'Monster'), ('wavatar', 'Wavatar'),
         ('retro', 'Retro')])
-    skillsform = FormField(SkillsForm)
     submit = SubmitField('Submit')
 
 

@@ -83,10 +83,12 @@ def send_new_password_email(email=None):
             return redirect(url_for('auth.register'))
     else:
         # Request was made from a user.
-        current_user.send_new_password_email()
-        flash('An email has been sent to your account with further details on how to proceed')
-        return redirect(url_for('main.index'))
-
+        if current_user.confirmed is True:
+            current_user.send_new_password_email()
+            flash('An email has been sent to your account with further details on how to proceed')
+        else:
+            flash("You must authenticate your account before you can do this action. Please see your email to authenticate your account.")
+        return redirect(url_for('main.edit'))
 
 @auth.route('/change-password/<token>', methods=['GET', 'POST'])
 def change_password(token):
@@ -114,8 +116,8 @@ def change_password(token):
     return render_template('new_password.html', form=form)
 
 
-
 @auth.route('/delete-account/<token>', methods=['GET', 'POST'])
+@login_required
 def delete_account(token):
     s = Serializer(current_app.config['SECRET_KEY'])
     try:
@@ -136,8 +138,8 @@ def delete_account(token):
         if current_user.is_authenticated:
             logout_user()
             User.query.filter_by(id=uid).delete()
-        flash("Your account has successfully been deleted.")
-        return redirect(url_for('main.index'))
+            flash("Your account has successfully been deleted.")
+            return redirect(url_for('main.index'))
     return render_template('delete_account.html', form=form)
 
 @auth.route('/send-new-delete_acc-email')
@@ -146,16 +148,18 @@ def send_new_delete_acc_email(email=None):
         user = User.query.filter_by(email=email).first()
         if user:
             user.send_new_delete_acc_email()
-            flash('An email has been sent to your account with further details on how to proceed')
+            flash('An email has been sent to your account with further details on how to delete your account.')
             return redirect(url_for('auth.login'))
         else:
             flash('No user with that associated account was found.  Please register to create an account')
             return redirect(url_for('auth.register'))
     else:
         # Request was made from a user.
-        current_user.send_new_delete_acc_email()
-        flash('An email has been sent to your account with further details on how to proceed')
-        return redirect(url_for('main.index'))
+        if current_user.confirmed is True:
+            current_user.send_new_delete_acc_email()
+        else:
+            flash("You must authenticate your account before you can do this action. Please see your email to authenticate your account.")
+        return redirect(url_for('main.edit'))
 
 @auth.before_app_request
 def before_request():
