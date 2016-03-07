@@ -82,8 +82,7 @@
                   <il><img class="user-avatar" src="{{ current_user.gravatar(64) }}"></il>
                </ul>
             {% else %}
-            <div class="nav navbar-nav navbar-right">
-             <!-- <a href="{{ url_for('auth.login') }}"><button class="btn">Login</button></a> <a href="{{ url_for('auth.register') }}"><button class="btn">Register</button></a> -->
+            <div class="nav navbar-nav navbar-right login-button">
                 <a href="{{ url_for('auth.login') }}" class="button">Login</a> <a href="{{ url_for('auth.register') }}" class="button">Register</a>
             </div>
 

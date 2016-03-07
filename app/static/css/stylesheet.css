@@ -27,11 +27,12 @@ body {
 
 nav {
 	border: 0px !important;
+	padding-left: 8px;
 }
 
 .button {
-	padding: 8px;
-	background-color: #DCDCDC;
+	padding: 5px;
+	background-color:  #eceaea;
 	border-radius: 10px;
 	color: black;
 }	
@@ -39,6 +40,13 @@ nav {
 .nav-bottom {
 	margin: 0;
 	padding: 0 !important;
+}
+
+.login-button {
+	padding-right: 10px;
+	padding-left: 10px;
+	padding-bottom: 5px;
+	padding-top: 15px;
 }
 
 .user-avatar {
@@ -50,6 +58,7 @@ nav {
 .user-info {
 	display: inline-block;
 	vertical-align: middle;
+	padding-left: 8px;
 }
 
 .search {
@@ -223,7 +232,7 @@ footer {
 }
 
 .side-padding {
-   padding-left: 30px;
+   padding-left: 3%;
 }
 
 .social-icon img {
