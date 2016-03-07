@@ -6,6 +6,7 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask.ext.login import UserMixin, AnonymousUserMixin
 from . import login_manager
 from hashlib import md5
+from datetime import datetime
 
 
 @login_manager.user_loader
@@ -45,6 +46,8 @@ class User(UserMixin, db.Model):
                                           secondaryjoin=(connections.c.invitation_id == id),
                                           backref=db.backref('connection_invitations', lazy='dynamic'),
                                           lazy='dynamic')
+    profile_comments = db.relationship('Comment', backref='profile', foreign_keys="[Comment.profile_id]", lazy='dynamic')
+    authored_comments = db.relationship('Comment', backref='author', foreign_keys="[Comment.author_id]", lazy='dynamic')
 
     def __repr__(self):
         return '<User %r>' % (self.first_name + self.last_name)
@@ -492,6 +495,28 @@ class CareerSkill(db.Model):
 #
 #     def __repr__(self):
 #         return '<UniCourses %r>' % self.coursename
+
+class Comment(db.Model):
+    __tablename__='comments'
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.Text)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    profile_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+    @staticmethod
+    def add_comment(author, profile, body):
+        """
+        Writes a comment on a users profile
+        :param author: THe user making the comment
+        :param profile: The user who's page is being commented on
+        :param body: The body of the text
+        :return: The comment
+        """
+        # Do some checks to make sure things are allowed regarding privacy, do a flash to show it didn't work etc.
+        comment = Comment(body=body, author_id=author.id, profile_id=profile.id)
+        db.session.add(comment)
+
 
 class Role(db.Model):
     __tablename__ = 'roles'

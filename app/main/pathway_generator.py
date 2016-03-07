@@ -1,5 +1,6 @@
-from ..models import Career, User, Qualification, Skill, UserQualification, QualificationType, Field
+from ..models import Career, User, Qualification, Skill, UserQualification, QualificationType, Field, Subject
 from flask.ext.login import current_user
+from app import db
 import random
 
 
@@ -46,6 +47,21 @@ def generate_future_pathway(u):
         else:
             if fcount[f] > top_fields[-1]:
                 top_fields[-1] = f
-        top_fields = sorted(top_fields, key = lambda x: fcount[x])
+        top_fields = sorted(top_fields, key=lambda x: fcount[x])
 
     print("Top fields: "+str(top_fields))
+
+    # Find some courses using those fields (eventually check requirements as well)
+
+    # Takes two from most common and one from each other
+    top_courses = Qualification.query.join(Subject).filter_by(field=top_fields[0]).all()
+    # Randomly pick two
+    courses = random.sample(top_courses, 2)
+
+    # Get one from each of the others:
+    course = Qualification.query.join(Subject).filter_by(field=top_fields[1]).all()
+    courses.append(random.sample(course, 1))
+    course = Qualification.query.join(Subject).filter_by(field=top_fields[2]).all()
+    courses.append(random.sample(course, 1))
+
+    print("Chosen courses are: " + str(courses))
