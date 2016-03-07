@@ -4,17 +4,14 @@
 
 {% block nav_overwrite %}
   <li><a href="{{ url_for('main.index') }}">Home <span class="sr-only">(current)</span></a></li>
-    <li><a href="{{ url_for('main.pathway') }}">Your Pathway</a></li>
-    {% if current_user.is_authenticated %}
-      <li><a href="{{ url_for('main.user', username=current_user.username) }}">Your Profile</a></li>
-      <li><a href="{{ url_for('main.connections') }}">Connections</a></li>
-    {% endif %}
-    <li><a href="{{ url_for('main.about') }}">About</a></li>
+  <li><a href="{{ url_for('main.pathway') }}">Your Pathway</a></li>
+  <li class="nav-active"><a href="{{ url_for('main.user', username=current_user.username) }}">Your Profile</a></li>
+  <li><a href="{{ url_for('main.connections') }}">Connections</a></li>
 {% endblock %}
 
 {% block header_content %}
-   <div class="page-header">
-      <h1>{{ current_user.first_name }} {{ current_user.last_name }}</h1>
+   <div class="header">
+      <h1>Edit Profile</h1>
    </div>
 {% endblock %}
 
@@ -24,10 +21,19 @@
             {{ wtf.quick_form(form) }}
         </div>
     </div>
+    <ul class="list-skills">
+      {% for s in skills %}
+        <li>{{ s.name }}</li>
+      {% endfor %}
+    </ul>
     <div class="row">
-    <a href="{{ url_for('auth.send_new_password_email') }}"><button class="btn">Change Password</button></a>
+        <div class="pw-button">
+        <a href="{{ url_for('auth.send_new_password_email') }}"><button class="btn">Change Password</button></a>
+        </div>
     </div>
     <div class="row">
-    <a href="{{ url_for('auth.send_new_delete_acc_email') }}"><button class="btn">Delete Account</button></a>
+        <div class="pw-button">
+        <a href="{{ url_for('auth.send_new_delete_acc_email') }}"><button class="btn">Delete Account</button></a>
+        </div>
     </div>
 {% endblock %}

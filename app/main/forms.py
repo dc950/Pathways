@@ -1,16 +1,20 @@
 from flask.ext.wtf import Form
-from wtforms import StringField, SubmitField, DateField, FormField, SelectField
+from wtforms import StringField, SubmitField, DateField, FormField, SelectField, TextAreaField
 from wtforms.validators import Length
 from ..models import User, UserQualification, Qualification, QualificationType, Career
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 
+class SkillsForm(Form):
+    skills = TextAreaField();
 
 class EditProfileForm(Form):
     first_name = StringField('First Name', validators=[Length(0, 64)])
     last_name = StringField('Last Name', validators=[Length(0, 64)])
+    email = StringField('Email', validators=[Length(0, 64)])
     default_avatar = SelectField('Default avatar style.  For a custom avatar got to www.gravatar.com', choices=[
         ('mm', 'Default image'), ('identicon', 'Identicon'), ('monsterid', 'Monster'), ('wavatar', 'Wavatar'),
         ('retro', 'Retro')])
+    skillsform = FormField(SkillsForm)
     submit = SubmitField('Submit')
 
 

@@ -21,13 +21,8 @@ def index():
 @admin.route('/database', methods=['GET', 'POST'])
 # @admin_required
 def database():
-    form1 = qualTypesForm()
-    form2 = qualTypesForm()
     careers = Career.query.all()
-    if form1.validate_on_submit():
-        qualifications()
-        subjects()
-    return render_template('admin-database.html', form2=form2, form1=form1)
+    return render_template('admin-database.html', careers=careers)
 
 
 @admin.route('/users', methods=['GET', 'POST'])
@@ -42,6 +37,7 @@ def users():
     user2 = User.query.filter_by(username=username2).first()
     if form1.validate_on_submit():
         if user:
+            flash("An email has been sent to your email address with more instructions on how to delete your account.")
             return redirect(url_for('admin.delete_this_user', username=username))
         else:
             flash('Username doesnt exist')
@@ -55,6 +51,20 @@ def users():
             flash('Username doesnt exist')
     return render_template('admin-users.html', users=users, form1=form1, form2=form2)
 
+
+
+
+@admin.route('/get-careers')
+# @admin_required
+def get_careers():
+    webcrawler()
+    flash("Careers Loaded")
+    return redirect(url_for('admin.index'))
+
+
+#@admin.route('/insert-qualifications')
+#def insert_qualifications():
+#    qualifications()
 
 
 @admin.route('/load-uni-courses')

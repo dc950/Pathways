@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-from ..models import Career, Qualification
+from ..models import Career, Qualification, Subject, QualificationType
 from .. import db
 
 def uniwebcrawler():
@@ -11,15 +11,17 @@ def uniwebcrawler():
         plain_text = source_code.text
         soup = BeautifulSoup(plain_text, "html.parser")
         for link in soup.find_all('h6', {'class': 'result-card__heading-sub course-name'}):
-            qualification = Qualification()
             coursetitle= link.contents[0].contents[0]
             b = False
             for q in Qualification.query.all():
-                if q.course_name == coursetitle:
+                if q.name == coursetitle:
                     b = True
             if b:
                 continue
-            qualification.course_name = coursetitle
+            qualification = Qualification()
+            subject = Subject.newSubject(coursetitle)
+            #
+            qualification.subject = subject
             print(coursetitle)
             for link2 in link.find_all('a'):
                 print(link2.get('href'))

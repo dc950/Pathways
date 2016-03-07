@@ -2,6 +2,7 @@ import json
 from flask import render_template, session, flash, redirect, url_for, send_from_directory, Flask, request, jsonify, Response
 from flask.ext.login import current_user, login_required
 from . import main
+from .pathway_generator import generate_future_pathway
 from .. import db
 from ..models import User, UserQualification, Qualification, QualificationType, Career
 from .forms import EditProfileForm, AddQualificationForm, EditQualificationForm, SearchForm
@@ -43,17 +44,20 @@ def user(username):
 @main.route('/user/edit-profile', methods=['GET', 'POST'])
 @login_required
 def edit():
+    user_skills = current_user.skills
     form = EditProfileForm()
     if form.validate_on_submit():
         current_user.first_name = form.first_name.data
         current_user.last_name = form.last_name.data
+        current_user.email = form.email.data
         current_user.def_avatar = form.default_avatar.data
         db.session.add(current_user)
         flash('Your profile has been updated')
         return redirect(url_for('.user', username=current_user.username))
     form.first_name.data = current_user.first_name
     form.last_name.data = current_user.last_name
-    return render_template('edit-profile.html', form=form)
+    form.email.data = current_user.email
+    return render_template('edit-profile.html', form=form, skills=user_skills)
 
 
 @main.route('/user/pathway/edit-qualification/')
@@ -139,16 +143,16 @@ def about():
 @login_required
 def pathway():
     user_subjects = UserQualification.query.join(Qualification, UserQualification.qualifications_id==Qualification.id).filter_by().all()
-    user_qual_types = QualificationType.query.join(Qualification, QualificationType.id==Qualification.qualification_type_id).join(UserQualification, UserQualification.qualifications_id==Qualification.id).filter_by(user_id=current_user.id).all()
+    #user_qual_types = QualificationType.query.join(Qualification, QualificationType.id==Qualification.qualification_type_id).join(UserQualification, UserQualification.qualifications_id==Qualification.id).filter_by(user_id=current_user.id).all()
 
     opt_param = request.args.get("request_json")
     print(opt_param)
-    if opt_param is "1":
-        results = dict((t.name, dict(level=t.level, subjects=[
-                dict(name=s.course_name, grade=s.grade) for s in UserQualification.query.join(Qualification, UserQualification.qualifications_id==Qualification.id).filter_by(qualification_type=t).all()
-            ])) for t in user_qual_types)
-        print("*** test ***\n")
-        return jsonify(**results)
+    #if opt_param is "1":
+    #    results = dict((t.name, dict(level=t.level, subjects=[
+    #            dict(name=s.course_name, grade=s.grade) for s in UserQualification.query.join(Qualification, UserQualification.qualifications_id==Qualification.id).filter_by(qualification_type=t).all()
+    #        ])) for t in user_qual_types)
+    #    print("*** test ***\n")
+    #    return jsonify(**results)
 
     return render_template("pathway.html",
                            title="Your Pathway",
@@ -207,6 +211,10 @@ def test():
     return render_template("test.html",
                            title="Test")
 
+@main.route('/generate-pathway')
+def generate_pathway():
+    generate_future_pathway()
+    return redirect(url_for('main.index'))
 
 @main.route('/js/<path:path>')
 def send_js(path):
