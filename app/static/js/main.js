@@ -24,18 +24,18 @@ $(document).ready(function(){
 
 
 	var newWords = [];
-	$("#skillsform-skills").on({
+	$("#skills").on({
 		keyup: function(e){
 			if(e.which==188 || e.which == 13) {
 				//console.log($("#skillsform-skills").val());
-				skillToAdd = $("#skillsform-skills").val();
+				skillToAdd = $("#skills").val();
 				skillToAdd = skillToAdd.substring(0, skillToAdd.length - 1);
 
 				var el = ("<li>" + skillToAdd + "</li>");
 				$(".list-skills").append(el);
 				//el.addClass("btn btn-primary btn-xs");
 
-				$("#skillsform-skills").val('');
+				$("#skills").val('');
 			}
 		}
 	});

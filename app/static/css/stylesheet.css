@@ -315,6 +315,16 @@ footer {
 	fill: green !important;
 }*/
 
+
+.admin-user-list {
+	float: left;
+	margin-right: 100px;
+}
+
+.admin-delete {
+	float: right;
+}
+
 /*----  Edit Profile ----*/
 .list-skills {
 	list-style-type: none;

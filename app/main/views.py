@@ -6,7 +6,7 @@ from . import main
 from .pathway_generator import generate_future_pathway
 from .. import db
 from ..models import User, UserQualification, Qualification, QualificationType, Career, Subject, Comment
-from .forms import EditProfileForm, AddQualificationForm, EditQualificationForm, SearchForm, CommentForm
+from .forms import EditProfileForm, AddQualificationForm, EditQualificationForm, SearchForm, CommentForm, SkillsForm
 from ..decorators import admin_required, permission_required
 from .search import search_user
 
@@ -52,17 +52,21 @@ def user(username):
 @login_required
 def edit():
     user_skills = current_user.skills
-    form = EditProfileForm()
-    if form.validate_on_submit():
-        current_user.first_name = form.first_name.data
-        current_user.last_name = form.last_name.data
-        current_user.def_avatar = form.default_avatar.data
+    form1 = EditProfileForm()
+    form2 = SkillsForm()
+    if form1.validate_on_submit():
+        current_user.first_name = form1.first_name.data
+        current_user.last_name = form1.last_name.data
+        current_user.email = form1.email.data
+        current_user.def_avatar = form1.default_avatar.data
         db.session.add(current_user)
         flash('Your profile has been updated')
         return redirect(url_for('.user', username=current_user.username))
-    form.first_name.data = current_user.first_name
-    form.last_name.data = current_user.last_name
-    return render_template('edit-profile.html', form=form, skills=user_skills)
+    form1.first_name.data = current_user.first_name
+    form1.last_name.data = current_user.last_name
+    form1.email.data = current_user.email
+    form1.default_avatar.data = current_user.def_avatar
+    return render_template('edit-profile.html', form1=form1, form2=form2, skills=user_skills)
 
 
 @main.route('/user/pathway/edit-qualification/')

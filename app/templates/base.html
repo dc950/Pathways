@@ -1,8 +1,8 @@
 {% extends "bootstrap/base.html" %}
 
 {% block styles %}
-   {{ super() }}
-   <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/stylesheet.css') }}">
+  {{ super() }}
+  <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/stylesheet.css') }}">
 {% endblock %}
 
 {% block scripts %}
@@ -33,17 +33,17 @@
 
 
 {% block navbar %}
-  {{ super() }}
-   <nav class="navbar navbar-default">
-      <div class="container-fluid">
-       <!-- Brand and toggle get grouped for better mobile display -->
-         <div class="navbar-header">
+    {{ super() }}
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
          
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse" aria-expanded="false">
-               <span class="sr-only">Toggle navigation</span>
-               <span class="icon-bar"></span>
-               <span class="icon-bar"></span>
-               <span class="icon-bar"></span>
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
             </button>
        
             <a class="navbar-brand" href="{{ url_for('main.index') }}">Pathways</a>
@@ -52,40 +52,44 @@
          <!-- Collect the nav links, forms, and other content for toggling -->
          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             {% if current_user.is_authenticated %}
-               <ul class="nav navbar-nav navbar-right">
-                  <il class="dropdown">
-                     <div class="user-info dropdown">
-                        <div>{{ current_user.email }} </div>
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                            {{ current_user.first_name }} {{ current_user.last_name }}
-                            {% if current_user.invitations|length > 0 %} <button class="btn btn-info">{{ current_user.invitations|length }}</button> {% endif %}
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                           <li><a href="{{ url_for('main.add_qualification') }}">Add Qualification</a></li>
-                           <li><a href="{{ url_for('main.edit_qualification') }}">Edit Qualifications</a></li>
-                           <li role="separator" class="divider"></li>
-                           <li><a href="{{ url_for('main.edit') }}">Edit Profile</a></li>
-                           <li role="separator" class="divider"></li>
-                            {% if current_user.invitations|length > 0 %}
-                                <li>Connection Invites</li>
-                                {% for c in current_user.invitations %}
-                                    <li><a href="{{ url_for('main.user', username=c.username) }}">{{ c.first_name }} {{ c.last_name }}</a></li>
-                                {% endfor %}
+                <ul class="nav navbar-nav navbar-right">
+                    <il class="dropdown">
+                        <div class="user-info dropdown">
+                            <div>{{ current_user.email }} </div>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                {{ current_user.first_name }} {{ current_user.last_name }}
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ url_for('main.add_qualification') }}">Add Qualification</a></li>
+                                <li><a href="{{ url_for('main.edit_qualification') }}">Edit Qualifications</a></li>
                                 <li role="separator" class="divider"></li>
+                                <li><a href="{{ url_for('main.edit') }}">Edit Profile</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+                            </ul>
+                        </div>
+                    </il>
+                    <il class="dropdown">
+                        <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {% if current_user.invitations|length > 0 %}
+                                {{ current_user.invitations|length }}
+                            {% else %}
+                                <span class="glyphicon glyphicon-bell"/>
                             {% endif %}
-                           <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+                        </button>
+                        <ul class="dropdown-menu">
+                            {% for c in current_user.invitations %}
+                                <li><a href="{{ url_for('main.user', username=c.username) }}">New Invite: {{ c.first_name }} {{ c.last_name }}</a></li>
+                            {% endfor %}
                         </ul>
-                     </div>
-                  </il>
-
-                  <il><img class="user-avatar" src="{{ current_user.gravatar(64) }}"></il>
-               </ul>
+                    </il>
+                    <il><img class="user-avatar" src="{{ current_user.gravatar(64) }}"></il>
+                </ul>
             {% else %}
-            <div class="nav navbar-nav navbar-right login-button">
-                <a href="{{ url_for('auth.login') }}" class="button">Login</a> <a href="{{ url_for('auth.register') }}" class="button">Register</a>
-            </div>
-
+                <div class="nav navbar-nav navbar-right login-button">
+                    <a href="{{ url_for('auth.login') }}" class="button">Login</a> <a href="{{ url_for('auth.register') }}" class="button">Register</a>
+                </div>
             {% endif %}
          </div><!-- /.navbar-collapse -->
 			{% if current_user.is_authenticated %}
@@ -121,7 +125,7 @@
 {% block content %}
    <header>
       <div class="container">
-        {% if false %}
+        {% if False %}
          {% for message in get_flashed_messages() %}
             <div class="alert alert-warning">
                <button type="button" class="close" data-dismiss="alert">&times;</button>

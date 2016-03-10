@@ -1,4 +1,5 @@
 {% extends "admin-base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
 
 {% block header_content %}
   <div class="header">
@@ -7,8 +8,21 @@
 {% endblock %}
 
 {% block main_content %}
-    <br><p>All users</p><br>
+    <h2>All users</h2>
+    <div class = "admin-user-list">
     <ul>
-      <p>{{ displayusers() }}</p>
+      {% for user in users %}
+      <li>Username: {{ user.username }} | Name: "{{ user.first_name }} {{ user.last_name }}"</li>
+      {% endfor %}
     </ul>
+    </div>
+    <div class = "admin-user-list">
+        <p> Enter the username of a user you want to delete in the field below </p>
+        {{ wtf.quick_form(form1) }}
+        <br>
+        <br>
+        <p> Enter the username of a user who you wish to send a warning email to because of an inappropriate profile avatar</p>
+        {{ wtf.quick_form(form2) }}
+        <br>
+    </div>
 {% endblock %}
