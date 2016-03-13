@@ -39,7 +39,12 @@ def user(username):
     if form.validate_on_submit():
         Comment.add_comment(current_user, user_obj, form.body.data)
     name = user_obj.first_name + " " + user_obj.last_name
-    comments = Comment.query.filter_by(profile=user_obj)
+    # comments = Comment.query.filter_by(profile=user_obj)
+    page = request.args.get('page', 1, type=int)
+    pagination = Comment.query.filter_by(profile=user_obj).order_by(Comment.timestamp.desc()).paginate(
+        page, per_page=5, error_out=False
+    )
+    comments = pagination.items
     if user_obj == current_user:
         unseen_comments = current_user.unseen_comments
         for c in unseen_comments:
@@ -49,7 +54,8 @@ def user(username):
                            user=user_obj,
                            title=name,
                            comments=comments,
-                           form=form)
+                           form=form,
+                           pagination=pagination)
 
 
 
