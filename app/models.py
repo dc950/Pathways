@@ -234,6 +234,12 @@ class User(UserMixin, db.Model):
             except IntegrityError:
                 db.session.rollback()
 
+    @property
+    def unseen_comments(self):
+        comments = Comment.query.filter_by(profile=self).filter_by(seen=False).all()
+        return comments
+
+
 
 class AnonymousUser(AnonymousUserMixin):
 
@@ -496,6 +502,7 @@ class CareerSkill(db.Model):
 #     def __repr__(self):
 #         return '<UniCourses %r>' % self.coursename
 
+
 class Comment(db.Model):
     __tablename__='comments'
     id = db.Column(db.Integer, primary_key=True)
@@ -503,6 +510,7 @@ class Comment(db.Model):
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     profile_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    seen = db.Column(db.Boolean, default=False)
 
     @staticmethod
     def add_comment(author, profile, body):

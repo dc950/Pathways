@@ -40,6 +40,11 @@ def user(username):
         Comment.add_comment(current_user, user_obj, form.body.data)
     name = user_obj.first_name + " " + user_obj.last_name
     comments = Comment.query.filter_by(profile=user_obj)
+    if user_obj == current_user:
+        unseen_comments = current_user.unseen_comments
+        for c in unseen_comments:
+            c.seen = True
+            db.session.add(c)
     return render_template("user.html",
                            user=user_obj,
                            title=name,
