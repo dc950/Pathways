@@ -75,4 +75,4 @@ def generate_future_pathway(u):
     career = Career.query.filter_by(field=top_fields[2])
     careers.append(career)
 
-    
+

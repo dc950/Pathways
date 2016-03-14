@@ -291,7 +291,7 @@ class Career(db.Model):
     subjects = db.relationship('CareerSubject', lazy='dynamic')
     skills = db.relationship('CareerSkill', lazy='dynamic')
     field_id = db.Column(db.Integer, db.ForeignKey('fields.id'))
-    field = db.relationship("Field", backref='subjects')
+    field = db.relationship("Field", backref='careers')
 
     def __repr__(self):
         return '<Career %r>' % self.name
@@ -315,7 +315,7 @@ class Career(db.Model):
     def add_subject_name(self, subject_name, points=1):
         """
         Adds the subject to the career when given the name
-        :param subject: the string name of the subject to be added
+        :param subject_name: the string name of the subject to be added
         :param points: The points for the qualification with relation to how important it is for the career
         """
 
