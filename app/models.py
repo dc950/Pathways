@@ -290,6 +290,8 @@ class Career(db.Model):
     #  Salary Information
     subjects = db.relationship('CareerSubject', lazy='dynamic')
     skills = db.relationship('CareerSkill', lazy='dynamic')
+    field_id = db.Column(db.Integer, db.ForeignKey('fields.id'))
+    field = db.relationship("Field", backref='subjects')
 
     def __repr__(self):
         return '<Career %r>' % self.name

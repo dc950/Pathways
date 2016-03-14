@@ -63,5 +63,16 @@ def generate_future_pathway(u):
     courses.append(random.sample(course, 1))
     course = Qualification.query.join(Subject).filter_by(field=top_fields[2]).all()
     courses.append(random.sample(course, 1))
+    # TODO: Check for entry requirements
 
     print("Chosen courses are: " + str(courses))
+
+    # Find career for field of each course
+    top_careers = Career.query.filter_by(field=top_fields[0])
+    careers = random.sample(top_careers, 2)
+    career = Career.query.filter_by(field=top_fields[1])
+    careers.append(career)
+    career = Career.query.filter_by(field=top_fields[2])
+    careers.append(career)
+
+    
