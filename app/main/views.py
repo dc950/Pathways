@@ -123,7 +123,7 @@ def add_qualification():
         nq = UserQualification()
         nq.user_id = current_user.id
         nq.qualifications_id = form.subjects.data
-        nq.grade = 'A*'
+        nq.grade = form.grade.data
 
         db.session.add(nq)
         db.session.commit()

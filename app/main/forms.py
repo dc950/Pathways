@@ -1,5 +1,5 @@
 from flask.ext.wtf import Form
-from wtforms import StringField, SubmitField, DateField, FormField, SelectField, TextAreaField
+from wtforms import StringField, SubmitField, DateField, FormField, SelectField, TextAreaField, HiddenField
 from wtforms.validators import Length
 from ..models import User, UserQualification, Qualification, QualificationType, Career
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
@@ -7,6 +7,7 @@ from wtforms.ext.sqlalchemy.fields import QuerySelectField
 
 class SkillsForm(Form):
     skills = TextAreaField();
+    skillsHidden = HiddenField("Skills")
 
 
 class EditProfileForm(Form):
@@ -16,6 +17,7 @@ class EditProfileForm(Form):
     default_avatar = SelectField('Default avatar style.  For a custom avatar got to www.gravatar.com', choices=[
         ('mm', 'Default image'), ('identicon', 'Identicon'), ('monsterid', 'Monster'), ('wavatar', 'Wavatar'),
         ('retro', 'Retro')])
+    s = FormField(SkillsForm)
     submit = SubmitField('Submit')
 
 
@@ -26,11 +28,8 @@ class SubjectGrade(Form):
 
 class AddQualificationForm(Form):
     qualification_type = SelectField(u'Qualification', coerce=int)
-    """start_date = DateField('Start Date', format='%Y-%m-%d')
-    end_date = DateField('End Date', format='%Y-%m-%d')"""
-    """institute = StringField('Institute', validators=[Length(1, 64)])"""
     subjects = SelectField(u'Subject 1', coerce=int)
-    """subjects2 = QuerySelectField(u'Subject 2')"""
+    grade = StringField('Grade', validators=[Length(1, 64)])
     submit = SubmitField('Submit')
 
 

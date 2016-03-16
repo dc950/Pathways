@@ -4,6 +4,8 @@
 	width: 100vw;
 	z-index: 10;
 
+	background-color: rgba(248, 248, 248, 0.862745) !important;
+
 	-webkit-box-shadow: 0px 10px 24px 7px rgba(0,0,0,0.75);
 	-moz-box-shadow: 0px 10px 24px 7px rgba(0,0,0,0.75);
 	box-shadow: 0px 10px 24px 7px rgba(0,0,0,0.75);
