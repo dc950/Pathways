@@ -87,9 +87,10 @@
                     <il><img class="user-avatar" src="{{ current_user.gravatar(64) }}"></il>
                 </ul>
             {% else %}
-                <div class="nav navbar-nav navbar-right login-button">
-                    <a href="{{ url_for('auth.login') }}" class="button">Login</a> <a href="{{ url_for('auth.register') }}" class="button">Register</a>
-                </div>
+                <ul class="nav navbar-nav navbar-right">
+                    <li> <a href="{{ url_for('auth.login') }}">Login</a></li>
+                    <li> <a href="{{ url_for('auth.register') }}">Register</a></li>
+                </ul>
             {% endif %}
          </div><!-- /.navbar-collapse -->
 			{% if current_user.is_authenticated %}
