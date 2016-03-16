@@ -17,8 +17,11 @@
 {% block header_content %}
 	<!-- Home page Slideshow -->
 	<div class="video-container">
-		<video poster="{{ url_for('static', filename='img/education-stock-image.jpg') }}" muted="" autoplay="" loop="">
-    		<source data-ng-src="{{ url_for('static', filename='media/EducationStock.webmsd.webm') }}" type="video/mp4" src="{{ url_for('static', filename='media/EducationStock.webmsd.webm') }}">
+		<video poster="{{ url_for('static', filename='img/education-stock-image.jpg') }}" muted="muted" autoplay="autoplay" loop="">
+    		<source type="video/ogg" src="{{ url_for('static', filename='media/EducationStock.oggtheora.ogv') }}">
+    		<source type="video/webm" src="{{ url_for('static', filename='media/EducationStock.websd.webm') }}">
+    		<source type="video/mp4" src="{{ url_for('static', filename='media/EducationStock.mp4') }}">
+    		<source type="video/mov" src="{{ url_for('static', filename='media/EducationStock.mov') }}">
   		</video>
   		<div class="vcenter">
 			<h1 id="get-started"><i>Start building your career roadmap with Pathways&trade;</i></h1>
