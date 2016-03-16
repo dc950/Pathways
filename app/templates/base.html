@@ -90,9 +90,10 @@
                     <il><img class="user-avatar" src="{{ current_user.gravatar(64) }}"></il>
                 </ul>
             {% else %}
-                <div class="nav navbar-nav navbar-right login-button">
-                    <a href="{{ url_for('auth.login') }}" class="button">Login</a> <a href="{{ url_for('auth.register') }}" class="button">Register</a>
-                </div>
+                <ul class="nav navbar-nav navbar-right">
+                    <li> <a href="{{ url_for('auth.login') }}">Login</a></li>
+                    <li> <a href="{{ url_for('auth.register') }}">Register</a></li>
+                </ul>
             {% endif %}
          </div><!-- /.navbar-collapse -->
 			{% if current_user.is_authenticated %}
@@ -147,6 +148,7 @@
          <br>
          <small>
             <p> Pathways &copy; 2016 is developed by <a href="http://www2.macs.hw.ac.uk/~osk5/Pathways/CompanySite/indexpage.html">Reflective Engineering</a> in collaboration with <a href="http://civil.lockheedmartin.co.uk/">Locke Martin Civil</a> and <a href="http://www.hw.ac.uk/">Heriot-Watt University.</a> </p>
+            <p><a href="http://goo.gl/forms/eW3BNcmCmi" target="_blank">Report Bug/Error</a></p>
             <p> Need help? Contact us: </p>          
             <!--<a href="mailto:hello@pathways.com"> <img src="{{ url_for('static', filename='img/email.jpg') }}" alt="Through Email" style="width:42px;height:42px;border:0;"> </a>-->
             <a class="social-icon" href="http://www.facebook.com/pages/pathways"> <img src="{{ url_for('static', filename='img/social/facebook.png') }}" alt="Facebook"> </a>

@@ -134,7 +134,7 @@ def add_qualification():
         nq = UserQualification()
         nq.user_id = current_user.id
         nq.qualifications_id = form.subjects.data
-        nq.grade = 'A*'
+        nq.grade = form.grade.data
 
         db.session.add(nq)
         db.session.commit()
@@ -176,7 +176,7 @@ def pathway():
         #    ])) for t in user_qual_types)
         #print("*** test ***\n")
         results = dict((t.name, dict(level=t.level, subjects=[
-                dict(name=s.qualification.subject.name, grade=s.grade) for s in UserQualification.query.join(Qualification, UserQualification.qualifications_id==Qualification.id).filter_by(qualification_type=t).all()
+                dict(name=s.qualification.subject.name, grade=s.grade) for s in UserQualification.query.filter_by(user_id=current_user.id).join(Qualification, UserQualification.qualifications_id==Qualification.id).filter_by(qualification_type=t).all()
             ])) for t in user_qual_types)
 
         return jsonify(**results)

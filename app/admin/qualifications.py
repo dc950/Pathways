@@ -256,10 +256,10 @@ def DefineSubjects():
         db.session.add(s)
         db.session.add(q)
 
-    for name in ["Histroy", "Biological Sciences", "Nursing", "Primary Education", "Psychology", "Computer Science", "Sociology",
-                 "Social Studies", "Computer Systems", "Information Systems", "Maths", "Law", "Business Studies"]:
+    for subject in [["Histroy", "Human History"], ["Biological Sciences", "Biology"], ["Nursing", "Medicine"], ["Primary Education", "Education"]]:
 
-        s = Subject.newSubject(name)
+        s = Subject.newSubject(subject[0])
+        s.field_id = Field.newField(subject[1])
         q = Qualification()
         q.subject = s
         q.qualification_type = phd

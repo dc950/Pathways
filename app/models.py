@@ -379,6 +379,20 @@ class Field(db.Model):
     name = db.Column(db.String(128), unique=True)
     # interests and skills?
 
+    @staticmethod
+    def newField(name):
+        """
+        Will return a new subject or if one already exists, it will return that one
+        :param name: The name of the subject
+        :return: A subject object with that name to be used.
+        """
+        field = Field.query.filter_by(name=name).first()
+        if field:
+            return field.id
+        else:
+            print("*** Found New Field")
+            return Subject(name=name)
+
 
 class Subject(db.Model):
     __tablename__ = 'subjects'
