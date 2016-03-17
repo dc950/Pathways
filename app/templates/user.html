@@ -1,5 +1,6 @@
 <!-- could import pathway page -->
 {% extends "base.html" %}
+{% import "_macros.html" as macros %}
 
 {% block header_content %}
     <div class="header">
@@ -53,6 +54,9 @@
             <p><a href="{{ url_for('main.user', username=c.author.username) }}"><img src="{{ c.author.gravatar(32) }}">
                 {{ c.author.first_name }} {{ c.author.last_name }}</a>: {{ c.body }}</p>
         {% endfor %}
+        <div class="pagination">
+            {{ macros.pagination_widget(pagination, 'main.user', username=user.username) }}
+        </div>
         <form action="" method="post" name="comment">
          {{ form.hidden_tag() }}
          <br>

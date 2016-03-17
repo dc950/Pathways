@@ -72,17 +72,20 @@
                     </il>
                     <il class="dropdown">
                         <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {% if current_user.invitations|length > 0 %}
-                                {{ current_user.invitations|length }}
+                            {% if (current_user.invitations|length + current_user.unseen_comments | length) > 0%}
+                                {{ current_user.invitations|length + current_user.unseen_comments|length }}
                             {% else %}
                                 <span class="glyphicon glyphicon-bell"/>
                             {% endif %}
                         </button>
                         <ul class="dropdown-menu">
-                            {% if current_user.invitations|length > 0 %}
+                            {% if current_user.invitations|length > 0 and current_user.unseen_comments|length > 0 %}
                                 {% for c in current_user.invitations %}
                                     <li><a href="{{ url_for('main.user', username=c.username) }}">New Invite: {{ c.first_name }} {{ c.last_name }}</a></li>
                                 {% endfor %}
+                                {% if current_user.unseen_comments|length > 0 %}
+                                    <li><a href="{{ url_for('main.user', username=current_user.username) }}">New comments on your profile</a></li>
+                                {% endif %}
                             {% else %}
                                 <li><a>No new notifications</a></li>
                             {% endif %}

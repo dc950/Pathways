@@ -89,15 +89,22 @@ class User(UserMixin, db.Model):
     def password(self):
         raise AttributeError('Password is not a readable attribute')
 
-    def gravatar(self, size=128, rating='g'):
+    def gravatar(self, size=128):
         if request.is_secure:
             url = 'https://www.gravatar.com/avatar'
         else:
             url = 'http://www.gravatar.com/avatar'
         if not self.avatar_hash:
             self.avatar_hash = md5(self.email.encode('utf-8')).hexdigest()
-        return '{url}/{hash}?s={size}&d={default}&r={rating}'.format(
-                url=url, hash=self.avatar_hash, size=size, default=self.def_avatar, rating=rating)
+
+        final_url = '{url}/{hash}?s={size}&d={default}&r={rating}'.format(
+                url=url, hash=self.avatar_hash, size=size, default=self.def_avatar, rating='g')
+        if not self.can(Permission.HAVE_AVATAR):
+            # If the user is not permitted to have an avatar, we force the default type
+            # For some reason setting f=n does not work, so need to separately append
+            final_url += '&f=y'
+            print("user cannot have normal avatar")
+        return final_url
 
     def made_request(self, user):
         return user in self.connection_requests
@@ -210,6 +217,28 @@ class User(UserMixin, db.Model):
     def is_administrator(self):
         return self.can(Permission.ADMINISTER)
 
+    def remove_permission(self, permission):
+        user = Role.query.filter_by(name='User').first()
+        print(user)
+        print(self.role)
+        restricted = Role.query.filter_by(name='Restricted').first()
+        no_comment = Role.query.filter_by(name='NoComment').first()
+        no_avatar = Role.query.filter_by(name='NoAvatar').first()
+
+        if self.role == no_comment:
+            if permission == Permission.HAVE_AVATAR:
+                self.role = restricted
+        elif self.role == no_avatar:
+            if permission == Permission.MAKE_COMMENT:
+                self.role = restricted
+        elif self.role == user:
+            print("role is user")
+            if permission == Permission.HAVE_AVATAR:
+                self.role = no_avatar
+            elif permission == Permission.MAKE_COMMENT:
+                self.role = no_comment
+
+
     @staticmethod
     def generate_fake(count=100):
         from sqlalchemy.exc import IntegrityError
@@ -234,6 +263,12 @@ class User(UserMixin, db.Model):
             except IntegrityError:
                 db.session.rollback()
 
+    @property
+    def unseen_comments(self):
+        comments = Comment.query.filter_by(profile=self).filter_by(seen=False).all()
+        return comments
+
+
 
 class AnonymousUser(AnonymousUserMixin):
 
@@ -255,6 +290,8 @@ class Career(db.Model):
     #  Salary Information
     subjects = db.relationship('CareerSubject', lazy='dynamic')
     skills = db.relationship('CareerSkill', lazy='dynamic')
+    field_id = db.Column(db.Integer, db.ForeignKey('fields.id'))
+    field = db.relationship("Field", backref='careers')
 
     def __repr__(self):
         return '<Career %r>' % self.name
@@ -278,7 +315,7 @@ class Career(db.Model):
     def add_subject_name(self, subject_name, points=1):
         """
         Adds the subject to the career when given the name
-        :param subject: the string name of the subject to be added
+        :param subject_name: the string name of the subject to be added
         :param points: The points for the qualification with relation to how important it is for the career
         """
 
@@ -510,6 +547,7 @@ class CareerSkill(db.Model):
 #     def __repr__(self):
 #         return '<UniCourses %r>' % self.coursename
 
+
 class Comment(db.Model):
     __tablename__='comments'
     id = db.Column(db.Integer, primary_key=True)
@@ -517,6 +555,7 @@ class Comment(db.Model):
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     profile_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    seen = db.Column(db.Boolean, default=False)
 
     @staticmethod
     def add_comment(author, profile, body):
@@ -546,9 +585,12 @@ class Role(db.Model):
     @staticmethod
     def insert_roles():
         roles = {
-            'User': (Permission.ADD_USERS |
+            'Restricted': (0x00, False),
+            'NoComment': (Permission.HAVE_AVATAR, False),
+            'NoAvatar': (Permission.MAKE_COMMENT, False),
+            'User': (Permission.MAKE_COMMENT |
                      Permission.HAVE_AVATAR, True),
-            'Mentor': (Permission.ADD_USERS |
+            'Mentor': (Permission.MAKE_COMMENT |
                        Permission.HAVE_AVATAR |
                        Permission.MENTOR |
                        Permission.MODERATE_CONTENT, False),
@@ -567,7 +609,7 @@ class Role(db.Model):
 
 class Permission:
     HAVE_AVATAR = 0x01
-    ADD_USERS = 0x02
+    MAKE_COMMENT = 0x02
     MENTOR = 0x04
     MODERATE_CONTENT = 0x08
     ADMINISTER = 0x80
