@@ -4,6 +4,7 @@ from .uniwebcrawler import uniwebcrawler
 from .. import db
 import sqlalchemy as sa
 from sqlalchemy.orm.session import make_transient
+from sqlalchemy.orm import sessionmaker
 
 gcse = QualificationType()
 btec2 = QualificationType()
@@ -158,6 +159,8 @@ def DefineQualificationTypes():
 
 def DefineSubjects():
 
+
+
     for name in ["English", "English Language", "English Lit", "Mathematics", "Welsh", "Welsh Second Language","Welsh Language",
                  "Irish", "Science", "Biology", "Chemistry", "Physics", "Core Science", "Double Science", "Triple Science",
                  "Additional Science",
@@ -236,6 +239,8 @@ def DefineSubjects():
         db.session.add(s)
         db.session.add(q)
 
+    db.session.commit()
+
     for name in ["Histroy", "Biological Sciences", "Nursing", "Primary Education", "Psychology", "Computer Science", "Sociology",
                  "Social Studies", "Computer Systems", "Information Systems", "Maths", "Law", "Business Studies"]:
 
@@ -246,6 +251,8 @@ def DefineSubjects():
         db.session.add(s)
         db.session.add(q)
 
+    db.session.commit()
+
     for name in ["Histroy", "Biological Sciences", "Nursing", "Primary Education", "Psychology", "Computer Science", "Sociology",
                  "Social Studies", "Computer Systems", "Information Systems", "Maths", "Law", "Business Studies"]:
 
@@ -255,8 +262,28 @@ def DefineSubjects():
         q.qualification_type = masters_degree
         db.session.add(s)
         db.session.add(q)
+    
+    db.session.commit()
 
-    for subject in [["Histroy", "Human History"], ["Biological Sciences", "Biology"], ["Nursing", "Medicine"], ["Primary Education", "Education"]]:
+    
+
+    for subject in [["Accounting & Finance","Economics"], ["Aeronautical & Manufacturing Engineering","Engineering & Technology"], ["Agriculture & Forestry","Agriculture"],
+                    ["American Studies","Area Studies"], ["Anatomy & Physiology","Human Physical Performance & Recreation"], ["Anthropology","Anthropology"], ["Archaeology","Archaeology"],
+                    ["Architecture","Architecture & Design"], ["Art & Design","Visual Arts"], ["Biological Sciences","Biology"], ["Business & Management Studies","Business"], 
+                    ["Celtic Studies","Linguistics"], ["Chemical Engineering","Chemistry"], ["Chemistry","Chemistry"], ["Civil Engineering","Engineering & Technology"],
+                    ["Classics & Ancient History","Human History"], ["Communication & Media Studies","Journalism, Media Studies & Communication"], ["Complementary Medicine","Medicine"],
+                    ["Computer Science","Computer Science"], ["Counselling","Psychology"], ["Criminology","Law"], ["Dentistry","Medicine"], ["Drama, Dance & Cinematics","Performing Arts"],
+                    ["East & South Asian Studies","Area Studies"], ["Economics","Economics"], ["Education","Education"], ["Electrical & Electronic Engineering","Engineering & Technology"],
+                    ["English","Literature"], ["Fashion","Visual Arts"], ["Film Making","Performing Arts"], ["Food Science","Agriculture"], ["French","Linguistics"], 
+                    ["Geography & Environmental Sciences","Geography"], ["Geology","Earth Sciences"], ["General Engineering","Engineering & Technology"], ["German","Linguistics"], ["History","Human History"],
+                    ["History of Art, Architecture & Design","Human History"], ["Hospitality, Leisure, Recreation & Tourism","Sociology"], ["Iberian Languages/Hispanic Studies","Area Studies"],
+                    ["Land & Property Management","Environmental Studies"], ["Law","Law"], ["Librarianship & Information Management","Library & Museum Studies"], ["Linguistics","Linguistics"],
+                    ["Marketing","Business"], ["Materials Technology","Engineering & Technology"], ["Mathematics","Mathematics"], ["Mechanical Engineering","Engineering & Technology"],
+                    ["Medicine","Medicine"], ["Middle Eastern and African Studies","Area Studies"], ["Music","Performing Arts"], ["Nursing","Medicine"], ["Ophthalmics","Medicine"],
+                    ["Pharmacology & Pharmacy","Chemistry"], ["Philosophy","Philosophy"], ["Physics and Astronomy","Physics"], ["Physiotherapy","Human Physical Performance & Recreation"],
+                    ["Politics","Political Science"], ["Psychology","Psychology"], ["Robotics","Computer Science"], ["Russian & East European Languages","Linguistics"], ["Social Policy","Social Work"],
+                    ["Social Work","Social Work"], ["Sociology","Sociology"], ["Sports Science","Human Physical Performance & Recreation"], ["Theology & Religious Studies","Religious Studies"],
+                    ["Town & Country Planning and Landscape Design","Architecture & Design"], ["Veterinary Medicine","Medicine"], ["Youth Work","Social Work"]]:
 
         s = Subject.newSubject(subject[0])
         s.field_id = Field.newField(subject[1])
@@ -273,7 +300,7 @@ def DefineFields():
     l = ["Human History", "Linguistics", "Literature", "Performing Arts", "Visual Arts", "Philosophy", "Religious Studies",
     "Anthropology", "Ethnic & Cultural Studies", "Archaeology", "Area Studies", "Economics", "Gender Studies", "Geography",
     "Organisational Studies", "Political Science", "Psychology", "Sociology", "Biology", "Chemistry", "Physics", "Earth Sciences",
-    "Space Science", "Mathematics", "Computer Science", "Systems Science", "Agiculture", "Architecture & Design", "Business",
+    "Space Science", "Mathematics", "Computer Science", "Systems Science", "Agriculture", "Architecture & Design", "Business",
     "Divinity", "Education", "Engineering & Technology", "Environmental Studies", "Family & Consumer Science",
     "Human Physical Performance & Recreation", "Journalism, Media Studies & Communication", "Law", "Library & Museum Studies",
     "Medicine", "Military Science", "Public Administration", "Social Work", "Transportation"]

@@ -14,16 +14,35 @@
 {% endblock %}
 
 {% block main_content %}
-<div class="col-md-8">
-    {% for u in users %}
-        <div class="row">
-            <div class="col-md-1">
-                <a href="{{ url_for('main.user', username=u.username) }}"><img src="{{ u.gravatar(64) }}"></a>
+<div class="container-fluid">
+    {% if careers|length > 0 %}
+        <div class="row search-result">Careers</div>
+    {% endif %}
+    {% for c in careers %}
+        <a href="{{ url_for('main.career', careername=c.name) }}" class="row search-result">
+            <div class="col-md-4">
+                {{ c.name }}
             </div>
-            <div class="col-md-8">
-                <h3><a href="{{ url_for('main.user', username=u.username) }}">{{ u.first_name }} {{ u.last_name }}</a></h3>
+            <div class="col-md-4">
+                {% for s in c.subjects %}
+                    {{ s.subject.field.name }},
+                {% endfor %}
             </div>
-        </div>
+        </a>
     {% endfor %}
+    <br /><br />
+    {% if users|length > 0 %}
+        <div class="row search-result">User</div>
+    {% endif %}
+    {% for u in users %}
+        <a href="{{ url_for('main.user', username=u.username) }}" class="row search-result">
+            <div class="col-md-12"> 
+                {{ u.first_name }} {{ u.last_name }}
+            </div>
+        </a>
+    {% endfor %}
+    {% if careers|length == 0 and users|length == 0%}
+        <div class="row">No results found.</div>
+    {% endif %}
 </div>
 {% endblock %}

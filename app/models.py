@@ -390,8 +390,8 @@ class Field(db.Model):
         if field:
             return field.id
         else:
-            print("*** Found New Field")
-            return Subject(name=name)
+            print("*** " + name + " ***")
+            return 0
 
 
 class Subject(db.Model):

@@ -8,7 +8,7 @@ from .. import db
 from ..models import User, UserQualification, Qualification, QualificationType, Career, Subject, Comment
 from .forms import EditProfileForm, AddQualificationForm, EditQualificationForm, SearchForm, CommentForm, SkillsForm
 from ..decorators import admin_required, permission_required
-from .search import search_user
+from .search import search_user, search_careers
 
 
 @main.route('/')
@@ -219,8 +219,10 @@ def search(term):
     print("in search, term is "+str(term))
 
     users = search_user(term)
+    careers = search_careers(term)
     return render_template("search.html",
                            users=users,
+                           careers=careers,
                            term=term)
 
 
