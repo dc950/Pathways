@@ -9,6 +9,7 @@ from ..models import User, UserQualification, Qualification, QualificationType, 
 from .forms import EditProfileForm, AddQualificationForm, EditQualificationForm, SearchForm, CommentForm, SkillsForm
 from ..decorators import admin_required, permission_required
 from .search import search_user, search_careers
+from .profanity_filter import contains_bad_word
 
 
 @main.route('/')
@@ -37,7 +38,10 @@ def user(username):
         return redirect(url_for('main.index'))
     form = CommentForm()
     if form.validate_on_submit():
-        Comment.add_comment(current_user, user_obj, form.body.data)
+        if contains_bad_word(form.body.data):
+            flash('Comment contains an inappropriate word and was not sent')
+        else:
+            Comment.add_comment(current_user, user_obj, form.body.data)
     name = user_obj.first_name + " " + user_obj.last_name
     # comments = Comment.query.filter_by(profile=user_obj)
     page = request.args.get('page', 1, type=int)

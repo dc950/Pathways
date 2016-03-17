@@ -7,6 +7,7 @@ from flask.ext.login import UserMixin, AnonymousUserMixin
 from . import login_manager
 from hashlib import md5
 from datetime import datetime
+import random
 
 
 @login_manager.user_loader
@@ -256,6 +257,11 @@ class User(UserMixin, db.Model):
                      password=password,
                      confirmed=True)
             u.generate_username()
+            # Select some random qualifications
+            quals = Qualification.query.all()
+            chosen_quals = random.sample(quals, 20)
+            for q in chosen_quals:
+                u.add_qualification(q)
             db.session.add(u)
             try:
                 db.session.commit()
