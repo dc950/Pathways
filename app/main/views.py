@@ -35,11 +35,22 @@ def user(username):
     if user_obj is None:
         flash('User %s not found.' % username)
         return redirect(url_for('main.index'))
+
+    opt_param = request.args.get("request_json")
+    print(opt_param)
+    if opt_param is "1":
+        results = dict((t.name, dict(level=t.level, subjects=[
+                dict(name=s.qualification.subject.name, grade=s.grade) for s in UserQualification.query.filter_by(user_id=user_obj.id).join(Qualification, UserQualification.qualifications_id==Qualification.id).filter_by(qualification_type=t).all()
+            ])) for t in QualificationType.query.join(Qualification, QualificationType.id==Qualification.qualification_type_id).join(UserQualification, UserQualification.qualifications_id==Qualification.id).filter_by(user_id=user_obj.id).order_by(QualificationType.level).all())
+
+        return jsonify(**results)
+
     form = CommentForm()
     if form.validate_on_submit():
         Comment.add_comment(current_user, user_obj, form.body.data)
     name = user_obj.first_name + " " + user_obj.last_name
     comments = Comment.query.filter_by(profile=user_obj)
+
     return render_template("user.html",
                            user=user_obj,
                            title=name,
