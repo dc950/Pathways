@@ -218,6 +218,30 @@ def add_connection(username):
         flash('Request sent to %s.' % (user_obj.first_name + " " + user_obj.last_name))
     return redirect(url_for('.user', username=username))
 
+@main.route('/remove_connection/<username>')
+@login_required
+def remove_connection(username):
+    user_obj = User.query.filter_by(username=username).first()
+    user_obj.remove_connection(current_user)
+    if user_obj in current_user.connections:
+        flash('User not removed')
+    else:
+        flash('You have removed your connection with %s.' % (user_obj.first_name + " " + user_obj.last_name))
+    return redirect(url_for('.user', username=username))
+
+@main.route('/decline_connection/<username>')
+@login_required
+def decline_connection(username):
+    user_obj = User.query.filter_by(username=username).first()
+    user_obj.decline_connection(current_user)
+    if user_obj in current_user.connections:
+        flash('User not removed')
+    else:
+        flash('You have declined the connection request with %s.' % (user_obj.first_name + " " + user_obj.last_name))
+    return redirect(url_for('.user', username=username))
+
+
+
 
 @main.route('/search', methods=['GET', 'POST'])
 def search_click():
