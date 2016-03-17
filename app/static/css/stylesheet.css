@@ -248,6 +248,10 @@ footer {
 
 /*----  Pathways Template ----*/
 /*----  Pathway Container ----*/
+.profile-pathway {
+	height: 700px;
+}
+
 #pathway-container {
 	height: 100%;
 }

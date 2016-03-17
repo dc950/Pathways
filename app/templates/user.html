@@ -11,6 +11,12 @@
     </div>
 {% endblock %}
 
+{% block scripts %}
+    {{ super() }}
+    <script src="{{ url_for('static', filename='js/d3/d3.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/pathway.js') }}"></script>
+{% endblock %}
+
 {% block nav_overwrite %}
   <li><a href="{{ url_for('main.index') }}">Home <span class="sr-only">(current)</span></a></li>
   <li><a href="{{ url_for('main.pathway') }}">Your Pathway</a></li>
@@ -22,19 +28,24 @@
     <p> This is the profile page for {{ user.first_name + " " + user.last_name}} </p>
     <p>Actions:</p>
     <div class="side-padding">
-       {% if user==current_user %}      
-          <li><a href="{{ url_for('main.edit') }}">Edit Profile</a></li>
-          <li><a href="{{ url_for('main.edit_qualification') }}">Edit Qualifications</a></li>       
-       {% elif user in current_user.connections %}
-          <li><a href="{{ url_for('main.edit') }}">Remove Connections</a></li>
-       {% elif user in current_user.invitations %}
-          <li><a href="{{ url_for('.add_connection', username=user.username)}}">Accept Connection Request</a></li>
+        {% if user==current_user %}      
+            <li><a href="{{ url_for('main.edit') }}">Edit Profile</a></li>
+            <li><a href="{{ url_for('main.edit_qualification') }}">Edit Qualifications</a></li>       
+        {% elif user in current_user.connections %}
+            <li><a href="{{ url_for('main.edit') }}">Remove Connections</a></li>
+        {% elif user in current_user.invitations %}
+            <li><a href="{{ url_for('.add_connection', username=user.username)}}">Accept Connection Request</a></li>
        <!-- Ignore request -->
        {% elif user in current_user.requests %}
           <li>Connection Request Pending</li>
        {% else %}
           <li><a href="{{ url_for('.add_connection', username=user.username)}}">Send Connection Request</a></li>
        {% endif %}
+    </div>
+    <div class="profile-pathway">
+        <div id="pathway-container" height=700px>
+            <svg class="overlay img-fluid"></svg>
+        </div>
     </div>
 
     {% if user == current_user or user in current_user.connections %}
