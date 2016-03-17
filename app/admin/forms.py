@@ -1,5 +1,5 @@
 from flask.ext.wtf import Form
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, ValidationError
+from wtforms import StringField,SubmitField, TextAreaField
 from wtforms.validators import DataRequired, Email, Length, Regexp, EqualTo
 
 
@@ -20,4 +20,3 @@ class adminWarningEmail(Form):
 
 class deleteAccountForm(Form):
     submit = SubmitField('Delete Account')
-

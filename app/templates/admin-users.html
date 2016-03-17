@@ -15,13 +15,14 @@
       <li>Username: {{ user.username }} | Name: "{{ user.first_name }} {{ user.last_name }}"</li>
       {% endfor %}
     </ul>
+    <p>Number Of Users: {{ users|length }}</p>
     </div>
     <div class = "admin-user-list">
-        <p> Enter the username of a user you want to delete in the field below </p>
+        <p> Enter the username of a user you want to delete in the field below:</p>
         {{ wtf.quick_form(form1) }}
         <br>
         <br>
-        <p> Enter the username of a user who you wish to send a warning email to because of an inappropriate profile avatar</p>
+        <p> Enter the username of a user who you wish to send a warning email to because of an inappropriate profile avatar:</p>
         {{ wtf.quick_form(form2) }}
         <br>
     </div>
