@@ -79,9 +79,13 @@
                             {% endif %}
                         </button>
                         <ul class="dropdown-menu">
-                            {% for c in current_user.invitations %}
-                                <li><a href="{{ url_for('main.user', username=c.username) }}">New Invite: {{ c.first_name }} {{ c.last_name }}</a></li>
-                            {% endfor %}
+                            {% if current_user.invitations|length > 0 %}
+                                {% for c in current_user.invitations %}
+                                    <li><a href="{{ url_for('main.user', username=c.username) }}">New Invite: {{ c.first_name }} {{ c.last_name }}</a></li>
+                                {% endfor %}
+                            {% else %}
+                                <li><a>No new notifications</a></li>
+                            {% endif %}
                         </ul>
                     </il>
                     <il><img class="user-avatar" src="{{ current_user.gravatar(64) }}"></il>
