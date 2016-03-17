@@ -13,20 +13,20 @@ from ..email import send_email
 
 @admin.route('/')
 @admin.route('/index/')
-# @admin_required
+@admin_required
 def index():
     return render_template('admin-index.html')
 
 
 @admin.route('/database', methods=['GET', 'POST'])
-# @admin_required
+@admin_required
 def database():
     careers = Career.query.all()
     return render_template('admin-database.html', careers=careers)
 
 
 @admin.route('/users', methods=['GET', 'POST'])
-# @admin_required
+@admin_required
 def users():
     form1 = adminDeleteUser()
     form2 = adminWarningEmail()
@@ -44,7 +44,8 @@ def users():
     if form2.validate_on_submit():
         if user2:
             send_email(user2.email, 'Inappropriate profile avatar', 'auth/email/avatar-warning', user=username2)
-            user2.def_avatar = 'mm'
+            # user2.def_avatar = 'mm'
+            user2.remove_permission(Permission.HAVE_AVATAR)
             flash("A warning email has been sent to " + username2 + "'s email address.")
             return redirect(url_for("admin.users"))
         else:
@@ -52,10 +53,8 @@ def users():
     return render_template('admin-users.html', users=users, form1=form1, form2=form2)
 
 
-
-
 @admin.route('/get-careers')
-# @admin_required
+@admin_required
 def get_careers():
     webcrawler()
     flash("Careers Loaded")
@@ -63,16 +62,20 @@ def get_careers():
 
 
 @admin.route('/insert-qualifications')
+@admin_required
 def insert_qualifications():
     Setup(False)
 
 
 @admin.route('/load-uni-courses')
+@admin_required
 def uni_courses():
     uniwebcrawler()
     return redirect(url_for("admin.database"))
 
+
 @admin.route('/delete-user/<username>', methods=['GET', 'POST'])
+@admin_required
 def delete_this_user(username):
     form1 = deleteAccountForm()
     user = User.query.filter_by(username=username).first()

@@ -1,4 +1,4 @@
-from ..models import QualificationType, Qualification, Subject, Field
+from ..models import QualificationType, Qualification, Subject, Field, Role
 from .webcrawler import webcrawler
 from .uniwebcrawler import uniwebcrawler
 from .. import db
@@ -23,7 +23,7 @@ masters_degree = QualificationType()
 phd = QualificationType()
 
 
-def Setup(clear):
+def setup(clear=False):
     if clear is True:
         QualificationsClear()
 
@@ -32,12 +32,14 @@ def Setup(clear):
     DefineQualificationTypes()
     print("****   Define Qualification Types Complete   ****")
     DefineSubjects()
+    Role.insert_roles()
     print("****   Define Subjects Complete   ****")
     webcrawler()
     print("****   Career Crawler Complete   ****")
     uniwebcrawler()
     print("****   University Crawler Complete   ****")
     DefineQualifications()
+
 
 def QualificationsClear():
     QualificationType.query.delete()
