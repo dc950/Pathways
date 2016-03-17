@@ -54,7 +54,7 @@ def user(username):
             Comment.add_comment(current_user, user_obj, form.body.data)
     name = user_obj.first_name + " " + user_obj.last_name
 
-    comments = Comment.query.filter_by(profile=user_obj)
+    comments = [] #Comment.query.filter_by(profile=user_obj)
 
     # comments = Comment.query.filter_by(profile=user_obj)
     page = request.args.get('page', 1, type=int)
