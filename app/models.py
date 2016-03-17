@@ -117,6 +117,14 @@ class User(UserMixin, db.Model):
         """
         user.connection_requests.append(self)
 
+    def remove_connection(self, user):
+        user.connection_requests.remove(self)
+        self.connection_requests.remove(user)
+
+    def decline_connection(self, user):
+        self.connection_requests.remove(user)
+
+
     @password.setter
     def password(self, password):
         self.password_hash = generate_password_hash(password)

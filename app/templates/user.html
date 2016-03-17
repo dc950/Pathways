@@ -28,13 +28,14 @@
     <p> This is the profile page for {{ user.first_name + " " + user.last_name}} </p>
     <p>Actions:</p>
     <div class="side-padding">
-        {% if user==current_user %}      
-            <li><a href="{{ url_for('main.edit') }}">Edit Profile</a></li>
-            <li><a href="{{ url_for('main.edit_qualification') }}">Edit Qualifications</a></li>       
-        {% elif user in current_user.connections %}
-            <li><a href="{{ url_for('main.edit') }}">Remove Connections</a></li>
-        {% elif user in current_user.invitations %}
-            <li><a href="{{ url_for('.add_connection', username=user.username)}}">Accept Connection Request</a></li>
+       {% if user==current_user %}      
+          <li><a href="{{ url_for('main.edit') }}">Edit Profile</a></li>
+          <li><a href="{{ url_for('main.edit_qualification') }}">Edit Qualifications</a></li>       
+       {% elif user in current_user.connections %}
+          <li><a href="{{ url_for('.remove_connection', username=user.username) }}">Remove Connections</a></li>
+       {% elif user in current_user.invitations %}
+          <li><a href="{{ url_for('.add_connection', username=user.username)}}">Accept Connection Request</a></li>
+          <li><a href="{{ url_for('.decline_connection', username=user.username)}}">Decline Connection Request</a></li>
        <!-- Ignore request -->
        {% elif user in current_user.requests %}
           <li>Connection Request Pending</li>
