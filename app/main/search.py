@@ -1,7 +1,7 @@
 import re
 from app import db
 from flask import session
-from ..models import User
+from ..models import User, Career
 from sqlalchemy import and_
 
 
@@ -57,3 +57,14 @@ def search_user(term):
         # TODO: More stuff to expand further
     users = remove_doubles(users)
     return users
+
+def search_careers(term):
+
+    careers = []
+
+    careers += Career.query.filter_by(name=term).all()
+    careers += Career.query.filter(Career.name.like('%'+term+'%')).all()
+
+    careers = remove_doubles(careers)
+
+    return careers

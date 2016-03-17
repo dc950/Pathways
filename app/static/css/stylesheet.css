@@ -346,3 +346,11 @@ footer {
     -webkit-border-radius: 3px 3px 3px 3px;
 	border: 1px solid #204d74;
 }
+
+.search-result {
+	display: block;
+	background-color: #F8F8f8;
+	color: black;
+	margin: 5px 0;
+	padding: 10px;
+}
