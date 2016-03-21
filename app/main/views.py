@@ -102,17 +102,27 @@ def edit_qualification(qualification=None):
     """
     These SQL queries should be moved to the model as function eventually
     """
-    all_qual_types = QualificationType.query.all()
-    user_subjects = UserQualification.query.filter_by(user_id=current_user.id).join(Qualification, UserQualification.qualifications_id==Qualification.id).all()
-    user_qual_types = QualificationType.query.join(Qualification, QualificationType.id==Qualification.qualification_type_id).join(UserQualification, UserQualification.qualifications_id==Qualification.id).filter_by(user_id=current_user.id).all()
-    user_quals = Qualification.query.join(UserQualification, Qualification.id==UserQualification.qualifications_id).all()
+    
     if qualification is None:
+        opt_param = request.args.get("delete") 
+
+        if opt_param is not None:
+            qual = db.session.query(UserQualification).get((current_user.id, opt_param))
+            #qual = UserQualification.query.filter_by(user_id=current_user.id).filter_by(qualifications_id=opt_param).first()
+            db.session.delete(qual)
+            db.session.commit()
+
+        #all_qual_types = QualificationType.query.all()
+        user_subjects = UserQualification.query.filter_by(user_id=current_user.id).join(Qualification, UserQualification.qualifications_id==Qualification.id).all()
+        #user_qual_types = QualificationType.query.join(Qualification, QualificationType.id==Qualification.qualification_type_id).join(UserQualification, UserQualification.qualifications_id==Qualification.id).filter_by(user_id=current_user.id).all()
+        user_quals = Qualification.query.join(UserQualification, Qualification.id==UserQualification.qualifications_id).all()
+
         return render_template("edit-qualification.html",
                            title="Edit Qualifications",
                            show_all=True,
                            subjects=user_subjects,
                            qualifications=user_quals)
-        opt_param = request.args.get("delete") 
+        
 
     else:
         form = EditQualificationForm()
