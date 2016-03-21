@@ -22,8 +22,6 @@ $(document).ready(function(){
 		console.log("Loading error: " + error);
 		console.log(treeData);
 
-
-
 		var viewerWidth = $("#pathway-container").width();
     	var viewerHeight = $("#pathway-container").height();
 
@@ -126,7 +124,6 @@ $(document).ready(function(){
 			mouseenter : function(){
 				var currentNode = $(this);
     			window.mytimeout = setTimeout(function(){
-    				console.log("Show Tool Tip");
     				toolTip = baseSvg.append("rect").attr("x", function(){
     					return currentNode.attr("cx");
     				}).attr("y", function(){
@@ -144,12 +141,10 @@ $(document).ready(function(){
     			clearTimeout(window.mytimeout);
     			toolTip.remove();
     			
-    			console.log("exit");
     		}
     	});
 
     	//Qualification Sections
-    	console.log("No. Qual Sections: " + newCircles.length);
     	$.each(newCircles, function(index, value){
     		var el = $("<div class='col-md-5 col-sm-5 qualifification-section'></div>");
 			$("#qualification-container").append(el);
@@ -161,7 +156,6 @@ $(document).ready(function(){
 
 			$.each(value.subjects[0], function(index2, value2){
 				li.append("<li>" + value2.__data__.name + "</li>");
-				console.log(value2.__data__.name);
 			});
     	});
 
@@ -207,5 +201,15 @@ function getLevelClass(i) {
 			return "node node-level-6"
 		default:
 			return "node"
+	}
+}
+
+function compare(a,b) {
+	if (a.level > b.level) {
+		return 1;
+	} else if (a.level < b.level) {
+		return -1;
+	} else {
+		return 0;
 	}
 }

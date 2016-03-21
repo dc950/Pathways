@@ -112,6 +112,8 @@ def edit_qualification(qualification=None):
                            show_all=True,
                            subjects=user_subjects,
                            qualifications=user_quals)
+        opt_param = request.args.get("delete") 
+
     else:
         form = EditQualificationForm()
         form.qualification_type.data = qualification
@@ -180,16 +182,12 @@ def about():
 @login_required
 def pathway():
     user_subjects = UserQualification.query.join(Qualification, UserQualification.qualifications_id==Qualification.id).filter_by().all()
-    user_qual_types = QualificationType.query.join(Qualification, QualificationType.id==Qualification.qualification_type_id).join(UserQualification, UserQualification.qualifications_id==Qualification.id).filter_by(user_id=current_user.id).order_by(QualificationType.level).all()
+    user_qual_types = QualificationType.query.join(Qualification, QualificationType.id==Qualification.qualification_type_id).join(UserQualification, UserQualification.qualifications_id==Qualification.id).filter_by(user_id=current_user.id).all()
     #user_qual_types = QualificationType.query.join(Qualification, QualificationType.id==Qualification.qualification_type_id).all()
 
     opt_param = request.args.get("request_json")
     print(opt_param)
     if opt_param is "1":
-        #results = dict((t.name, dict(level=t.level, subjects=[
-        #        dict(name=s.course_name, grade=s.grade) for s in UserQualification.query.join(Qualification, UserQualification.qualifications_id==Qualification.id).filter_by(qualification_type=t).all()
-        #    ])) for t in user_qual_types)
-        #print("*** test ***\n")
         results = dict((t.name, dict(level=t.level, subjects=[
                 dict(name=s.qualification.subject.name, grade=s.grade) for s in UserQualification.query.filter_by(user_id=current_user.id).join(Qualification, UserQualification.qualifications_id==Qualification.id).filter_by(qualification_type=t).all()
             ])) for t in user_qual_types)
