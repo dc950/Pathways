@@ -112,9 +112,7 @@ def edit_qualification(qualification=None):
             db.session.delete(qual)
             db.session.commit()
 
-        #all_qual_types = QualificationType.query.all()
         user_subjects = UserQualification.query.filter_by(user_id=current_user.id).join(Qualification, UserQualification.qualifications_id==Qualification.id).all()
-        #user_qual_types = QualificationType.query.join(Qualification, QualificationType.id==Qualification.qualification_type_id).join(UserQualification, UserQualification.qualifications_id==Qualification.id).filter_by(user_id=current_user.id).all()
         user_quals = Qualification.query.join(UserQualification, Qualification.id==UserQualification.qualifications_id).all()
 
         return render_template("edit-qualification.html",
@@ -125,10 +123,35 @@ def edit_qualification(qualification=None):
         
 
     else:
+        UserQual = db.session.query(UserQualification).get((current_user.id, qualification))
+        QualType = UserQual.qualification.qualification_type_id
         form = EditQualificationForm()
-        form.qualification_type.data = qualification
+
+        form.qualification_type.choices = [(q.id, q.name) for q in QualificationType.query.filter_by(id=QualType).all()]
+        form.subjects.choices = [(s.id, s.subject.name) for s in Qualification.query.filter_by(qualification_type_id=QualType).all()]
+
+        form.subjects.default = qualification
+
+        form.grade.default = UserQual.grade
+
+        #form.process()
+
+        if form.validate_on_submit():
+            db.session.delete(UserQual)
+
+            nq = UserQualification()
+            nq.user_id = current_user.id
+            nq.qualifications_id = form.subjects.data
+            nq.grade = form.grade.data
+
+            db.session.add(nq)
+            db.session.commit()
+
+            return redirect(url_for('main.edit_qualification'))
+
+        #form.qualification_type.data = qualification
         return render_template("edit-qualification.html",
-                           title="Edit Qualification: " + qualification,
+                           title="Edit Qualification: " + UserQual.qualification.subject.name,
                            show_all=False,
                            form=form)
 
