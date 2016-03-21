@@ -31,7 +31,7 @@ def generate_future_pathway(u):
     # Get all fields
     fields = []
     for q in u.qualifications:
-        fields.append(q.subject.field)
+        fields.append(q.qualification.subject.field)
     print("Fields: " + str(fields))
 
     # count instances of each
@@ -39,15 +39,9 @@ def generate_future_pathway(u):
     for f in fields:
         fcount.update({f: fields.count(f)})
 
-    # choose top 3
-    top_fields = []
-    for f in fields:
-        if len(top_fields) < 3:
-            top_fields.append(f)
-        else:
-            if fcount[f] > top_fields[-1]:
-                top_fields[-1] = f
-        top_fields = sorted(top_fields, key=lambda x: fcount[x])
+    # sort them 3
+    top_fields = fcount.keys()
+    top_fields = sorted(top_fields, key=lambda x: fcount[x])
 
     print("Top fields: "+str(top_fields))
 
@@ -60,19 +54,41 @@ def generate_future_pathway(u):
 
     # Get one from each of the others:
     course = Qualification.query.join(Subject).filter_by(field=top_fields[1]).all()
-    courses.append(random.sample(course, 1))
+    courses.append(random.sample(course, 1)[0])
     course = Qualification.query.join(Subject).filter_by(field=top_fields[2]).all()
-    courses.append(random.sample(course, 1))
+    courses.append(random.sample(course, 1)[0])
     # TODO: Check for entry requirements
 
     print("Chosen courses are: " + str(courses))
 
     # Find career for field of each course
-    top_careers = Career.query.filter_by(field=top_fields[0])
-    careers = random.sample(top_careers, 2)
-    career = Career.query.filter_by(field=top_fields[1])
-    careers.append(career)
-    career = Career.query.filter_by(field=top_fields[2])
-    careers.append(career)
+    all_careers = Career.query.all()
+    # for c in all_careers:
+    #     print(str(c.field))
 
+    top_careers = []
+    chosen_count = 0
+    careers = []
+    for i in top_fields:
+        top_careers = list(filter(lambda c: i in c.fields, all_careers)) # TODO: change to big join thing to speed up
+        if chosen_count == 0:
+            if len(top_careers) > 1:
+                careers = random.sample(top_careers, 2)
+                chosen_count += 1
+            elif len(top_careers) == 1:
+                careers = random.sample(top_careers, 1)
+                chosen_count += 1
+        elif chosen_count > 0 and chosen_count < 3:
+            if len(top_careers) > 0:
+                careers.append(random.sample(top_careers, 1)[0])
+                chosen_count += 1
+        else:
+            break
+
+    print('Top careers: ' + str(top_careers))
+    print("Chosen courses are: " + str(courses))
+    print('Chosen careers are: ' + str(careers))
+
+    u.future_quals += courses
+    u.future_careers += careers
 

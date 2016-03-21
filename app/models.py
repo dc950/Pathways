@@ -18,12 +18,19 @@ user_skills = db.Table('user_skills',
                        db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
                        db.Column('skill_id', db.Integer, db.ForeignKey('skills.id')))
 
+future_quals = db.Table('future_quals',
+                        db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
+                        db.Column('qual_id', db.Integer, db.ForeignKey('qualifications.id')))
+
+future_careers = db.Table('future_careers',
+                        db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
+                        db.Column('career_id', db.Integer, db.ForeignKey('careers.id')))
+
 # If a request is made a connection is added.
 # If a request is sent, it is added again the other way around.  If both exist, the connection is made...
 connections = db.Table('connections',
                        db.Column('requesting_id', db.Integer, db.ForeignKey('users.id')),
                        db.Column('invitation_id', db.Integer, db.ForeignKey('users.id')))
-
 
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
@@ -49,6 +56,9 @@ class User(UserMixin, db.Model):
                                           lazy='dynamic')
     profile_comments = db.relationship('Comment', backref='profile', foreign_keys="[Comment.profile_id]", lazy='dynamic')
     authored_comments = db.relationship('Comment', backref='author', foreign_keys="[Comment.author_id]", lazy='dynamic')
+
+    future_careers = db.relationship('Career', secondary=future_careers)
+    future_quals = db.relationship('Qualification', secondary=future_quals)
 
     def __repr__(self):
         return '<User %r>' % (self.first_name + self.last_name)
@@ -252,6 +262,7 @@ class User(UserMixin, db.Model):
     def generate_fake(count=100):
         from sqlalchemy.exc import IntegrityError
         from random import seed
+        from .main.pathway_generator import generate_future_pathway
         import forgery_py
 
         fout = open('fake_users.txt', 'w')
@@ -270,6 +281,7 @@ class User(UserMixin, db.Model):
             chosen_quals = random.sample(quals, 20)
             for q in chosen_quals:
                 u.add_qualification(q)
+            generate_future_pathway(u)
             db.session.add(u)
             try:
                 db.session.commit()
@@ -304,8 +316,6 @@ class Career(db.Model):
     #  Salary Information
     subjects = db.relationship('CareerSubject', lazy='dynamic')
     skills = db.relationship('CareerSkill', lazy='dynamic')
-    field_id = db.Column(db.Integer, db.ForeignKey('fields.id'))
-    field = db.relationship("Field", backref='careers')
 
     def __repr__(self):
         return '<Career %r>' % self.name
@@ -377,6 +387,14 @@ class Career(db.Model):
             db.session.commit()
             self.add_skill(s, points)
 
+    @property
+    def fields(self):
+        fields = []
+        for s in self.subjects:
+            if s.subject.field not in fields:
+                fields.append(s.subject.field)
+        return fields
+
 
 class Skill(db.Model):
     __tablename__ = 'skills'
@@ -406,6 +424,9 @@ class Field(db.Model):
         else:
             print("*** " + name + " ***")
             return 0
+
+    def __repr__(self):
+        return '<Field %r>' % self.name
 
 
 class Subject(db.Model):
@@ -483,6 +504,14 @@ class Qualification(db.Model):
 
     def __repr__(self):
         return self.name
+
+
+class Grade(db.Model):
+    __tablename__ = 'grades'
+    id = db.Column(db.Integer, primary_key=True)
+    qual_type_id = db.Column(db.Integer, db.ForeignKey('qualification_types.id'))
+    qual_type = db.relationship("QualificationType")
+    grade = db.Column(db.String)
 
 
 class QualificationType(db.Model):
