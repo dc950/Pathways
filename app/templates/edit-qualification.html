@@ -37,7 +37,7 @@
 				    	<td class="">{{ subs.grade }}</td>
 					    <td class="">{{ subs.qualification.qualification_type.name }}</td>
 					    <!--<td class="">Heriot Watt University</td>-->
-					    <td class="text-center"><span class="glyphicon glyphicon-pencil" /> <span class="glyphicon glyphicon-remove" /></td>
+					    <td class="text-center"><a href="./{{ subs.qualification.id }}"><span class="glyphicon glyphicon-pencil" /></a> <a href="?delete={{ subs.qualification.id }}"><span class="glyphicon glyphicon-remove" /></a></td>
 					</tr>
 					{% endfor %}
 				</tbody>
