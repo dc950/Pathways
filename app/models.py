@@ -402,7 +402,7 @@ class Field(db.Model):
         """
         field = Field.query.filter_by(name=name).first()
         if field:
-            return field.id
+            return field
         else:
             print("*** " + name + " ***")
             return 0
