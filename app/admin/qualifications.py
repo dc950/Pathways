@@ -189,7 +189,7 @@ def DefineSubjects():
                 ["Personal & Social Education", "Sociology"],  ["Physical Education", "Human Physical Performance & Recreation"], ["Preparation for Working Life", "Sociology"], ["Rural & Agricultural Science", "Agriculture"],
                 ["Statistics", "Mathematics"]]:        
         s = Subject.newSubject(subject[0])
-        s.field_id = Field.newField(subject[1])
+        s.field = Field.newField(subject[1])
         q = Qualification()
         q.subject = s
         q.qualification_type = gcse
@@ -212,7 +212,7 @@ def DefineSubjects():
                 ["Urdu", "Linguistics"]]:
 
         s = Subject.newSubject(subject[0])
-        s.field_id = Field.newField(subject[1])
+        s.field = Field.newField(subject[1])
         q = Qualification()
         q.subject = s
         q.qualification_type = higher
@@ -234,7 +234,7 @@ def DefineSubjects():
                     ["Spanish", "Linguistics"], ["Technological Studies", "Computer Science"]]:
 
         s = Subject.newSubject(subject[0])
-        s.field_id = Field.newField(subject[1])
+        s.field = Field.newField(subject[1])
         q = Qualification()
         q.subject = s
         q.qualification_type = adv_higher
@@ -262,7 +262,7 @@ def DefineSubjects():
                     ["Town & Country Planning and Landscape Design","Architecture & Design"], ["Veterinary Medicine","Medicine"], ["Youth Work","Social Work"]]:
 
         s = Subject.newSubject(subject[0])
-        s.field_id = Field.newField(subject[1])
+        s.field = Field.newField(subject[1])
         q = Qualification()
         q.subject = s
         q.qualification_type = bachelors_degree
@@ -290,7 +290,7 @@ def DefineSubjects():
                     ["Town & Country Planning and Landscape Design","Architecture & Design"], ["Veterinary Medicine","Medicine"], ["Youth Work","Social Work"]]:
 
         s = Subject.newSubject(subject[0])
-        s.field_id = Field.newField(subject[1])
+        s.field = Field.newField(subject[1])
         q = Qualification()
         q.subject = s
         q.qualification_type = masters_degree
@@ -320,7 +320,7 @@ def DefineSubjects():
                     ["Town & Country Planning and Landscape Design","Architecture & Design"], ["Veterinary Medicine","Medicine"], ["Youth Work","Social Work"]]:
 
         s = Subject.newSubject(subject[0])
-        s.field_id = Field.newField(subject[1])
+        s.field = Field.newField(subject[1])
         q = Qualification()
         q.subject = s
         q.qualification_type = phd

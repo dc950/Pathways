@@ -315,7 +315,7 @@ def test():
 
 @main.route('/generate-pathway')
 def generate_pathway():
-    generate_future_pathway()
+    generate_future_pathway(current_user)
     return redirect(url_for('main.index'))
 
 @main.route('/js/<path:path>')
