@@ -1,0 +1,12 @@
+<p> Dear {{ user.first_name }} {{ user.last_name }}</p>
+
+<p>{{ customemail }}</p>
+
+<p>If you have any questions for the Reflective Engineering Team, our contact information can be <a href = {{ url_for('main.about',  _external = True) }}> found here </a>.</p>
+
+<p>Alternatively, copy and paste the following link into your browser's address bar</p>
+<p>{{ url_for('main.about',  _external = True) }}</p>
+
+<p>Sincerely,</p>
+
+<p>The Reflective Pathways Team</p>
