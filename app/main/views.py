@@ -5,7 +5,7 @@ from flask.ext.login import current_user, login_required
 from . import main
 from .pathway_generator import generate_future_pathway
 from .. import db
-from ..models import User, UserQualification, Qualification, QualificationType, Career, Subject, Comment
+from ..models import User, UserQualification, Qualification, QualificationType, Career, Subject, Comment, future_quals
 from .forms import EditProfileForm, AddQualificationForm, EditQualificationForm, SearchForm, CommentForm, SkillsForm
 from ..decorators import admin_required, permission_required
 from .search import search_user, search_careers
@@ -221,14 +221,26 @@ def pathway():
     user_qual_types = QualificationType.query.join(Qualification, QualificationType.id==Qualification.qualification_type_id).join(UserQualification, UserQualification.qualifications_id==Qualification.id).filter_by(user_id=current_user.id).all()
     #user_qual_types = QualificationType.query.join(Qualification, QualificationType.id==Qualification.qualification_type_id).all()
 
+    future_qual_types = []
+
+    for x in db.session.query(future_quals).filter_by(user_id=current_user.id).all():
+        print(x.qual_id)
+        future_qual_types += QualificationType.query.join(Qualification, QualificationType.id==Qualification.qualification_type_id).filter_by(subject_id=x.qual_id).all()
+
     opt_param = request.args.get("request_json")
     print(opt_param)
     if opt_param is "1":
-        results = dict((t.name, dict(level=t.level, subjects=[
+        results = dict((("Level " + str(t.level) + " - " + t.name), dict(level=t.level, subjects=[
                 dict(name=s.qualification.subject.name, grade=s.grade) for s in UserQualification.query.filter_by(user_id=current_user.id).join(Qualification, UserQualification.qualifications_id==Qualification.id).filter_by(qualification_type=t).all()
             ])) for t in user_qual_types)
 
-        return jsonify(**results)
+        results2 = dict((("Level " + str(9) + " - " + "Careers"), dict(level=str(9), subjects=[
+                dict(name=s.name, grade=None) for s in current_user.future_careers
+            ])) for t in user_qual_types)
+
+        z = results.copy()
+        z.update(results2)
+        return jsonify(**z)
 
     return render_template("pathway.html",
                            title="Your Pathway",
