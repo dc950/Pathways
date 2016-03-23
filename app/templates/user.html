@@ -23,7 +23,7 @@
 {% endblock %}
 
 {% block main_content %}
-    <div>
+    <div class="row">
         <div class="col-md-3">
             <div class="side-padding">
                <img src="{{ user.gravatar(256) }}">
@@ -53,11 +53,14 @@
 
 
     {% if user == current_user or user in current_user.connections %}
+    <div>
         <div class="profile-pathway">
-        <div id="pathway-container" height=700px>
-            <svg class="overlay img-fluid"></svg>
+            <div id="pathway-container" height=700px>
+                <svg class="overlay img-fluid"></svg>
+            </div>
         </div>
     </div>
+    <div>
        <h3>Page comments</h3>
         {% for c in comments %}
             <p><a href="{{ url_for('main.user', username=c.author.username) }}"><img src="{{ c.author.gravatar(32) }}">
@@ -73,6 +76,7 @@
                {{ form.body(size=64) }}<br>
          <p>{{ form.submit }}</p>
       </form>
+    </div>
     {% else %}
        <p>You are unable to see this data as you are not connected to the user</p>
     {% endif %}
