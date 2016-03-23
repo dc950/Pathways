@@ -72,14 +72,14 @@
                     </il>
                     <il class="dropdown">
                         <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {% if (current_user.invitations|length + current_user.unseen_comments | length) > 0%}
+                            {% if (current_user.invitations|length + current_user.unseen_comments | length) > 0 %}
                                 {{ current_user.invitations|length + current_user.unseen_comments|length }}
                             {% else %}
                                 <span class="glyphicon glyphicon-bell"/>
                             {% endif %}
                         </button>
                         <ul class="dropdown-menu">
-                            {% if current_user.invitations|length > 0 and current_user.unseen_comments|length > 0 %}
+                            {% if current_user.invitations|length > 0 or current_user.unseen_comments|length > 0 %}
                                 {% for c in current_user.invitations %}
                                     <li><a href="{{ url_for('main.user', username=c.username) }}">New Invite: {{ c.first_name }} {{ c.last_name }}</a></li>
                                 {% endfor %}
@@ -151,7 +151,7 @@
       <footer class="container-fluid">
          <br>
          <small>
-            <p> Pathways &copy; 2016 is developed by <a href="http://www2.macs.hw.ac.uk/~osk5/Pathways/CompanySite/indexpage.html">Reflective Engineering</a> in collaboration with <a href="http://civil.lockheedmartin.co.uk/">Locke Martin Civil</a> and <a href="http://www.hw.ac.uk/">Heriot-Watt University.</a> </p>
+            <p> Pathways &copy; 2016 is developed by <a href="http://www2.macs.hw.ac.uk/~osk5/Pathways/CompanySite/indexpage.html">Reflective Engineering</a> in collaboration with <a href="http://civil.lockheedmartin.co.uk/">Lockeed Martin Civil</a> and <a href="http://www.hw.ac.uk/">Heriot-Watt University.</a> </p>
             <p><a href="http://goo.gl/forms/eW3BNcmCmi" target="_blank">Report Bug/Error</a></p>
             <p> Need help? Contact us: </p>          
             <!--<a href="mailto:hello@pathways.com"> <img src="{{ url_for('static', filename='img/email.jpg') }}" alt="Through Email" style="width:42px;height:42px;border:0;"> </a>-->

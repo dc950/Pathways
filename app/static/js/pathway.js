@@ -38,6 +38,7 @@ $(document).ready(function(){
 		var j = 0;
 		var newCircles = [];
 
+
 		$.each(treeData, function(index, value){
     		//console.log(index);
 
@@ -48,14 +49,14 @@ $(document).ready(function(){
     	});
 
     	//var noLevels = console.log("Length : " + newCircles.length);
+		columnWidth = (viewerWidth - (2 * marginWidth)) / newCircles.length;
+		$("#clip1").prepend("<rect x='200' y='10' width=" + columnWidth + " height=" + nav_offset +"/>")
 
     	/*
     	 * Draw Nodes on screen for every subject undertaken
     	 */
     	$.each(newCircles, function(index, value){
     		//console.log(index)
-
-    		columnWidth = (viewerWidth - (2 * marginWidth)) / newCircles.length;
 
     		var xPos = (columnWidth * index) + marginWidth;
     		
@@ -69,7 +70,15 @@ $(document).ready(function(){
 
     		var yHeight;
 
-    		value.subjects.append('circle').attr('cx', function(d, i){
+    		var cn = value.subjects.append("a").attr("xlink:href", function(d) {
+    			if(value.level == '9') {
+    				return window.location.protocol + "//" + window.location.host + "/career/" + d.name;
+    			}
+    			else {
+    				return "#";
+    			}
+    		})
+    		.append('circle').attr('cx', function(d, i){
 				return xPos + (columnWidth / 2);
 			}).attr('cy', function(d, i){
 				var n = value.subjects[0].length;
@@ -95,7 +104,24 @@ $(document).ready(function(){
 				return getLevelClass(value.level);
 			}).attr('fill', getLevelColour(value.level))
 
-			value.subjects.append('text').attr("dx", function(d, i){
+			$("<rect></rect>").appendTo("#clip1").attr("x", function(d, i){
+				return xPos + (columnWidth / 2) + 20;
+			}).attr("y", function(d, i){
+				var n = value.subjects[0].length;
+				var edgeMargin = 60;
+
+				var workingHeight = viewerHeight - titleHeight - (2 * edgeMargin) - nav_offset;
+
+				if (n > 1) {
+					var y = (workingHeight / (n-1)) * i + nav_offset;
+				} else {
+					var y = workingHeight / 2 + nav_offset;
+				}
+				
+				return y + edgeMargin + titleHeight;
+			}).attr('width', columnWidth).attr('height', nav_offset);
+
+			value.subjects.append('g').attr('clip-path', 'url(#clip1)').append('text').attr("dx", function(d, i){
 				return xPos + (columnWidth / 2) + 20;
 			}).attr("dy", function(d, i){
 				var n = value.subjects[0].length;
@@ -113,6 +139,7 @@ $(document).ready(function(){
 			}).text(function(d){
 				return d.name;
 			}).attr('class', 'node-label');
+
     	});
 
     	var toolTip;
@@ -145,19 +172,7 @@ $(document).ready(function(){
     	});
 
     	//Qualification Sections
-    	$.each(newCircles, function(index, value){
-    		var el = $("<div class='col-md-5 col-sm-5 qualifification-section'></div>");
-			$("#qualification-container").append(el);
-			el.append("<div class='edit-button' role='button'> <a href='./pathway/edit-qualification/" + value.qualification + "''>Edit [X]</a></div>");
-			el.append("<div>" + value.qualification + "</div>");
-
-			var li = $("<ul></ul>");
-			el.append(li);
-
-			$.each(value.subjects[0], function(index2, value2){
-				li.append("<li>" + value2.__data__.name + "</li>");
-			});
-    	});
+    	
 
 	});
 	
@@ -180,6 +195,12 @@ function getLevelColour(i) {
 			return "coral"
 		case 6:
 			return "blue"
+		case 7:
+			return "Lavender"
+		case 8:
+			return "SandyBrown"
+		case 9:
+			return "Gainsboro"
 		default:
 			return "green"
 	}
