@@ -26,6 +26,7 @@ def generate_future_pathway(u):
 
     # Actual solution
     # Find most common field based on qualifications
+
     qualification_type = QualificationType.query.filter_by(name="Bachelor's Degree").first()
 
     # Get all fields
