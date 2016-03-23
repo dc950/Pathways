@@ -217,15 +217,30 @@ def about():
 @main.route('/user/pathway', methods=['GET', 'POST'])
 @login_required
 def pathway():
-    user_subjects = UserQualification.query.join(Qualification, UserQualification.qualifications_id==Qualification.id).filter_by().all()
+    user_subjects = UserQualification.query.filter_by(user_id=current_user.id).join(Qualification, UserQualification.qualifications_id==Qualification.id).all()
     user_qual_types = QualificationType.query.join(Qualification, QualificationType.id==Qualification.qualification_type_id).join(UserQualification, UserQualification.qualifications_id==Qualification.id).filter_by(user_id=current_user.id).all()
     #user_qual_types = QualificationType.query.join(Qualification, QualificationType.id==Qualification.qualification_type_id).all()
 
-    future_qual_types = []
+    future_qual_types = [] #.qualification_name
+    for x in current_user.future_quals:
+        future_qual_types.append(x.qualification_type)
 
-    for x in db.session.query(future_quals).filter_by(user_id=current_user.id).all():
-        print(x.qual_id)
-        future_qual_types += QualificationType.query.join(Qualification, QualificationType.id==Qualification.qualification_type_id).filter_by(subject_id=x.qual_id).all()
+    #user_subjects = current_user.future_quals
+
+    for x in current_user.future_quals:
+        uq = UserQualification()
+        uq.user_id = current_user.id
+        uq.qualifications_id = x.id
+        uq.qualification = x
+        user_subjects.append(uq)
+
+    print(current_user.future_quals)
+
+    #user_qual_types.append(future_qual_types)
+
+    #for x in db.session.query(future_quals).filter_by(user_id=current_user.id).all():
+    #    print(x.qual_id)
+    #      future_qual_types += QualificationType.query.join(Qualification, QualificationType.id==Qualification.qualification_type_id).filter_by(subject_id=x.qual_id).all()
     
     opt_param2 = request.args.get("request_career_page")
     print(opt_param2)
@@ -236,15 +251,18 @@ def pathway():
     print(opt_param)
     if opt_param is "1":
         results = dict((("Level " + str(t.level) + " - " + t.name), dict(level=t.level, subjects=[
-                dict(name=s.qualification.subject.name, grade=s.grade) for s in UserQualification.query.filter_by(user_id=current_user.id).join(Qualification, UserQualification.qualifications_id==Qualification.id).filter_by(qualification_type=t).all()
-            ])) for t in user_qual_types)
+                dict(name=s.qualification.subject.name, grade=s.grade) for s in filter((lambda x: x.qualification.qualification_type_id==t.id), user_subjects)
+            ])) for t in (user_qual_types + future_qual_types))
 
         results2 = dict((("Level " + str(9) + " - " + "Careers"), dict(level=9, subjects=[
                 dict(name=s.name, grade=None) for s in current_user.future_careers
             ])) for t in user_qual_types)
 
+        #results3 = dict((("Level " + str(t.level) + " - " + t.name), dict(level=t.level, test="test")) for t in future_qual_types)
+
         z = results.copy()
         z.update(results2)
+        #z.update(results3)
         return jsonify(**z)
 
 

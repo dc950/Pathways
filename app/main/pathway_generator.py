@@ -48,14 +48,14 @@ def generate_future_pathway(u):
     # Find some courses using those fields (eventually check requirements as well)
 
     # Takes two from most common and one from each other
-    top_courses = Qualification.query.join(Subject).filter_by(field=top_fields[0]).all()
+    top_courses = Qualification.query.join(Subject).filter_by(field=top_fields[0]).filter_by(name="Bachelor's Degree").all()
     # Randomly pick two
     courses = random.sample(top_courses, 2)
 
     # Get one from each of the others:
-    course = Qualification.query.join(Subject).filter_by(field=top_fields[1]).all()
+    course = Qualification.query.join(Subject).filter_by(field=top_fields[1]).filter_by(name="Bachelor's Degree").all()
     courses.append(random.sample(course, 1)[0])
-    course = Qualification.query.join(Subject).filter_by(field=top_fields[2]).all()
+    course = Qualification.query.join(Subject).filter_by(field=top_fields[2]).filter_by(name="Bachelor's Degree").all()
     courses.append(random.sample(course, 1)[0])
     # TODO: Check for entry requirements
 
@@ -89,6 +89,6 @@ def generate_future_pathway(u):
     print("Chosen courses are: " + str(courses))
     print('Chosen careers are: ' + str(careers))
 
-    u.future_quals += courses
-    u.future_careers += careers
+    u.future_quals = courses
+    u.future_careers = careers
 

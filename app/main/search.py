@@ -62,8 +62,15 @@ def search_careers(term):
 
     careers = []
 
+    words = term.split(' ')
+
     careers += Career.query.filter_by(name=term).all()
     careers += Career.query.filter(Career.name.like('%'+term+'%')).all()
+
+    for i in range(1, len(words)):
+
+        careers += Career.query.filter_by(name=words[i]).all()
+        careers += Career.query.filter(Career.name.like('%'+words[i]+'%')).all()
 
     careers = remove_doubles(careers)
 
