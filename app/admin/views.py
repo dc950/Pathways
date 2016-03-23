@@ -30,11 +30,15 @@ def database():
 def users():
     form1 = adminDeleteUser()
     form2 = adminWarningEmail()
+    form3 = adminCustomEmailForm()
     users = User.query.all()
     username = form1.usernamedelete.data
     username2 = form2.usernamewarning.data
+    username3 = form3.usernamecustom.data
+    customemail = form3.customeemailbox.data
     user = User.query.filter_by(username=username).first()
     user2 = User.query.filter_by(username=username2).first()
+    user3 = User.query.filter_by(username=username3).first()
     if form1.validate_on_submit():
         if user:
             flash("An email has been sent to " + username + " regarding their deleted account.")
@@ -50,7 +54,12 @@ def users():
             return redirect(url_for("admin.users"))
         else:
             flash('Username doesnt exist')
-    return render_template('admin-users.html', users=users, form1=form1, form2=form2)
+    if form3.validate_on_submit():
+        if user3:
+            send_email(user3.email, 'Reflective Pathways Admin Message', 'auth/email/custom-email', customemail=customemail, user=user3)
+            flash("A custom email you have written has been sent to " + username3 + ".")
+            return redirect(url_for("admin.users"))
+    return render_template('admin-users.html', users=users, form1=form1, form2=form2, form3=form3)
 
 
 @admin.route('/get-careers')
