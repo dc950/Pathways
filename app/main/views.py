@@ -226,6 +226,11 @@ def pathway():
     for x in db.session.query(future_quals).filter_by(user_id=current_user.id).all():
         print(x.qual_id)
         future_qual_types += QualificationType.query.join(Qualification, QualificationType.id==Qualification.qualification_type_id).filter_by(subject_id=x.qual_id).all()
+    
+    opt_param2 = request.args.get("request_career_page")
+    print(opt_param2)
+    if opt_param2 is not None:
+        return url_for('.career', careername=opt_param2)
 
     opt_param = request.args.get("request_json")
     print(opt_param)
@@ -234,13 +239,14 @@ def pathway():
                 dict(name=s.qualification.subject.name, grade=s.grade) for s in UserQualification.query.filter_by(user_id=current_user.id).join(Qualification, UserQualification.qualifications_id==Qualification.id).filter_by(qualification_type=t).all()
             ])) for t in user_qual_types)
 
-        results2 = dict((("Level " + str(9) + " - " + "Careers"), dict(level=str(9), subjects=[
+        results2 = dict((("Level " + str(9) + " - " + "Careers"), dict(level=9, subjects=[
                 dict(name=s.name, grade=None) for s in current_user.future_careers
             ])) for t in user_qual_types)
 
         z = results.copy()
         z.update(results2)
         return jsonify(**z)
+
 
     return render_template("pathway.html",
                            title="Your Pathway",

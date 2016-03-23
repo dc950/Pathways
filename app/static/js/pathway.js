@@ -69,7 +69,15 @@ $(document).ready(function(){
 
     		var yHeight;
 
-    		value.subjects.append('circle').attr('cx', function(d, i){
+    		var cn = value.subjects.append("a").attr("xlink:href", function(d) {
+    			if(value.level == '9') {
+    				return window.location.protocol + "//" + window.location.host + "/career/" + d.name;
+    			}
+    			else {
+    				return "#";
+    			}
+    		})
+    		.append('circle').attr('cx', function(d, i){
 				return xPos + (columnWidth / 2);
 			}).attr('cy', function(d, i){
 				var n = value.subjects[0].length;
@@ -113,6 +121,7 @@ $(document).ready(function(){
 			}).text(function(d){
 				return d.name;
 			}).attr('class', 'node-label');
+
     	});
 
     	var toolTip;
@@ -180,6 +189,12 @@ function getLevelColour(i) {
 			return "coral"
 		case 6:
 			return "blue"
+		case 7:
+			return "Lavender"
+		case 8:
+			return "SandyBrown"
+		case 9:
+			return "Gainsboro"
 		default:
 			return "green"
 	}
