@@ -26,6 +26,7 @@ def generate_future_pathway(u):
 
     # Actual solution
     # Find most common field based on qualifications
+
     qualification_type = QualificationType.query.filter_by(name="Bachelor's Degree").first()
 
     # Get all fields
@@ -43,20 +44,33 @@ def generate_future_pathway(u):
     top_fields = fcount.keys()
     top_fields = sorted(top_fields, key=lambda x: fcount[x])
 
+
+    if len(top_fields) < 2:
+        flash("Not enough course data")
+        return
+
     print("Top fields: "+str(top_fields))
 
     # Find some courses using those fields (eventually check requirements as well)
 
     # Takes two from most common and one from each other
     top_courses = Qualification.query.join(Subject).filter_by(field=top_fields[0]).filter_by(name="Bachelor's Degree").all()
+    courses = []
+
     # Randomly pick two
-    courses = random.sample(top_courses, 2)
+    if len(top_courses) > 1:
+        courses = random.sample(top_courses, 2)
+    elif len(top_courses) == 1:
+        courses = random.sample(top_courses, 1)
 
     # Get one from each of the others:
+
     course = Qualification.query.join(Subject).filter_by(field=top_fields[1]).filter_by(name="Bachelor's Degree").all()
-    courses.append(random.sample(course, 1)[0])
+    if len(course) >= 1:
+        courses.append(random.sample(course, 1)[0])
     course = Qualification.query.join(Subject).filter_by(field=top_fields[2]).filter_by(name="Bachelor's Degree").all()
-    courses.append(random.sample(course, 1)[0])
+    if len(course) >= 1:
+        courses.append(random.sample(course, 1)[0])
     # TODO: Check for entry requirements
 
     print("Chosen courses are: " + str(courses))
@@ -91,4 +105,3 @@ def generate_future_pathway(u):
 
     u.future_quals = courses
     u.future_careers = careers
-
