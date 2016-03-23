@@ -6,9 +6,7 @@
     <div class="header">
        <h1>{{ user.first_name + " " + user.last_name}}</h1>
     </div>
-    <div class="side-padding">
-       <img src="{{ user.gravatar(256) }}">
-    </div>
+
 {% endblock %}
 
 {% block scripts %}
@@ -25,31 +23,41 @@
 {% endblock %}
 
 {% block main_content %}
-    <p> This is the profile page for {{ user.first_name + " " + user.last_name}} </p>
-    <p>Actions:</p>
-    <div class="side-padding">
-       {% if user==current_user %}      
-          <li><a href="{{ url_for('main.edit') }}">Edit Profile</a></li>
-          <li><a href="{{ url_for('main.edit_qualification') }}">Edit Qualifications</a></li>       
-       {% elif user in current_user.connections %}
-          <li><a href="{{ url_for('.remove_connection', username=user.username) }}">Remove Connections</a></li>
-       {% elif user in current_user.invitations %}
-          <li><a href="{{ url_for('.add_connection', username=user.username)}}">Accept Connection Request</a></li>
-          <li><a href="{{ url_for('.decline_connection', username=user.username)}}">Decline Connection Request</a></li>
-       <!-- Ignore request -->
-       {% elif user in current_user.requests %}
-          <li>Connection Request Pending</li>
-       {% else %}
-          <li><a href="{{ url_for('.add_connection', username=user.username)}}">Send Connection Request</a></li>
-       {% endif %}
+    <div>
+        <div class="col-md-3">
+            <div class="side-padding">
+               <img src="{{ user.gravatar(256) }}">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <p> This is the profile page for {{ user.first_name + " " + user.last_name}} </p>
+            <p>Actions:</p>
+            <div class="side-padding">
+               {% if user==current_user %}
+                  <li><a href="{{ url_for('main.edit') }}">Edit Profile</a></li>
+                  <li><a href="{{ url_for('main.edit_qualification') }}">Edit Qualifications</a></li>
+               {% elif user in current_user.connections %}
+                  <li><a href="{{ url_for('.remove_connection', username=user.username) }}">Remove Connections</a></li>
+               {% elif user in current_user.invitations %}
+                  <li><a href="{{ url_for('.add_connection', username=user.username)}}">Accept Connection Request</a></li>
+                  <li><a href="{{ url_for('.decline_connection', username=user.username)}}">Decline Connection Request</a></li>
+               <!-- Ignore request -->
+               {% elif user in current_user.requests %}
+                  <li>Connection Request Pending</li>
+               {% else %}
+                  <li><a href="{{ url_for('.add_connection', username=user.username)}}">Send Connection Request</a></li>
+               {% endif %}
+            </div>
+        </div>
     </div>
-    <div class="profile-pathway">
+
+
+    {% if user == current_user or user in current_user.connections %}
+        <div class="profile-pathway">
         <div id="pathway-container" height=700px>
             <svg class="overlay img-fluid"></svg>
         </div>
     </div>
-
-    {% if user == current_user or user in current_user.connections %}
        <h3>Page comments</h3>
         {% for c in comments %}
             <p><a href="{{ url_for('main.user', username=c.author.username) }}"><img src="{{ c.author.gravatar(32) }}">
@@ -65,10 +73,6 @@
                {{ form.body(size=64) }}<br>
          <p>{{ form.submit }}</p>
       </form>
-
-
-
-
     {% else %}
        <p>You are unable to see this data as you are not connected to the user</p>
     {% endif %}
