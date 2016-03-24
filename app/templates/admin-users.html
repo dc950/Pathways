@@ -12,7 +12,7 @@
     <div class = "admin-user-list">
     <ul>
       {% for user in users %}
-      <li>Username: {{ user.username }} | Name: "{{ user.first_name }} {{ user.last_name }}"</li>
+      <li>Username: <a href="{{ url_for('main.user', username=user.username) }}">{{ user.username }}</a> | Name: "{{ user.first_name }} {{ user.last_name }}"</li>
       {% endfor %}
     </ul>
     <p>Number Of Users: {{ users|length }}</p>
