@@ -1,10 +1,12 @@
 from flask import render_template, redirect, request, url_for, flash, Markup
 from . import admin
-from .forms import *
+from .forms import adminCustomEmailForm, adminDeleteUser, adminForm, adminWarningEmail, deleteAccountForm
+from wtforms import SelectField, FieldList, FormField, SubmitField
+from flask.ext.wtf import Form
 from .webcrawler import webcrawler
 from .uniwebcrawler import uniwebcrawler
-from .qualifications import *
-from ..models import Permission, Career, User
+from .qualifications import setup
+from ..models import Permission, Career, User, Subject, Field
 from ..decorators import permission_required, admin_required
 from flask import render_template, redirect, request, url_for, flash, Markup, current_app
 from flask.ext.login import login_user, logout_user, login_required, current_user
@@ -73,7 +75,7 @@ def get_careers():
 @admin.route('/insert-qualifications')
 @admin_required
 def insert_qualifications():
-    Setup(False)
+    setup()
 
 
 @admin.route('/load-uni-courses')
@@ -93,4 +95,45 @@ def delete_this_user(username):
         User.query.filter_by(username=username).delete()
         flash("Your account has successfully been deleted.")
         return redirect(url_for('admin.index'))
-    return render_template('admin-delete-user.html', form1=form1, username = username)
+    return render_template('admin-delete-user.html', form1=form1, username=username)
+
+
+@admin.route('/set-course-fields', methods=['GET', 'POST'])
+@admin_required
+def set_subject_fields():
+
+    all_fields_choices = sorted([(x.id, x.name) for x in Field.query.all()], key=lambda z: z[1])
+    all_fields_choices.insert(0, (-1, 'None'))
+
+    # setattr(SetField, 'fields', FieldList(SelectField('Course', choices=all_fields_choices)))
+    class SetField(Form):
+        fields = FieldList(SelectField('course', choices=all_fields_choices))
+        submit = SubmitField('Submit')
+
+    form = SetField(request.form)
+    subjects = Subject.query.filter_by(field=None).all()
+    f_data = form.fields.data
+
+    # Doing this instead of validate_on_submit because it's never True for some reason I can't figure out
+    # This is probably less secure but it is in the admin section so it shouldn't be too big a risk...
+    if len(f_data) > 0:
+        for s, f in zip(subjects, form.fields.data):
+            if f != '-1':
+                field = Field.query.filter_by(id=f).first()
+                s.field = field
+        return redirect(url_for('admin.set_subject_fields'))
+    # print(form.errors)
+
+    # print("choices are " + str(form.fields.unbound_field.choices))
+
+    form_data = []
+    for s in subjects:
+        e = form.fields.append_entry(s.name)
+        form_data.append((s.name, e))
+
+
+    # print(form.fields.pop_entry())
+    # print(form.fields[0].label)
+    return render_template('admin-fields.html', form=form, form_data=form_data)
+
+

@@ -6,7 +6,7 @@ from wtforms.ext.sqlalchemy.fields import QuerySelectField
 
 
 class SkillsForm(Form):
-    skills = TextAreaField();
+    skills = TextAreaField()
     skillsHidden = HiddenField("Skills")
 
 

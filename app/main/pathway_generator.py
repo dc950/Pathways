@@ -1,5 +1,6 @@
 from ..models import Career, User, Qualification, Skill, UserQualification, QualificationType, Field, Subject
 from flask.ext.login import current_user
+from flask import flash
 from app import db
 import random
 
