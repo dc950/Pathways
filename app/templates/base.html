@@ -1,33 +1,33 @@
 {% extends "bootstrap/base.html" %}
 
 {% block styles %}
-  {{ super() }}
-  <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/stylesheet.css') }}">
+    {{ super() }}
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/stylesheet.css') }}">
 {% endblock %}
 
 {% block scripts %}
-   {{ super() }}
-   <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {{ super() }}
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 {% endblock %}
 
 {% block html_attribs %}
-   lang="en"
+    lang="en"
 {% endblock %}
 
 {% block title %}
-   {% if title %}
-      {{ title }} | Pathways
-   {% else %}
-      Pathways
-   {% endif %}
+    {% if title %}
+        {{ title }} | Pathways
+    {% else %}
+        Pathways
+    {% endif %}
 {% endblock %}
 
 {% block metas %}
-   <meta charset="UTF-8">
-   <meta name="version" content="1.0.0">
-   <meta name="author" content="Deaven Howarth" >
-   <meta name="description" content="Hogcraft 3.0">
-   <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="version" content="1.0.0">
+    <meta name="author" content="Deaven Howarth">
+    <meta name="description" content="Hogcraft 3.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 {% endblock %}
 
 
@@ -36,140 +36,164 @@
     {{ super() }}
     <nav class="navbar navbar-default">
         <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-         
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse" aria-expanded="false">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-       
-            <a class="navbar-brand" href="{{ url_for('main.index') }}">Pathways</a>
-         </div>
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
 
-         <!-- Collect the nav links, forms, and other content for toggling -->
-         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            {% if current_user.is_authenticated %}
-                <ul class="nav navbar-nav navbar-right">
-                    <il class="dropdown">
-                        <div class="user-info dropdown">
-                            <div>{{ current_user.email }} </div>
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                {{ current_user.first_name }} {{ current_user.last_name }}
-                                <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a href="{{ url_for('main.add_qualification') }}">Add Qualification</a></li>
-                                <li><a href="{{ url_for('main.edit_qualification') }}">Edit Qualifications</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="{{ url_for('main.edit') }}">Edit Profile</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
-                            </ul>
-                        </div>
-                    </il>
-                    <il class="dropdown">
-                        <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {% if (current_user.invitations|length + current_user.unseen_comments | length) > 0 %}
-                                {{ current_user.invitations|length + current_user.unseen_comments|length }}
-                            {% else %}
-                                <span class="glyphicon glyphicon-bell"/>
-                            {% endif %}
-                        </button>
-                        <ul class="dropdown-menu">
-                            {% if current_user.invitations|length > 0 or current_user.unseen_comments|length > 0 %}
-                                {% for c in current_user.invitations %}
-                                    <li><a href="{{ url_for('main.user', username=c.username) }}">New Invite: {{ c.first_name }} {{ c.last_name }}</a></li>
-                                {% endfor %}
-                                {% if current_user.unseen_comments|length > 0 %}
-                                    <li><a href="{{ url_for('main.user', username=current_user.username) }}">New comments on your profile</a></li>
-                                {% endif %}
-                            {% else %}
-                                <li><a>No new notifications</a></li>
-                            {% endif %}
-                        </ul>
-                    </il>
-                    <il class="dropdown">
-                        <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="glyphicon glyphicon-user"/>
-                        </button>
-                        <ul class="dropdown-menu">
-                            {% for user in current_user.connections %}
-							  	<li><a href="{{ url_for('.user', username=user.username) }}">{{ user.first_name }} {{ user.last_name }}</a></li>
-							{% endfor %}
-                        </ul>
-                    </il>
-                    <il><img class="user-avatar" src="{{ current_user.gravatar(64) }}"></il>
-                </ul>
-            {% else %}
-                <ul class="nav navbar-nav navbar-right">
-                    <li> <a href="{{ url_for('auth.login') }}">Login</a></li>
-                    <li> <a href="{{ url_for('auth.register') }}">Register</a></li>
-                </ul>
-            {% endif %}
-         </div><!-- /.navbar-collapse -->
-			{% if current_user.is_authenticated %}
-         <!-- Collect the nav links, forms, and other content for toggling -->
-         <div class="collapse navbar-collapse nav-bottom" id="bs-example-navbar-collapse-2">
-            <ul class="nav navbar-nav">
-              {% if self.nav_overwrite() %}
-                {% block nav_overwrite %}{% endblock %}
-              {% else %}
-                <li><a href="{{ url_for('main.index') }}">Home <span class="sr-only">(current)</span></a></li>
-                <li><a href="{{ url_for('main.pathway') }}">Your Pathway</a></li>
-                <li><a href="{{ url_for('main.user', username=current_user.username) }}">Your Profile</a></li>
-              {% endif %}
-            </ul>
-            <div class="search">
-               <form class="navbar-form navbar-right" role="search" method="POST" action="{{ url_for('main.search_click') }}">
-                  {{ search_form.hidden_tag() }}
-                   <div class="form-group">
-                     <!--<input type="text" class="form-control" placeholder="Search">-->
-                      {{ search_form.term(size=32) }}
-                  </div>
-                   {{ search_form.submit }}
-                  <!--<button type="submit" class="btn btn-default">Submit</button>-->
-               </form>
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target=".navbar-collapse" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+                <a class="navbar-brand" href="{{ url_for('main.index') }}">Pathways</a>
             </div>
-         </div><!-- /.navbar-collapse -->
-         {% endif %}
-      </div><!-- /.container-fluid -->
-   </nav>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                {% if current_user.is_authenticated %}
+                    <ul class="nav navbar-nav navbar-right">
+                        <il class="dropdown">
+                            <div class="user-info dropdown">
+                                <div>{{ current_user.email }} </div>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                   aria-haspopup="true" aria-expanded="false">
+                                    {{ current_user.first_name }} {{ current_user.last_name }}
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="{{ url_for('main.add_qualification') }}">Add Qualification</a></li>
+                                    <li><a href="{{ url_for('main.edit_qualification') }}">Edit Qualifications</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="{{ url_for('main.edit') }}">Edit Profile</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+                                </ul>
+                            </div>
+                        </il>
+                        <il class="dropdown">
+                            <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                {% if (current_user.invitations|length + current_user.unseen_comments | length) > 0 %}
+                                    {{ current_user.invitations|length + current_user.unseen_comments|length }}
+                                {% else %}
+                                    <span class="glyphicon glyphicon-bell"/>
+                                {% endif %}
+                            </button>
+                            <ul class="dropdown-menu">
+                                {% if current_user.invitations|length > 0 or current_user.unseen_comments|length > 0 %}
+                                    {% for c in current_user.invitations %}
+                                        <li><a href="{{ url_for('main.user', username=c.username) }}">New
+                                            Invite: {{ c.first_name }} {{ c.last_name }}</a></li>
+                                    {% endfor %}
+                                    {% if current_user.unseen_comments|length > 0 %}
+                                        <li><a href="{{ url_for('main.user', username=current_user.username) }}">New
+                                            comments on your profile</a></li>
+                                    {% endif %}
+                                {% else %}
+                                    <li><a>No new notifications</a></li>
+                                {% endif %}
+                            </ul>
+                        </il>
+                        <il class="dropdown">
+                            <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                <span class="glyphicon glyphicon-user"/>
+                            </button>
+                            <ul class="dropdown-menu">
+                                {% for user in current_user.connections %}
+                                    <li>
+                                        <a href="{{ url_for('.user', username=user.username) }}">{{ user.first_name }} {{ user.last_name }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </il>
+                        <il><img class="user-avatar" src="{{ current_user.gravatar(64) }}"></il>
+                    </ul>
+                {% else %}
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+                        <li><a href="{{ url_for('auth.register') }}">Register</a></li>
+                    </ul>
+                {% endif %}
+            </div><!-- /.navbar-collapse -->
+            {% if current_user.is_authenticated %}
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse nav-bottom" id="bs-example-navbar-collapse-2">
+                    <ul class="nav navbar-nav">
+                        {% if self.nav_overwrite() %}
+                            {% block nav_overwrite %}{% endblock %}
+                        {% else %}
+                            <li><a href="{{ url_for('main.index') }}">Home <span class="sr-only">(current)</span></a>
+                            </li>
+                            <li><a href="{{ url_for('main.pathway') }}">Your Pathway</a></li>
+                            <li><a href="{{ url_for('main.user', username=current_user.username) }}">Your Profile</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                    <div class="search">
+                        <form class="navbar-form navbar-right" role="search" method="POST"
+                              action="{{ url_for('main.search_click') }}">
+                            {{ search_form.hidden_tag() }}
+                            <div class="form-group">
+                                <!--<input type="text" class="form-control" placeholder="Search">-->
+                                {{ search_form.term(size=32) }}
+                            </div>
+                            {{ search_form.submit }}
+                            <!--<button type="submit" class="btn btn-default">Submit</button>-->
+                        </form>
+                    </div>
+                </div><!-- /.navbar-collapse -->
+            {% endif %}
+        </div><!-- /.container-fluid -->
+    </nav>
 {% endblock %}
 
 {% block content %}
-   <header>
-      <div class="container">
-        {% if False %}
-         {% for message in get_flashed_messages() %}
-            <div class="alert alert-warning">
-               <button type="button" class="close" data-dismiss="alert">&times;</button>
-               {{ message }}
-            </div>
-         {% endfor %}
+<header>
+    <div class="container">
+        {% if not noflash %}
+            {% if current_user.is_authenticated and not current_user.confirmed %}
+                <div class="alert alert-warning">
+                    Note: Your account has not been authenticated yet. <a href="{{ url_for('auth.send_token') }}"> Click
+                    here </a> to resend the email.
+                </div>
+            {% endif %}
+            {% for message in get_flashed_messages() %}
+                <div class="alert alert-warning">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    {{ message }}
+                </div>
+            {% endfor %}
         {% endif %}
-      </div>
-      {% block header_content %}{% endblock %}
-   </header>
-   <main>
-      {% block main_content %}{% endblock %}
-   </main>
-   <div style="clear: both; text-align:center">
-      <footer class="container-fluid">
-         <br>
-         <small>
-            <p> Pathways &copy; 2016 is developed by <a href="http://www2.macs.hw.ac.uk/~osk5/Pathways/CompanySite/indexpage.html">Reflective Engineering</a> in collaboration with <a href="http://civil.lockheedmartin.co.uk/">Lockeed Martin Civil</a> and <a href="http://www.hw.ac.uk/">Heriot-Watt University.</a> </p>
+    </div>
+    {% block header_content %}{% endblock %}
+</header>
+<main>
+    {% block main_content %}{% endblock %}
+</main>
+<div style="clear: both; text-align:center">
+    <footer class="container-fluid">
+        <br>
+        <small>
+            <p> Pathways &copy; 2016 is developed by <a
+                    href="http://www2.macs.hw.ac.uk/~osk5/Pathways/CompanySite/indexpage.html">Reflective
+                Engineering</a> in collaboration with <a href="http://civil.lockheedmartin.co.uk/">Lockeed Martin
+                Civil</a> and <a href="http://www.hw.ac.uk/">Heriot-Watt University.</a></p>
             <p><a href="http://goo.gl/forms/eW3BNcmCmi" target="_blank">Report Bug/Error</a></p>
-            <p> Need help? Contact us: </p>          
+            <p> Need help? Contact us: </p>
             <!--<a href="mailto:hello@pathways.com"> <img src="{{ url_for('static', filename='img/email.jpg') }}" alt="Through Email" style="width:42px;height:42px;border:0;"> </a>-->
-            <a class="social-icon" href="http://www.facebook.com/pages/pathways"> <img src="{{ url_for('static', filename='img/social/facebook.png') }}" alt="Facebook"> </a>
-            <a class="social-icon" href="http://www.twitter.com/pathways"> <img src="{{ url_for('static', filename='img/social/twitter.png') }}" alt="Twitter"> </a>
-            <a class="social-icon" href="http://www.google.com"> <img src="{{ url_for('static', filename='img/social/googleplus.png') }}" alt="Google"> </a>
-            <a class="social-icon" href="http://www2.macs.hw.ac.uk/~osk5/Pathways/CompanySite/contact.html"> <img src="{{ url_for('static', filename='img/social/website.png') }}" alt="Our Website"> </a>
-         </small>
-      </footer>
-   </div>
+            <a class="social-icon" href="http://www.facebook.com/pages/pathways"> <img
+                    src="{{ url_for('static', filename='img/social/facebook.png') }}" alt="Facebook"> </a>
+            <a class="social-icon" href="http://www.twitter.com/pathways"> <img
+                    src="{{ url_for('static', filename='img/social/twitter.png') }}" alt="Twitter"> </a>
+            <a class="social-icon" href="http://www.google.com"> <img
+                    src="{{ url_for('static', filename='img/social/googleplus.png') }}" alt="Google"> </a>
+            <a class="social-icon" href="http://www2.macs.hw.ac.uk/~osk5/Pathways/CompanySite/contact.html"> <img
+                    src="{{ url_for('static', filename='img/social/website.png') }}" alt="Our Website"> </a>
+        </small>
+    </footer>
+</div>
 
 {% endblock %}

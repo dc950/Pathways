@@ -1,4 +1,4 @@
-from flask import render_template, redirect, request, url_for, flash, Markup, current_app
+from flask import render_template, redirect, request, url_for, flash, Markup, current_app, get_flashed_messages
 from flask.ext.login import login_user, logout_user, login_required, current_user
 from . import auth
 from ..models import User
@@ -161,9 +161,12 @@ def send_new_delete_acc_email(email=None):
             flash("You must authenticate your account before you can do this action. Please see your email to authenticate your account.")
         return redirect(url_for('main.edit'))
 
-@auth.before_app_request
-def before_request():
-    if request.endpoint:
-        if current_user.is_authenticated and not current_user.confirmed and request.endpoint[:5] != 'auth.':
-            message = Markup("Note: Your account has not been authenticated yet. <a href='"+url_for('auth.send_token')+"'> Click here </a> to resend the email.")
-            flash(message)
+# @auth.before_app_request
+# def before_request():
+#     if request.endpoint:
+#         if current_user.is_authenticated and not current_user.confirmed and request.endpoint[:5] != 'auth.':
+#             message = Markup("Note: Your account has not been authenticated yet. <a href='"+url_for('auth.send_token')+"'> Click here </a> to resend the email.")
+#             # for m in get_flashed_messages():
+#             #     if m == message:
+#             #         return
+#             flash(message)

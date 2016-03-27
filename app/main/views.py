@@ -16,7 +16,8 @@ from .profanity_filter import contains_bad_word
 @main.route('/index')
 def index():
     return render_template("index.html",
-                           title="Home")
+                           title="Home",
+                           noflash=True)
 
 
 @main.route('/career/<careername>')
