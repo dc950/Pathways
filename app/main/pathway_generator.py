@@ -39,7 +39,7 @@ def generate_future_pathway(u):
     for i in range(cur_max_level.level+1, cur_max_level.level+4):
         # If above max value, return
         if i > 8:
-            return
+            break
         qualification_types = QualificationType.query.filter_by(level=i).all()
         qts = []
         for q in qualification_types:
