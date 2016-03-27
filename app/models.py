@@ -26,6 +26,7 @@ future_careers = db.Table('future_careers',
                         db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
                         db.Column('career_id', db.Integer, db.ForeignKey('careers.id')))
 
+
 # If a request is made a connection is added.
 # If a request is sent, it is added again the other way around.  If both exist, the connection is made...
 connections = db.Table('connections',
@@ -592,7 +593,7 @@ class CareerSkill(db.Model):
 
 
 class Comment(db.Model):
-    __tablename__='comments'
+    __tablename__ = 'comments'
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
@@ -612,6 +613,19 @@ class Comment(db.Model):
         # Do some checks to make sure things are allowed regarding privacy, do a flash to show it didn't work etc.
         comment = Comment(body=body, author_id=author.id, profile_id=profile.id)
         db.session.add(comment)
+
+
+class ReportedComment(db.Model):
+    __tablename__ = 'reported_comments'
+    comment_id = db.Column(db.Integer, db.ForeignKey('comments.id'), primary_key=True)
+    comment = db.relationship("Comment")
+
+    def remove_comment(self):
+        db.session.remove(self.comment)
+        db.session.remove(self)
+
+    def keep_comment(self):
+        db.session.remove(self)
 
 
 class Role(db.Model):
