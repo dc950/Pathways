@@ -84,6 +84,7 @@ def edit():
     form1 = EditProfileForm()
     form2 = SkillsForm()
     if form1.validate_on_submit():
+        print("validated")
         current_user.first_name = form1.first_name.data
         current_user.last_name = form1.last_name.data
         current_user.email = form1.email.data
@@ -91,6 +92,7 @@ def edit():
         db.session.add(current_user)
         flash('Your profile has been updated')
         return redirect(url_for('.user', username=current_user.username))
+    print(form1.errors)
     form1.first_name.data = current_user.first_name
     form1.last_name.data = current_user.last_name
     form1.email.data = current_user.email

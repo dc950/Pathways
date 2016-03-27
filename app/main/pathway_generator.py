@@ -4,17 +4,13 @@ from app import db
 import random
 
 
-# Check current level
-# Get all uni courses with similar fields
-
-
 def generate_future_pathway(u):
 
     # Get all fields
     fields = []
     for q in u.qualifications:
         fields.append(q.qualification.subject.field)
-    print("Fields: " + str(fields))
+    # print("Fields: " + str(fields))
 
     # count instances of each
     fcount = {}
@@ -29,7 +25,7 @@ def generate_future_pathway(u):
         flash("Not enough course data")
         return
 
-    print("Top fields: "+str(top_fields))
+    # print("Top fields: "+str(top_fields))
 
     # Find future qualifications
 
@@ -61,34 +57,24 @@ def generate_future_pathway(u):
                 elif len(possible_courses) == 1:
                     qts.append(possible_courses[0])
                     chosen_count += 1
-        print("level "+str(i)+": "+str(courses))
+        # print("level "+str(i)+": "+str(qts))
         if len(qts) > 3:
             courses += random.sample(qts, 4)
         else:
             courses += qts
 
-    print("Chosen courses are: " + str(courses))
+    # print("Chosen courses are: " + str(courses))
 
-    # Find career for field of each course
-    all_careers = Career.query.all()
-    # for c in all_careers:
-    #     print(str(c.field))
+    # Find future careers
 
-    top_careers = []
     chosen_count = 0
     careers = []
     for i in top_fields:
-        # top_careers = list(filter(lambda c: i in c.fields, all_careers))  # TODO: change to big join thing to speed up
         top_careers = Career.query.join(
             CareerSubject, CareerSubject.career_id == Career.id
         ).join(
             Subject, CareerSubject.subject_id == Subject.id
         ).filter_by(field=i).all()
-        # top_careers = Subject.query.filter_by(field=i).join(
-        #     CareerSubject, CareerSubject.subject_id == Subject.id
-        # ).join(
-        #     Career, CareerSubject.career_id == Career.id
-        # ).all()
         if chosen_count == 0:
             if len(top_careers) > 1:
                 careers = random.sample(top_careers, 2)
@@ -103,9 +89,9 @@ def generate_future_pathway(u):
         else:
             break
 
-    print('Top careers: ' + str(top_careers))
-    print("Chosen courses are: " + str(courses))
-    print('Chosen careers are: ' + str(careers))
+    # print('Top careers: ' + str(top_careers))
+    # print("Chosen courses are: " + str(courses))
+    # print('Chosen careers are: ' + str(careers))
 
     u.future_quals = courses
     u.future_careers = careers

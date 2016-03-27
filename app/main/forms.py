@@ -17,7 +17,7 @@ class EditProfileForm(Form):
     default_avatar = SelectField('Default avatar style.  For a custom avatar got to www.gravatar.com', choices=[
         ('mm', 'Default image'), ('identicon', 'Identicon'), ('monsterid', 'Monster'), ('wavatar', 'Wavatar'),
         ('retro', 'Retro')])
-    s = FormField(SkillsForm)
+    # s = FormField(SkillsForm)
     submit = SubmitField('Submit')
 
 
