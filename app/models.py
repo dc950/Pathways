@@ -45,6 +45,7 @@ class User(UserMixin, db.Model):
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     avatar_hash = db.Column(db.String(32))
     def_avatar = db.Column(db.String(16), default='identicon')
+    is_active = db.Column(db.Boolean, default=True)
 
     skills = db.relationship("Skill", secondary=user_skills)
     qualifications = db.relationship('UserQualification', lazy='dynamic')

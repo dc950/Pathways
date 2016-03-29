@@ -52,6 +52,10 @@ def user(username):
         flash('User %s not found.' % username)
         return redirect(url_for('main.index'))
 
+    if not user_obj.is_active:
+        flash('User %s not found.' % username)
+        return redirect(url_for('main.index'))
+
     opt_param = request.args.get("request_json")
     print(opt_param)
     if opt_param is "1":
@@ -314,9 +318,14 @@ def pathway():
 @login_required
 def add_connection(username):
     user_obj = User.query.filter_by(username=username).first()
+
     if user_obj is None:
         flash('User does not exist')
         return redirect(url_for('.index'))
+    if not user_obj.is_active:
+        flash('User does not exist')
+        return redirect(url_for('.index'))
+
     if current_user.made_request(user_obj):
         flash('You have already made a request to this person')
         return redirect(url_for('.user', username=user_obj.username))
@@ -326,6 +335,7 @@ def add_connection(username):
     else:
         flash('Request sent to %s.' % (user_obj.first_name + " " + user_obj.last_name))
     return redirect(url_for('.user', username=username))
+
 
 @main.route('/remove_connection/<username>')
 @login_required
@@ -338,6 +348,7 @@ def remove_connection(username):
         flash('You have removed your connection with %s.' % (user_obj.first_name + " " + user_obj.last_name))
     return redirect(url_for('.user', username=username))
 
+
 @main.route('/decline_connection/<username>')
 @login_required
 def decline_connection(username):
@@ -348,8 +359,6 @@ def decline_connection(username):
     else:
         flash('You have declined the connection request with %s.' % (user_obj.first_name + " " + user_obj.last_name))
     return redirect(url_for('.user', username=username))
-
-
 
 
 @main.route('/search', methods=['GET', 'POST'])
@@ -374,24 +383,18 @@ def search(term):
                            term=term)
 
 
-
-
-'''
-@main.before_request
-def before_request():
-    g.search_form = SearchForm()
-'''
-
 @main.route('/test')
 @admin_required
 def test():
     return render_template("test.html",
                            title="Test")
 
+
 @main.route('/generate-pathway')
 def generate_pathway():
     generate_future_pathway(current_user)
     return redirect(url_for('main.pathway'))
+
 
 @main.route('/js/<path:path>')
 def send_js(path):
