@@ -37,18 +37,20 @@
             <p>Actions:</p>
             <div class="side-padding">
                {% if user==current_user %}
-                  <li><a href="{{ url_for('main.edit') }}">Edit Profile</a></li>
-                  <li><a href="{{ url_for('main.edit_qualification') }}">Edit Qualifications</a></li>
+                  <li><a class="btn btn-default" href="{{ url_for('main.edit') }}">Edit Profile</a></li>
+                   <br>
+                  <li><a class="btn btn-default" href="{{ url_for('main.edit_qualification') }}">Edit Qualifications</a></li>
                {% elif user in current_user.connections %}
-                  <li><a href="{{ url_for('.remove_connection', username=user.username) }}">Remove Connections</a></li>
+                  <li><a class="btn btn-default" href="{{ url_for('.remove_connection', username=user.username) }}">Remove Connections</a></li>
                {% elif user in current_user.invitations %}
-                  <li><a href="{{ url_for('.add_connection', username=user.username)}}">Accept Connection Request</a></li>
-                  <li><a href="{{ url_for('.decline_connection', username=user.username)}}">Decline Connection Request</a></li>
+                  <li><a class="btn btn-default" href="{{ url_for('.add_connection', username=user.username)}}">Accept Connection Request</a></li>
+                   <br>
+                  <li><a class="btn btn-default" href="{{ url_for('.decline_connection', username=user.username)}}">Decline Connection Request</a></li>
                <!-- Ignore request -->
                {% elif user in current_user.requests %}
                   <li>Connection Request Pending</li>
                {% else %}
-                  <li><a href="{{ url_for('.add_connection', username=user.username)}}">Send Connection Request</a></li>
+                  <li><a class="btn btn-default" href="{{ url_for('.add_connection', username=user.username)}}">Send Connection Request</a></li>
                {% endif %}
             </div>
         </div>
@@ -67,7 +69,7 @@
        <h3>Page comments</h3>
         {% for c in comments %}
             <p><a href="{{ url_for('main.user', username=c.author.username) }}"><img src="{{ c.author.gravatar(32) }}">
-                {{ c.author.first_name }} {{ c.author.last_name }}</a>: {{ c.body }}</p>
+                {{ c.author.first_name }} {{ c.author.last_name }}</a>: {{ c.body }} <a class="btn btn-default" href="{{ url_for('main.reportcomment', commentid=c.id) }}"> Report This Comment </a></p>
         {% endfor %}
         <div class="pagination">
             {{ macros.pagination_widget(pagination, 'main.user', username=user.username) }}
