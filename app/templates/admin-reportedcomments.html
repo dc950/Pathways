@@ -1,0 +1,24 @@
+{% extends "admin-base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block header_content %}
+  <div class="header">
+     <h1>Reported Comments</h1>
+  </div>
+{% endblock %}
+
+{% block main_content %}
+    <h2>All Reported Comments</h2>
+    {% if reported_comments|length == 0 %}
+        <p>There are no reported comments at this time.</p>
+    {% else %}
+        <div class = "admin-user-list">
+        <ul>
+          {% for comment in reported_comments %}
+              <li>"{{ comment.comment.body }}"</li>
+              <p><a class="btn btn-default" href="{{ url_for('admin.deletecomment', commentid=comment.comment.id) }}"> Delete </a> <a class="btn btn-default" href="{{ url_for('admin.keepcomment', commentid=comment.comment.id) }}"> Keep </a></p>
+          {% endfor %}
+        </ul>
+        </div>
+    {% endif %}
+{% endblock %}

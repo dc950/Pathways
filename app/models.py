@@ -26,6 +26,7 @@ future_careers = db.Table('future_careers',
                         db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
                         db.Column('career_id', db.Integer, db.ForeignKey('careers.id')))
 
+
 # If a request is made a connection is added.
 # If a request is sent, it is added again the other way around.  If both exist, the connection is made...
 connections = db.Table('connections',
@@ -44,6 +45,7 @@ class User(UserMixin, db.Model):
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     avatar_hash = db.Column(db.String(32))
     def_avatar = db.Column(db.String(16), default='identicon')
+    is_active = db.Column(db.Boolean, default=True)
 
     skills = db.relationship("Skill", secondary=user_skills)
     qualifications = db.relationship('UserQualification', lazy='dynamic')
@@ -149,7 +151,7 @@ class User(UserMixin, db.Model):
     def send_confirmation_email(self):
         token = self.generate_confirmation_token()
         send_email(self.email, 'Confirm Your Account', 'auth/email/confirm', user=self, token=token)
-        flash('A confirmation email has been sent to your email')
+        flash('A confirmation email has been sent to your email.')
 
     def confirm(self, token):
         s = Serializer(current_app.config['SECRET_KEY'])
@@ -166,12 +168,12 @@ class User(UserMixin, db.Model):
     def send_new_password_email(self):
         token = self.generate_new_password_token()
         send_email(self.email, 'Change your password', 'auth/email/change-password', user=self, token=token)
-        flash('A confirmation email has been sent to your email')
+        flash('An email containing instructions on how to change your password has been sent to your email.')
 
     def send_new_delete_acc_email(self):
         token = self.generate_delete_account_token()
         send_email(self.email, 'To delete your account', 'auth/email/delete-account', user=self, token=token)
-        flash('A confirmation email has been sent to your email')
+        flash('An email containing instructions on how to delete your account has been sent to your email.')
 
     def generate_new_password_token(self, expiration=1800):
         s = Serializer(current_app.config['SECRET_KEY'], expiration)
@@ -216,6 +218,16 @@ class User(UserMixin, db.Model):
             db.session.add(s)
             db.session.commit()
             self.add_skill(s)
+
+    def remove_skill(self, skill_name):
+        """
+        Removes a skill from the user based off of the skill name
+        :param skill_name: The name of the skill to be removed
+        """
+        s = Skill.query.filter_by(name=skill_name).first()
+        if s is not None:
+            if s in self.skills:
+                self.skills.remove(s)
 
     def add_qualification(self, qualification, grade=None):
         """
@@ -592,7 +604,7 @@ class CareerSkill(db.Model):
 
 
 class Comment(db.Model):
-    __tablename__='comments'
+    __tablename__ = 'comments'
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
@@ -612,6 +624,24 @@ class Comment(db.Model):
         # Do some checks to make sure things are allowed regarding privacy, do a flash to show it didn't work etc.
         comment = Comment(body=body, author_id=author.id, profile_id=profile.id)
         db.session.add(comment)
+
+
+class ReportedComment(db.Model):
+    __tablename__ = 'reported_comments'
+    comment_id = db.Column(db.Integer, db.ForeignKey('comments.id'), primary_key=True)
+    comment = db.relationship("Comment")
+
+    @staticmethod
+    def add_comment(comment):
+        reported_comment = ReportedComment(comment=comment)
+        db.session.add(reported_comment)
+
+    def remove_comment(self):
+        db.session.delete(self.comment)
+        db.session.delete(self)
+
+    def keep_comment(self):
+        db.session.delete(self)
 
 
 class Role(db.Model):

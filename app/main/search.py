@@ -50,12 +50,15 @@ def search_user(term):
             names.append((first_name, last_name))
         # Loop through the names to get exact matches first so they are at the top of the list
         for first_name, last_name in names:
-            users += (User.query.filter_by(first_name=first_name, last_name=last_name).all())
+            users += (User.query.filter_by(first_name=first_name, last_name=last_name, is_active=True).all())
         # Loop through again looking for close matches
         for first_name, last_name in names:
             users += User.query.filter(and_(User.first_name.like('%'+first_name+'%'), User.last_name.like('%'+last_name+'%'))).all()
         # TODO: More stuff to expand further
     users = remove_doubles(users)
+    for u in users:
+        if not u.is_active:
+            users.remove(u)
     return users
 
 

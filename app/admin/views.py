@@ -6,7 +6,7 @@ from flask.ext.wtf import Form
 from .webcrawler import webcrawler
 from .uniwebcrawler import uniwebcrawler
 from .qualifications import setup
-from ..models import Permission, Career, User, Subject, Field
+from ..models import Permission, Career, User, Subject, Field, ReportedComment
 from ..decorators import admin_required
 from ..email import send_email
 
@@ -41,7 +41,6 @@ def users():
     user3 = User.query.filter_by(username=username3).first()
     if form1.validate_on_submit():
         if user:
-            flash("An email has been sent to " + username + " regarding their deleted account.")
             return redirect(url_for('admin.delete_this_user', username=username))
         else:
             flash('Username doesnt exist')
@@ -60,6 +59,38 @@ def users():
             flash("A custom email you have written has been sent to " + username3 + ".")
             return redirect(url_for("admin.users"))
     return render_template('admin-users.html', users=users, form1=form1, form2=form2, form3=form3)
+
+
+@admin.route('/reportedcomments', methods=['GET', 'POST'])
+@admin_required
+def reportedcomments():
+    reported_comments = ReportedComment.query.all()
+    return render_template('admin-reportedcomments.html', reported_comments=reported_comments)
+
+
+@admin.route('/deletecomment/<commentid>', methods=['GET', 'POST'])
+@admin_required
+def deletecomment(commentid):
+    r_comment_obj = ReportedComment.query.filter_by(comment_id=commentid).first()
+    if r_comment_obj is None:
+        flash('This comment doesnt exist')
+        return redirect(url_for('admin.reportedcomments'))
+    r_comment_obj.remove_comment()
+    flash('This comment has been successfully deleted.')
+    return redirect(url_for('admin.reportedcomments'))
+
+
+@admin.route('/keepcomment/<commentid>', methods=['GET', 'POST'])
+@admin_required
+def keepcomment(commentid):
+    r_comment_obj = ReportedComment.query.filter_by(comment_id=commentid).first()
+    if r_comment_obj is None:
+        flash('This comment doesnt exist')
+        return redirect(url_for('admin.reportedcomments'))
+    r_comment_obj.keep_comment()
+    flash('This comment has been not been deleted.')
+    return redirect(url_for('admin.reportedcomments'))
+
 
 
 @admin.route('/get-careers')
@@ -91,7 +122,8 @@ def delete_this_user(username):
     if form1.validate_on_submit():
         send_email(user.email, 'Deletion of account', 'auth/email/delete-notice', user=user)
         User.query.filter_by(username=username).delete()
-        flash("Your account has successfully been deleted.")
+        flash("The account has successfully been deleted.")
+        flash("An email has been sent to " + username + " regarding their deleted account.")
         return redirect(url_for('admin.index'))
     return render_template('admin-delete-user.html', form1=form1, username=username)
 

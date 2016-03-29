@@ -31,14 +31,38 @@ $(document).ready(function(){
 				skillToAdd = $("#skills").val();
 				skillToAdd = skillToAdd.substring(0, skillToAdd.length - 1);
 
-				var el = ("<li>" + skillToAdd + "</li>");
+                elemName = skillToAdd+'List';
+                //Remove this but
+				var el = ('<li id = "' + elemName + '">' + skillToAdd +
+                '&nbsp;<button type="button" class="close delete-skill" id="' + skillToAdd +'">&times;</button></li>');
 				$(".list-skills").append(el);
 				//el.addClass("btn btn-primary btn-xs");
 
 				$("#skills").val('');
+
+
+				//Send ajax request
+                var request = $.ajax({
+                    type: 'GET',
+                    url: '/add-skill/' + skillToAdd
+                });
 			}
 		}
 	});
+
+    $(".delete-skill").click(function(){
+        var skillToDelete = this.id;
+        //alert("Deleting "+skillToDelete);
+
+        //Send ajax request
+        var request = $.ajax({
+            type: 'GET',
+            url: '/delete-skill/' + skillToDelete
+        });
+
+        elemName = this.id + 'List';
+        $("#"+elemName).remove()
+    });
 
 	$("#learn-more").click(function(){
 		target = $("#selling-point-one");

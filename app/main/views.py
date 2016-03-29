@@ -1,11 +1,11 @@
 import json
 import app
-from flask import render_template, session, flash, redirect, url_for, send_from_directory, Flask, request, jsonify, Response
+from flask import render_template, session, flash, redirect, url_for, send_from_directory, Flask, request, jsonify, Response, make_response
 from flask.ext.login import current_user, login_required
 from . import main
 from .pathway_generator import generate_future_pathway
 from .. import db
-from ..models import User, UserQualification, Qualification, QualificationType, Career, Subject, Comment, future_quals
+from ..models import User, UserQualification, Qualification, QualificationType, Career, Subject, Comment, future_quals, ReportedComment
 from .forms import EditProfileForm, AddQualificationForm, EditQualificationForm, SearchForm, CommentForm, SkillsForm
 from ..decorators import admin_required, permission_required
 from .search import search_user, search_careers
@@ -16,7 +16,8 @@ from .profanity_filter import contains_bad_word
 @main.route('/index')
 def index():
     return render_template("index.html",
-                           title="Home")
+                           title="Home",
+                           noflash=True)
 
 
 @main.route('/career/<careername>')
@@ -30,10 +31,28 @@ def career(careername):
                            title=careername)
 
 
+@main.route('/reportcomment/<commentid>')
+def reportcomment(commentid):
+    comment_obj = Comment.query.filter_by(id=commentid).first()
+    reportedalready = ReportedComment.query.filter_by(comment_id=commentid).first()
+    if reportedalready:
+        flash('You have already reported this comment.')
+        return redirect(url_for('main.user',username=current_user.username))
+    if comment_obj is None:
+        flash('This comment doesnt exist')
+        return redirect(url_for('main.user',username=current_user.username))
+    ReportedComment.add_comment(comment_obj)
+    flash('Thank you for reporting this comment for an Admin to review.')
+    return redirect(url_for('main.user',username=current_user.username))
+
 @main.route('/user/<username>', methods=['GET', 'POST'])
 def user(username):
     user_obj = User.query.filter_by(username=username).first()
     if user_obj is None:
+        flash('User %s not found.' % username)
+        return redirect(url_for('main.index'))
+
+    if not user_obj.is_active:
         flash('User %s not found.' % username)
         return redirect(url_for('main.index'))
 
@@ -87,7 +106,7 @@ def edit():
         print("validated")
         current_user.first_name = form1.first_name.data
         current_user.last_name = form1.last_name.data
-        current_user.email = form1.email.data
+        #current_user.email = form1.email.data
         current_user.def_avatar = form1.default_avatar.data
         db.session.add(current_user)
         flash('Your profile has been updated')
@@ -95,9 +114,31 @@ def edit():
     print(form1.errors)
     form1.first_name.data = current_user.first_name
     form1.last_name.data = current_user.last_name
-    form1.email.data = current_user.email
+    #form1.email.data = current_user.email
     form1.default_avatar.data = current_user.def_avatar
     return render_template('edit-profile.html', form1=form1, form2=form2, skills=user_skills)
+
+
+@main.route('/add-skill/<skill_name>')
+@login_required
+def add_skill(skill_name):
+    # print('In the thing')
+    current_user.add_skill_name(skill_name)
+    # skills = current_user.skills
+    # data = []
+    # for s in skills:
+    #     data.append(s.name)
+    response = make_response(json.dumps(True))
+    response.content_type = 'application/json'
+    return response
+
+
+@main.route('/delete-skill/<skill_name>')
+def delete_skill(skill_name):
+    current_user.remove_skill(skill_name)
+    response = make_response(json.dumps(True))
+    response.content_type = 'application/json'
+    return response
 
 
 @main.route('/user/pathway/edit-qualification/')
@@ -277,9 +318,14 @@ def pathway():
 @login_required
 def add_connection(username):
     user_obj = User.query.filter_by(username=username).first()
+
     if user_obj is None:
         flash('User does not exist')
         return redirect(url_for('.index'))
+    if not user_obj.is_active:
+        flash('User does not exist')
+        return redirect(url_for('.index'))
+
     if current_user.made_request(user_obj):
         flash('You have already made a request to this person')
         return redirect(url_for('.user', username=user_obj.username))
@@ -289,6 +335,7 @@ def add_connection(username):
     else:
         flash('Request sent to %s.' % (user_obj.first_name + " " + user_obj.last_name))
     return redirect(url_for('.user', username=username))
+
 
 @main.route('/remove_connection/<username>')
 @login_required
@@ -301,6 +348,7 @@ def remove_connection(username):
         flash('You have removed your connection with %s.' % (user_obj.first_name + " " + user_obj.last_name))
     return redirect(url_for('.user', username=username))
 
+
 @main.route('/decline_connection/<username>')
 @login_required
 def decline_connection(username):
@@ -311,8 +359,6 @@ def decline_connection(username):
     else:
         flash('You have declined the connection request with %s.' % (user_obj.first_name + " " + user_obj.last_name))
     return redirect(url_for('.user', username=username))
-
-
 
 
 @main.route('/search', methods=['GET', 'POST'])
@@ -337,24 +383,18 @@ def search(term):
                            term=term)
 
 
-
-
-'''
-@main.before_request
-def before_request():
-    g.search_form = SearchForm()
-'''
-
 @main.route('/test')
 @admin_required
 def test():
     return render_template("test.html",
                            title="Test")
 
+
 @main.route('/generate-pathway')
 def generate_pathway():
     generate_future_pathway(current_user)
     return redirect(url_for('main.pathway'))
+
 
 @main.route('/js/<path:path>')
 def send_js(path):
