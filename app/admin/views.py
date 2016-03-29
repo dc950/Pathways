@@ -41,7 +41,6 @@ def users():
     user3 = User.query.filter_by(username=username3).first()
     if form1.validate_on_submit():
         if user:
-            flash("An email has been sent to " + username + " regarding their deleted account.")
             return redirect(url_for('admin.delete_this_user', username=username))
         else:
             flash('Username doesnt exist')
@@ -123,7 +122,8 @@ def delete_this_user(username):
     if form1.validate_on_submit():
         send_email(user.email, 'Deletion of account', 'auth/email/delete-notice', user=user)
         User.query.filter_by(username=username).delete()
-        flash("Your account has successfully been deleted.")
+        flash("The account has successfully been deleted.")
+        flash("An email has been sent to " + username + " regarding their deleted account.")
         return redirect(url_for('admin.index'))
     return render_template('admin-delete-user.html', form1=form1, username=username)
 
