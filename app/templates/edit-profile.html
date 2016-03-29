@@ -23,7 +23,7 @@
             {{ wtf.quick_form(form2) }}
             <ul class="list-skills">
             {% for s in skills %}
-            <li>{{ s.name }}</li>
+            <li id="{{ s.name }}List">{{ s.name }}&nbsp;<button type="button" class="close delete-skill" id="{{ s.name }}">&times;</button></li>
             {% endfor %}
             </ul>
         </div>

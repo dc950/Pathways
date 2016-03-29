@@ -1,6 +1,6 @@
 import json
 import app
-from flask import render_template, session, flash, redirect, url_for, send_from_directory, Flask, request, jsonify, Response
+from flask import render_template, session, flash, redirect, url_for, send_from_directory, Flask, request, jsonify, Response, make_response
 from flask.ext.login import current_user, login_required
 from . import main
 from .pathway_generator import generate_future_pathway
@@ -99,6 +99,28 @@ def edit():
     form1.email.data = current_user.email
     form1.default_avatar.data = current_user.def_avatar
     return render_template('edit-profile.html', form1=form1, form2=form2, skills=user_skills)
+
+
+@main.route('/add-skill/<skill_name>')
+@login_required
+def add_skill(skill_name):
+    # print('In the thing')
+    current_user.add_skill_name(skill_name)
+    # skills = current_user.skills
+    # data = []
+    # for s in skills:
+    #     data.append(s.name)
+    response = make_response(json.dumps(True))
+    response.content_type = 'application/json'
+    return response
+
+
+@main.route('/delete-skill/<skill_name>')
+def delete_skill(skill_name):
+    current_user.remove_skill(skill_name)
+    response = make_response(json.dumps(True))
+    response.content_type = 'application/json'
+    return response
 
 
 @main.route('/user/pathway/edit-qualification/')
