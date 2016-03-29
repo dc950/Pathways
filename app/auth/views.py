@@ -1,7 +1,7 @@
 from flask import render_template, redirect, request, url_for, flash, Markup, current_app, get_flashed_messages
 from flask.ext.login import login_user, logout_user, login_required, current_user
 from . import auth
-from ..models import User
+from ..models import User, UserQualification, user_skills, connections, future_quals, future_careers
 from ..email import send_email
 from .forms import LoginForm, RegistrationForm, ChangePasswordForm, ForgottenPasswordForm, DeleteAccountForm
 from app import db
@@ -13,7 +13,7 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
-        if user is not None and user.verify_password(form.password.data):
+        if user is not None and user.verify_password(form.password.data) and user.is_active:
             login_user(user, form.remember_me.data)
             return redirect(request.args.get('next') or url_for('main.index'))
         flash('Invalid username or password')
@@ -136,8 +136,41 @@ def delete_account(token):
 
     if form.validate_on_submit():
         if current_user.is_authenticated:
+
+            # Find and delete UserQualificaions
+            uqs = UserQualification.query.filter_by(user_id=current_user.id).all()
+            for uq in uqs:
+                db.session.delete(uq)
+
+            # Find and delete skills
+            for s in current_user.skills:
+                current_user.skills.remove(s)
+
+            # Remove connections
+            for i in current_user.connection_requests:
+                current_user.connection_requests.remove(i)
+
+            for i in current_user.connection_invitations:
+                current_user.connection_invitations.remove(i)
+
+            # Remove future quals
+            for q in current_user.future_quals:
+                current_user.future_quals.remove(q)
+
+            # Remove future careers
+            for c in current_user.future_careers:
+                current_user.future_careers.remove(c)
+
+            current_user.first_name = ''
+            current_user.last_name = ''
+            current_user.email = str(current_user.id)
+            current_user.username = str(current_user.id)
+            current_user.avatar_hash = ''
+
+
+            current_user.is_active = False
             logout_user()
-            User.query.filter_by(id=uid).delete()
+            # User.query.filter_by(id=uid).delete()
             flash("Your account has successfully been deleted.")
             return redirect(url_for('main.index'))
     return render_template('delete_account.html', form=form)

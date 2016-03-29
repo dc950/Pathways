@@ -104,7 +104,7 @@
                             <ul class="dropdown-menu">
                                 {% for user in current_user.connections %}
                                     <li>
-                                        <a href="{{ url_for('.user', username=user.username) }}">{{ user.first_name }} {{ user.last_name }}</a>
+                                        <a href="{{ url_for('main.user', username=user.username) }}">{{ user.first_name }} {{ user.last_name }}</a>
                                     </li>
                                 {% endfor %}
                             </ul>
