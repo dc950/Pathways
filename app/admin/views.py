@@ -66,13 +66,6 @@ def users():
 @admin_required
 def reportedcomments():
     reported_comments = ReportedComment.query.all()
-    # commentform = adminReportComment()
-    # comm_id = commentform.commentid.data
-    # r_comment = ReportedComment.query.filter_by(comment_id=comm_id).first()
-    # if commentform.validate_on_submit():
-    #     if r_comment:
-    #         r_comment.remove_comment()
-    #         flash('The comment with ID: ' + comm_id + ' has been successfully deleted.')
     return render_template('admin-reportedcomments.html', reported_comments=reported_comments)
 
 
