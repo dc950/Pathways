@@ -620,12 +620,17 @@ class ReportedComment(db.Model):
     comment_id = db.Column(db.Integer, db.ForeignKey('comments.id'), primary_key=True)
     comment = db.relationship("Comment")
 
+    @staticmethod
+    def add_comment(comment):
+        reported_comment = ReportedComment(comment=comment)
+        db.session.add(reported_comment)
+
     def remove_comment(self):
-        db.session.remove(self.comment)
-        db.session.remove(self)
+        db.session.delete(self.comment)
+        db.session.delete(self)
 
     def keep_comment(self):
-        db.session.remove(self)
+        db.session.delete(self)
 
 
 class Role(db.Model):

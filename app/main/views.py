@@ -5,7 +5,7 @@ from flask.ext.login import current_user, login_required
 from . import main
 from .pathway_generator import generate_future_pathway
 from .. import db
-from ..models import User, UserQualification, Qualification, QualificationType, Career, Subject, Comment, future_quals
+from ..models import User, UserQualification, Qualification, QualificationType, Career, Subject, Comment, future_quals, ReportedComment
 from .forms import EditProfileForm, AddQualificationForm, EditQualificationForm, SearchForm, CommentForm, SkillsForm
 from ..decorators import admin_required, permission_required
 from .search import search_user, search_careers
@@ -30,6 +30,16 @@ def career(careername):
                            career=career_obj,
                            title=careername)
 
+
+@main.route('/reportcomment/<commentid>')
+def reportcomment(commentid):
+    comment_obj = Comment.query.filter_by(id=commentid).first()
+    if comment_obj is None:
+        flash('This comment doesnt exist')
+        return redirect(url_for('main.user',username=current_user.username))
+    ReportedComment.add_comment(comment_obj)
+    flash('Thank you for reporting this comment for an Admin to review.')
+    return redirect(url_for('main.user',username=current_user.username))
 
 @main.route('/user/<username>', methods=['GET', 'POST'])
 def user(username):
