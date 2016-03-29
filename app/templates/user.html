@@ -41,7 +41,7 @@
                    <br>
                   <li><a class="btn btn-default" href="{{ url_for('main.edit_qualification') }}">Edit Qualifications</a></li>
                {% elif user in current_user.connections %}
-                  <li><a class="btn btn-default" href="{{ url_for('.remove_connection', username=user.username) }}">Remove Connections</a></li>
+                  <li><a class="btn btn-default" href="{{ url_for('.remove_connection', username=user.username) }}">Remove Connection</a></li>
                {% elif user in current_user.invitations %}
                   <li><a class="btn btn-default" href="{{ url_for('.add_connection', username=user.username)}}">Accept Connection Request</a></li>
                    <br>
