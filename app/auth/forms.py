@@ -12,12 +12,12 @@ class LoginForm(Form):
 
 
 class RegistrationForm(Form):
-    first_name = StringField('First Name', validators=[DataRequired(), Length(1, 64)])  # VALIDATE
-    last_name = StringField('Last Name', validators=[DataRequired(), Length(1, 64)])  # VALIDATE
+    first_name = StringField('First Name', validators=[DataRequired(), Length(1, 64)])
+    last_name = StringField('Last Name', validators=[DataRequired(), Length(1, 64)])
     email = StringField('Email', validators=[DataRequired(), Length(1, 64), Email()])
     password = PasswordField('Password', validators=[
-        DataRequired(), EqualTo('password2', message='Passwords must match.')])
-    password2 = PasswordField('Confirm Password', validators=[DataRequired()])
+        DataRequired(), EqualTo('password2', message='Passwords must match.'), Length(6, 32)])
+    password2 = PasswordField('Confirm Password', validators=[DataRequired(), Length(6, 32)])
     submit = SubmitField('Register')
 
     def validate_email(self, field):
@@ -27,8 +27,8 @@ class RegistrationForm(Form):
 
 class ChangePasswordForm(Form):
     password = PasswordField('Password', validators=[
-        DataRequired(), EqualTo('password2', message='Passwords must match.')])
-    password2 = PasswordField('Confirm Password', validators=[DataRequired()])
+        DataRequired(), EqualTo('password2', message='Passwords must match.'), Length(6, 32)])
+    password2 = PasswordField('Confirm Password', validators=[DataRequired(), Length(6, 32)])
     submit = SubmitField('Change Password')
 
 class DeleteAccountForm(Form):
