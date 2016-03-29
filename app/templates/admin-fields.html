@@ -1,0 +1,28 @@
+{% extends 'admin-base.html' %}
+
+
+
+{% block main_content %}
+    <h1>Field Data Entry</h1>
+    {% if form_data | length == 0 %}
+        <h3>All subjects have associated fields</h3>
+    {% else %}
+        <form action="" method="post" name="fields">
+            {{ form.hidden_tag() }}
+            <table class="table table-hover">
+            <tr>
+                <th>Subject</th>
+                <th>Field</th>
+            </tr>
+                {% for f in form_data %}
+                    <tr>
+                        <td>{{ f[0] }}</td>
+                        <td>{{ f[1] }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+            {{ form.submit }}
+        </form>
+    {% endif %}
+
+{% endblock %}

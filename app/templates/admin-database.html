@@ -7,18 +7,18 @@
 {% endblock %}
 
 {% block main_content %}
+    <h3>Automatic Data Insertion</h3>
     <div class="row">
-        <a href="{{ url_for('admin.insert_qualifications') }}">Load qualifications</a>
+        <a href="{{ url_for('admin.insert_qualifications') }}">Insert local qualifications</a>
     </div>
     <div class="row">
-        <a href="{{ url_for('admin.uni_courses') }}"> Load uni course</a>
+        <a href="{{ url_for('admin.uni_courses') }}"> Load uni course from Which</a>
     </div>
-    <h3>Careers</h3>
-    <div class="row">x
-        <a href="{{ url_for('admin.get_careers') }}">Update Careers</a>
     <div class="row">
-    {% for c in careers %}
-    <p><a href="{{ url_for('main.career', careername=c.name) }}">{{ c.name }}</a></p>
-    {% endfor %}
-
+        <a href="{{ url_for('admin.get_careers') }}">Load Careers from UCAS</a>
+    </div>
+    <h3>Manual Data Insertion</h3>
+    <div class="row">
+        <a href="{{ url_for('admin.set_subject_fields') }}">Set subject fields</a>
+    </div>
 {% endblock %}

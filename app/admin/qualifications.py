@@ -2,9 +2,6 @@ from ..models import QualificationType, Qualification, Subject, Field, Role
 from .webcrawler import webcrawler
 from .uniwebcrawler import uniwebcrawler
 from .. import db
-import sqlalchemy as sa
-from sqlalchemy.orm.session import make_transient
-from sqlalchemy.orm import sessionmaker
 
 gcse = QualificationType()
 btec2 = QualificationType()
@@ -13,7 +10,6 @@ btec3 = QualificationType()
 higher = QualificationType()
 btec4 = QualificationType()
 cert_higher_ed = QualificationType()
-higher = QualificationType()
 adv_higher = QualificationType()
 diploma = QualificationType()
 btec5 = QualificationType()
@@ -49,8 +45,10 @@ def QualificationsClear():
 
     db.session.commit()
 
+
 def DefineQualifications():
     print("Test")
+
 
 def DefineQualificationTypes():
 
@@ -299,8 +297,6 @@ def DefineSubjects():
     
     db.session.commit()
 
-    
-
     for subject in [["Accounting & Finance","Economics"], ["Aeronautical & Manufacturing Engineering","Engineering & Technology"], ["Agriculture & Forestry","Agriculture"],
                     ["American Studies","Area Studies"], ["Anatomy & Physiology","Human Physical Performance & Recreation"], ["Anthropology","Anthropology"], ["Archaeology","Archaeology"],
                     ["Architecture","Architecture & Design"], ["Art & Design","Visual Arts"], ["Biological Sciences","Biology"], ["Business & Management Studies","Business"], 
@@ -328,6 +324,7 @@ def DefineSubjects():
         db.session.add(q)
 
     db.session.commit()
+
 
 def DefineFields():
     

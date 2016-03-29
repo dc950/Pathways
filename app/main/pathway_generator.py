@@ -1,39 +1,16 @@
-from ..models import Career, User, Qualification, Skill, UserQualification, QualificationType, Field, Subject
-from flask.ext.login import current_user
+from ..models import Career, User, Qualification, Skill, UserQualification, QualificationType, Field, Subject, CareerSubject
+from flask import flash
 from app import db
 import random
 
 
-# Check current level
-# Get all uni courses with similar fields
-
-
 def generate_future_pathway(u):
-    # Temporary solution until fields are done.
-    # selects a few random uni courses and careers as options
-    # qualification_type = QualificationType.query.filter_by(name="Bachelor's Degree").first()
-    # print("QualificationType: "+str(qualification_type.id))
-    # all_courses = Qualification.query.filter_by(qualification_type=qualification_type).all()
-    # print("All courses:"+str(all_courses))
-    # courses = random.sample(all_courses, 5)
-    # all_careers = Career.query.all()
-    # branches = []
-    # for c in courses:
-    #     careers = random.sample(all_careers, 2)
-    #     branch = {'course': c, 'careers': careers}
-    #     branches.append(branch)
-    # print(str(branches))
-
-    # Actual solution
-    # Find most common field based on qualifications
-
-    qualification_type = QualificationType.query.filter_by(name="Bachelor's Degree").first()
 
     # Get all fields
     fields = []
     for q in u.qualifications:
         fields.append(q.qualification.subject.field)
-    print("Fields: " + str(fields))
+    # print("Fields: " + str(fields))
 
     # count instances of each
     fcount = {}
@@ -44,47 +21,60 @@ def generate_future_pathway(u):
     top_fields = fcount.keys()
     top_fields = sorted(top_fields, key=lambda x: fcount[x])
 
-
     if len(top_fields) < 2:
         flash("Not enough course data")
         return
 
-    print("Top fields: "+str(top_fields))
+    # print("Top fields: "+str(top_fields))
 
-    # Find some courses using those fields (eventually check requirements as well)
+    # Find future qualifications
 
-    # Takes two from most common and one from each other
-    top_courses = Qualification.query.join(Subject).filter_by(field=top_fields[0]).filter_by(name="Bachelor's Degree").all()
+    # Find next levels
+    user_quals = UserQualification.query.filter_by(user_id=u.id).all()
+    cur_max_level = max(user_quals, key=lambda x: x.level)
+
     courses = []
 
-    # Randomly pick two
-    if len(top_courses) > 1:
-        courses = random.sample(top_courses, 2)
-    elif len(top_courses) == 1:
-        courses = random.sample(top_courses, 1)
+    # For each of the next 3 levels
+    for i in range(cur_max_level.level+1, cur_max_level.level+4):
+        # If above max value, return
+        if i > 8:
+            break
+        qualification_types = QualificationType.query.filter_by(level=i).all()
+        qts = []
+        for q in qualification_types:
+            chosen_count = 0
+            for f in top_fields:
+                if chosen_count > 4:
+                    break
+                possible_courses = Qualification.query.join(
+                    Subject, Subject.id == Qualification.subject_id
+                ).filter(Qualification.qualification_type_id==q.id).filter_by(field=f).all()
+                qt_courses = []
+                if len(possible_courses) > 1:
+                    qts += random.sample(possible_courses, 2)
+                    chosen_count += 2
+                elif len(possible_courses) == 1:
+                    qts.append(possible_courses[0])
+                    chosen_count += 1
+        # print("level "+str(i)+": "+str(qts))
+        if len(qts) > 3:
+            courses += random.sample(qts, 4)
+        else:
+            courses += qts
 
-    # Get one from each of the others:
+    # print("Chosen courses are: " + str(courses))
 
-    course = Qualification.query.join(Subject).filter_by(field=top_fields[1]).filter_by(name="Bachelor's Degree").all()
-    if len(course) >= 1:
-        courses.append(random.sample(course, 1)[0])
-    course = Qualification.query.join(Subject).filter_by(field=top_fields[2]).filter_by(name="Bachelor's Degree").all()
-    if len(course) >= 1:
-        courses.append(random.sample(course, 1)[0])
-    # TODO: Check for entry requirements
+    # Find future careers
 
-    print("Chosen courses are: " + str(courses))
-
-    # Find career for field of each course
-    all_careers = Career.query.all()
-    # for c in all_careers:
-    #     print(str(c.field))
-
-    top_careers = []
     chosen_count = 0
     careers = []
     for i in top_fields:
-        top_careers = list(filter(lambda c: i in c.fields, all_careers)) # TODO: change to big join thing to speed up
+        top_careers = Career.query.join(
+            CareerSubject, CareerSubject.career_id == Career.id
+        ).join(
+            Subject, CareerSubject.subject_id == Subject.id
+        ).filter_by(field=i).all()
         if chosen_count == 0:
             if len(top_careers) > 1:
                 careers = random.sample(top_careers, 2)
@@ -99,9 +89,9 @@ def generate_future_pathway(u):
         else:
             break
 
-    print('Top careers: ' + str(top_careers))
-    print("Chosen courses are: " + str(courses))
-    print('Chosen careers are: ' + str(careers))
+    # print('Top careers: ' + str(top_careers))
+    # print("Chosen courses are: " + str(courses))
+    # print('Chosen careers are: ' + str(careers))
 
     u.future_quals = courses
     u.future_careers = careers
