@@ -1,12 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<p>403 - Forbidden.</p>
-<p>You do not have permission to access to this page/function</p>
-<p>Click <a href="{{ url_for('main.index') }}">Here</a> To return to our main website</p>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block header_content %}
+    <h1>403 - Forbidden</h1>
+{% endblock %}
+
+
+{% block main_content %}
+    <p>You do not have permission to access this page</p>
+    <p><a href="{{url_for('main.index')}}">Return to home page</a></p>
+{% endblock %}

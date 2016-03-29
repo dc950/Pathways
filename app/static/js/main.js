@@ -52,7 +52,7 @@ $(document).ready(function(){
 
     $(".delete-skill").click(function(){
         var skillToDelete = this.id;
-        alert("Deleting "+skillToDelete);
+        //alert("Deleting "+skillToDelete);
 
         //Send ajax request
         var request = $.ajax({
