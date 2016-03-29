@@ -76,7 +76,6 @@ def send_new_password_email(email=None):
         user = User.query.filter_by(email=email).first()
         if user:
             user.send_new_password_email()
-            flash('An email has been sent to your account with further details on how to proceed')
             return redirect(url_for('auth.login'))
         else:
             flash('No user with that associated account was found.  Please register to create an account')
@@ -85,7 +84,6 @@ def send_new_password_email(email=None):
         # Request was made from a user.
         if current_user.confirmed is True:
             current_user.send_new_password_email()
-            flash('An email has been sent to your account with further details on how to proceed')
         else:
             flash("You must authenticate your account before you can do this action. Please see your email to authenticate your account.")
         return redirect(url_for('main.edit'))
@@ -148,7 +146,6 @@ def send_new_delete_acc_email(email=None):
         user = User.query.filter_by(email=email).first()
         if user:
             user.send_new_delete_acc_email()
-            flash('An email has been sent to your account with further details on how to delete your account.')
             return redirect(url_for('auth.login'))
         else:
             flash('No user with that associated account was found.  Please register to create an account')
