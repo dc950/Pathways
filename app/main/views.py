@@ -34,6 +34,10 @@ def career(careername):
 @main.route('/reportcomment/<commentid>')
 def reportcomment(commentid):
     comment_obj = Comment.query.filter_by(id=commentid).first()
+    reportedalready = ReportedComment.query.filter_by(comment_id=commentid).first()
+    if reportedalready:
+        flash('You have already reported this comment.')
+        return redirect(url_for('main.user',username=current_user.username))
     if comment_obj is None:
         flash('This comment doesnt exist')
         return redirect(url_for('main.user',username=current_user.username))
@@ -102,7 +106,7 @@ def edit():
         print("validated")
         current_user.first_name = form1.first_name.data
         current_user.last_name = form1.last_name.data
-        current_user.email = form1.email.data
+        #current_user.email = form1.email.data
         current_user.def_avatar = form1.default_avatar.data
         db.session.add(current_user)
         flash('Your profile has been updated')
@@ -110,7 +114,7 @@ def edit():
     print(form1.errors)
     form1.first_name.data = current_user.first_name
     form1.last_name.data = current_user.last_name
-    form1.email.data = current_user.email
+    #form1.email.data = current_user.email
     form1.default_avatar.data = current_user.def_avatar
     return render_template('edit-profile.html', form1=form1, form2=form2, skills=user_skills)
 

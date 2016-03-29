@@ -151,7 +151,7 @@ class User(UserMixin, db.Model):
     def send_confirmation_email(self):
         token = self.generate_confirmation_token()
         send_email(self.email, 'Confirm Your Account', 'auth/email/confirm', user=self, token=token)
-        flash('A confirmation email has been sent to your email')
+        flash('A confirmation email has been sent to your email.')
 
     def confirm(self, token):
         s = Serializer(current_app.config['SECRET_KEY'])
@@ -168,12 +168,12 @@ class User(UserMixin, db.Model):
     def send_new_password_email(self):
         token = self.generate_new_password_token()
         send_email(self.email, 'Change your password', 'auth/email/change-password', user=self, token=token)
-        flash('A confirmation email has been sent to your email')
+        flash('An email containing instructions on how to change your password has been sent to your email.')
 
     def send_new_delete_acc_email(self):
         token = self.generate_delete_account_token()
         send_email(self.email, 'To delete your account', 'auth/email/delete-account', user=self, token=token)
-        flash('A confirmation email has been sent to your email')
+        flash('An email containing instructions on how to delete your account has been sent to your email.')
 
     def generate_new_password_token(self, expiration=1800):
         s = Serializer(current_app.config['SECRET_KEY'], expiration)
