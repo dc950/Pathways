@@ -210,11 +210,13 @@ class User(UserMixin, db.Model):
         Adds the skill to the user by name - if the skill does not exist, it is created
         :param skill_name: the name of the skill to be added
         """
-        s = Skill.query.filter_by(name=skill_name.lower)
+        s_name = skill_name.lower()
+
+        s = Skill.query.filter_by(name=s_name)
         if s.count():
             self.add_skill(s.first())
         else:
-            s = Skill(name=skill_name.lower)
+            s = Skill(name=s_name)
             db.session.add(s)
             db.session.commit()
             self.add_skill(s)
@@ -390,11 +392,12 @@ class Career(db.Model):
         :param skill_name: the name of the skill to be added
         :param points: The points for showing the importance of the skill
         """
-        s = Skill.query.filter_by(name=skill_name.lower)
+        s_name = skill_name.lower()
+        s = Skill.query.filter_by(name=s_name)
         if s.count():
             self.add_skill(s.first(), points)
         else:
-            s = Skill(name=skill_name.lower)
+            s = Skill(name=s_name)
             db.session.add(s)
             db.session.commit()
             self.add_skill(s, points)
@@ -518,20 +521,13 @@ class Qualification(db.Model):
         return self.name
 
 
-class Grade(db.Model):
-    __tablename__ = 'grades'
-    id = db.Column(db.Integer, primary_key=True)
-    qual_type_id = db.Column(db.Integer, db.ForeignKey('qualification_types.id'))
-    qual_type = db.relationship("QualificationType")
-    grade = db.Column(db.String)
-
-
 class QualificationType(db.Model):
     __tablename__ = 'qualification_types'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), unique=True)
     level = db.Column(db.Integer)
     ucas_points = db.Column(db.Integer)
+    allowed_grades = db.Column(db.String(16))
 
     @staticmethod
     def newType(name):
@@ -552,7 +548,7 @@ class UserQualification(db.Model):
     __tablename__ = 'user_qualifications'
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
     qualifications_id = db.Column(db.Integer, db.ForeignKey('qualifications.id'), primary_key=True)
-    grade = db.Column(db.String(1))  # There's probably a better way to do this...
+    grade = db.Column(db.String(8))
     qualification = db.relationship("Qualification")
 
     @property

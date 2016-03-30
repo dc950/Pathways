@@ -97,7 +97,7 @@ def user(username):
 
 
 
-@main.route('/user/edit-profile', methods=['GET', 'POST'])
+@main.route('/edit-profile', methods=['GET', 'POST'])
 @login_required
 def edit():
     user_skills = current_user.skills
@@ -142,8 +142,8 @@ def delete_skill(skill_name):
     return response
 
 
-@main.route('/user/pathway/edit-qualification/')
-@main.route('/user/pathway/edit-qualification/<qualification>', methods=['GET', 'POST'])
+@main.route('/edit-qualification/')
+@main.route('/edit-qualification/<qualification>', methods=['GET', 'POST'])
 @login_required
 def edit_qualification(qualification=None):
     """
@@ -170,40 +170,37 @@ def edit_qualification(qualification=None):
         
 
     else:
-        UserQual = db.session.query(UserQualification).get((current_user.id, qualification))
-        QualType = UserQual.qualification.qualification_type_id
+        user_qual = db.session.query(UserQualification).get((current_user.id, qualification))
+        qual_type = user_qual.qualification.qualification_type_id
         form = EditQualificationForm()
 
-        form.qualification_type.choices = [(q.id, q.name) for q in QualificationType.query.filter_by(id=QualType).all()]
-        form.subjects.choices = [(s.id, s.subject.name) for s in Qualification.query.filter_by(qualification_type_id=QualType).all()]
+        form.qualification_type.choices = [(q.id, q.name) for q in QualificationType.query.filter_by(id=qual_type).all()]
+        form.subjects.choices = sorted([(s.id, s.subject.name) for s in Qualification.query.filter_by(qualification_type_id=qual_type).all()], key=lambda x: x[1])
 
         form.subjects.default = qualification
 
-        form.grade.default = UserQual.grade
+        form.grade.default = user_qual.grade
 
         #form.process()
 
         if form.validate_on_submit():
-            db.session.delete(UserQual)
-
-            nq = UserQualification()
-            nq.user_id = current_user.id
-            nq.qualifications_id = form.subjects.data
-            nq.grade = form.grade.data
-
-            db.session.add(nq)
-            db.session.commit()
+            user.user_id = current_user.id
+            user_qual.qualifications_id = form.subjects.data
+            user_qual.grade = form.grade.data
+            #
+            # db.session.add(user_qual)
+            # db.session.commit()
 
             return redirect(url_for('main.edit_qualification'))
 
         #form.qualification_type.data = qualification
         return render_template("edit-qualification.html",
-                           title="Edit Qualification: " + UserQual.qualification.subject.name,
+                           title="Edit Qualification: " + user_qual.qualification.subject.name,
                            show_all=False,
                            form=form)
 
 
-@main.route('/user/pathway/add-qualification/', methods=['GET', 'POST'])
+@main.route('/add-qualification/', methods=['GET', 'POST'])
 @login_required
 def add_qualification():
     form = AddQualificationForm()
@@ -233,8 +230,14 @@ def add_qualification():
         nq.qualifications_id = form.subjects.data
         nq.grade = form.grade.data
 
-        db.session.add(nq)
-        db.session.commit()
+        # Check if this item is already in the database and if it is, overwrite it and return
+        oq = UserQualification.query.filter_by(user_id=nq.user_id, qualifications_id=nq.qualifications_id).first()
+        if oq is not None:
+            oq.grade = nq.grade
+            # db.session.commit()
+        else:
+            db.session.add(nq)
+            db.session.commit()
 
         return redirect(url_for('main.edit_qualification'))
 
@@ -258,7 +261,7 @@ def about():
                            title="About Us")
 
 
-@main.route('/user/pathway', methods=['GET', 'POST'])
+@main.route('/pathway', methods=['GET', 'POST'])
 @login_required
 def pathway():
     opt_param2 = request.args.get("request_career_page")
