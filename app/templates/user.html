@@ -1,10 +1,11 @@
 <!-- could import pathway page -->
 {% extends "base.html" %}
 {% import "_macros.html" as macros %}
+{% set active_page = "user" %}
 
 {% block header_content %}
     <div class="header">
-       <h1>{{ user.first_name + " " + user.last_name}}</h1>
+        <h1>{{ user.first_name + " " + user.last_name }}</h1>
     </div>
 
 {% endblock %}
@@ -15,74 +16,80 @@
     <script src="{{ url_for('static', filename='js/pathway.js') }}"></script>
 {% endblock %}
 
-{% block nav_overwrite %}
-    <li><a href="{{ url_for('main.index') }}">Home <span class="sr-only">(current)</span></a></li>
-    <li><a href="{{ url_for('main.pathway') }}">Your Pathway</a></li>
-    {% if user == current_user %}
-        <li class="nav-active"><a href="{{ url_for('main.user', username=current_user.username) }}">Your Profile</a></li>
-    {% else %}
-    <li><a href="{{ url_for('main.user', username=current_user.username) }}">Your Profile</a></li>
-    {% endif %}
-{% endblock %}
-
 {% block main_content %}
     <div class="row">
         <div class="col-md-3">
             <div class="side-padding">
-               <img src="{{ user.gravatar(256) }}">
+                <img src="{{ user.gravatar(256) }}">
             </div>
         </div>
         <div class="col-md-3">
-            <p> This is the profile page for {{ user.first_name + " " + user.last_name}} </p>
+            <p> This is the profile page for {{ user.first_name + " " + user.last_name }} </p>
             <p>Actions:</p>
             <div class="side-padding">
-               {% if user==current_user %}
-                  <li><a class="btn btn-default" href="{{ url_for('main.edit') }}">Edit Profile</a></li>
-                   <br>
-                  <li><a class="btn btn-default" href="{{ url_for('main.edit_qualification') }}">Edit Qualifications</a></li>
-               {% elif user in current_user.connections %}
-                  <li><a class="btn btn-default" href="{{ url_for('.remove_connection', username=user.username) }}">Remove Connection</a></li>
-               {% elif user in current_user.invitations %}
-                  <li><a class="btn btn-default" href="{{ url_for('.add_connection', username=user.username)}}">Accept Connection Request</a></li>
-                   <br>
-                  <li><a class="btn btn-default" href="{{ url_for('.decline_connection', username=user.username)}}">Decline Connection Request</a></li>
-               <!-- Ignore request -->
-               {% elif user in current_user.requests %}
-                  <li>Connection Request Pending</li>
-               {% else %}
-                  <li><a class="btn btn-default" href="{{ url_for('.add_connection', username=user.username)}}">Send Connection Request</a></li>
-               {% endif %}
+                {% if user==current_user %}
+                    <li><a class="btn btn-default" href="{{ url_for('main.edit') }}">Edit Profile</a></li>
+                    <br>
+                    <li><a class="btn btn-default" href="{{ url_for('main.edit_qualification') }}">Edit
+                        Qualifications</a></li>
+                {% elif user in current_user.connections %}
+                    <li><a class="btn btn-default" href="{{ url_for('.remove_connection', username=user.username) }}">Remove
+                        Connection</a></li>
+                {% elif user in current_user.invitations %}
+                    <li><a class="btn btn-default" href="{{ url_for('.add_connection', username=user.username) }}">Accept
+                        Connection Request</a></li>
+                    <br>
+                    <li><a class="btn btn-default" href="{{ url_for('.decline_connection', username=user.username) }}">Decline
+                        Connection Request</a></li>
+                    <!-- Ignore request -->
+                {% elif user in current_user.requests %}
+                    <li>Connection Request Pending</li>
+                {% else %}
+                    <li><a class="btn btn-default" href="{{ url_for('.add_connection', username=user.username) }}">Send
+                        Connection Request</a></li>
+                {% endif %}
             </div>
         </div>
+        {% if user == current_user or user in current_user.connections %}
+            <div class="col-md-4">
+                <h3>Skills and Interests</h3>
+                {% for s in user.skills %}
+                    <li>{{ s.name }}</li>
+                {% endfor %}
+            </div>
+        {% endif %}
     </div>
 
 
     {% if user == current_user or user in current_user.connections %}
-    <div>
-        <div class="profile-pathway">
-            <div id="pathway-container" height=700px>
-                <svg class="overlay img-fluid"></svg>
+        <div>
+            <div class="profile-pathway">
+                <div id="pathway-container" height=700px>
+                    <svg class="overlay img-fluid"></svg>
+                </div>
             </div>
         </div>
-    </div>
-    <div>
-       <h3>Page comments</h3>
-        {% for c in comments %}
-            <p><a href="{{ url_for('main.user', username=c.author.username) }}"><img src="{{ c.author.gravatar(32) }}">
-                {{ c.author.first_name }} {{ c.author.last_name }}</a>: {{ c.body }} <a class="btn btn-default" href="{{ url_for('main.reportcomment', commentid=c.id) }}"> Report This Comment </a></p>
-        {% endfor %}
-        <div class="pagination">
-            {{ macros.pagination_widget(pagination, 'main.user', username=user.username) }}
+        <div>
+            <h3>Page comments</h3>
+            {% for c in comments %}
+                <p><a href="{{ url_for('main.user', username=c.author.username) }}"><img
+                        src="{{ c.author.gravatar(32) }}">
+                    {{ c.author.first_name }} {{ c.author.last_name }}</a>: {{ c.body }} <a class="btn btn-default"
+                                                                                            href="{{ url_for('main.reportcomment', commentid=c.id) }}">
+                    Report This Comment </a></p>
+            {% endfor %}
+            <div class="pagination">
+                {{ macros.pagination_widget(pagination, 'main.user', username=user.username) }}
+            </div>
+            <form action="" method="post" name="comment">
+                {{ form.hidden_tag() }}
+                <br>
+                <p>
+                    {{ form.body(size=64) }}<br>
+                <p>{{ form.submit }}</p>
+            </form>
         </div>
-        <form action="" method="post" name="comment">
-         {{ form.hidden_tag() }}
-         <br>
-            <p>
-               {{ form.body(size=64) }}<br>
-         <p>{{ form.submit }}</p>
-      </form>
-    </div>
     {% else %}
-       <p>You are unable to see this data as you are not connected to the user</p>
+        <p>You are unable to see this data as you are not connected to the user</p>
     {% endif %}
 {% endblock %}
