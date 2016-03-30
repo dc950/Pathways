@@ -3,7 +3,7 @@ import app
 from flask import render_template, session, flash, redirect, url_for, send_from_directory, Flask, request, jsonify, Response, make_response
 from flask.ext.login import current_user, login_required
 from . import main
-from .pathway_generator import generate_future_pathway
+from .pathway_generator import generate_future_pathway, get_pathway
 from .. import db
 from ..models import User, UserQualification, Qualification, QualificationType, Career, Subject, Comment, future_quals, ReportedComment
 from .forms import EditProfileForm, AddQualificationForm, EditQualificationForm, SearchForm, CommentForm, SkillsForm
@@ -56,14 +56,15 @@ def user(username):
         flash('User %s not found.' % username)
         return redirect(url_for('main.index'))
 
+    opt_param2 = request.args.get("request_career_page")
+    # print(opt_param2)
+    if opt_param2 is not None:
+        return url_for('.career', careername=opt_param2)
+
     opt_param = request.args.get("request_json")
     print(opt_param)
     if opt_param is "1":
-        results = dict((t.name, dict(level=t.level, subjects=[
-                dict(name=s.qualification.subject.name, grade=s.grade) for s in UserQualification.query.filter_by(user_id=user_obj.id).join(Qualification, UserQualification.qualifications_id==Qualification.id).filter_by(qualification_type=t).all()
-            ])) for t in QualificationType.query.join(Qualification, QualificationType.id==Qualification.qualification_type_id).join(UserQualification, UserQualification.qualifications_id==Qualification.id).filter_by(user_id=user_obj.id).order_by(QualificationType.level).all())
-
-        return jsonify(**results)
+        return get_pathway(user_obj)
 
     form = CommentForm()
     if form.validate_on_submit():
@@ -96,7 +97,7 @@ def user(username):
 
 
 
-@main.route('/user/edit-profile', methods=['GET', 'POST'])
+@main.route('/edit-profile', methods=['GET', 'POST'])
 @login_required
 def edit():
     user_skills = current_user.skills
@@ -141,8 +142,8 @@ def delete_skill(skill_name):
     return response
 
 
-@main.route('/user/pathway/edit-qualification/')
-@main.route('/user/pathway/edit-qualification/<qualification>', methods=['GET', 'POST'])
+@main.route('/edit-qualification/')
+@main.route('/edit-qualification/<qualification>', methods=['GET', 'POST'])
 @login_required
 def edit_qualification(qualification=None):
     """
@@ -169,40 +170,37 @@ def edit_qualification(qualification=None):
         
 
     else:
-        UserQual = db.session.query(UserQualification).get((current_user.id, qualification))
-        QualType = UserQual.qualification.qualification_type_id
+        user_qual = db.session.query(UserQualification).get((current_user.id, qualification))
+        qual_type = user_qual.qualification.qualification_type_id
         form = EditQualificationForm()
 
-        form.qualification_type.choices = [(q.id, q.name) for q in QualificationType.query.filter_by(id=QualType).all()]
-        form.subjects.choices = [(s.id, s.subject.name) for s in Qualification.query.filter_by(qualification_type_id=QualType).all()]
+        form.qualification_type.choices = [(q.id, q.name) for q in QualificationType.query.filter_by(id=qual_type).all()]
+        form.subjects.choices = sorted([(s.id, s.subject.name) for s in Qualification.query.filter_by(qualification_type_id=qual_type).all()], key=lambda x: x[1])
 
         form.subjects.default = qualification
 
-        form.grade.default = UserQual.grade
+        form.grade.default = user_qual.grade
 
         #form.process()
 
         if form.validate_on_submit():
-            db.session.delete(UserQual)
-
-            nq = UserQualification()
-            nq.user_id = current_user.id
-            nq.qualifications_id = form.subjects.data
-            nq.grade = form.grade.data
-
-            db.session.add(nq)
-            db.session.commit()
+            user.user_id = current_user.id
+            user_qual.qualifications_id = form.subjects.data
+            user_qual.grade = form.grade.data
+            #
+            # db.session.add(user_qual)
+            # db.session.commit()
 
             return redirect(url_for('main.edit_qualification'))
 
         #form.qualification_type.data = qualification
         return render_template("edit-qualification.html",
-                           title="Edit Qualification: " + UserQual.qualification.subject.name,
+                           title="Edit Qualification: " + user_qual.qualification.subject.name,
                            show_all=False,
                            form=form)
 
 
-@main.route('/user/pathway/add-qualification/', methods=['GET', 'POST'])
+@main.route('/add-qualification/', methods=['GET', 'POST'])
 @login_required
 def add_qualification():
     form = AddQualificationForm()
@@ -232,8 +230,14 @@ def add_qualification():
         nq.qualifications_id = form.subjects.data
         nq.grade = form.grade.data
 
-        db.session.add(nq)
-        db.session.commit()
+        # Check if this item is already in the database and if it is, overwrite it and return
+        oq = UserQualification.query.filter_by(user_id=nq.user_id, qualifications_id=nq.qualifications_id).first()
+        if oq is not None:
+            oq.grade = nq.grade
+            # db.session.commit()
+        else:
+            db.session.add(nq)
+            db.session.commit()
 
         return redirect(url_for('main.edit_qualification'))
 
@@ -257,61 +261,21 @@ def about():
                            title="About Us")
 
 
-@main.route('/user/pathway', methods=['GET', 'POST'])
+@main.route('/pathway', methods=['GET', 'POST'])
 @login_required
 def pathway():
-    user_subjects = UserQualification.query.filter_by(user_id=current_user.id).join(Qualification, UserQualification.qualifications_id==Qualification.id).all()
-    user_qual_types = QualificationType.query.join(Qualification, QualificationType.id==Qualification.qualification_type_id).join(UserQualification, UserQualification.qualifications_id==Qualification.id).filter_by(user_id=current_user.id).all()
-    #user_qual_types = QualificationType.query.join(Qualification, QualificationType.id==Qualification.qualification_type_id).all()
-
-    future_qual_types = [] #.qualification_name
-    for x in current_user.future_quals:
-        future_qual_types.append(x.qualification_type)
-
-    #user_subjects = current_user.future_quals
-
-    for x in current_user.future_quals:
-        uq = UserQualification()
-        uq.user_id = current_user.id
-        uq.qualifications_id = x.id
-        uq.qualification = x
-        user_subjects.append(uq)
-
-    print(current_user.future_quals)
-
-    #user_qual_types.append(future_qual_types)
-
-    #for x in db.session.query(future_quals).filter_by(user_id=current_user.id).all():
-    #    print(x.qual_id)
-    #      future_qual_types += QualificationType.query.join(Qualification, QualificationType.id==Qualification.qualification_type_id).filter_by(subject_id=x.qual_id).all()
-    
     opt_param2 = request.args.get("request_career_page")
-    print(opt_param2)
+    # print(opt_param2)
     if opt_param2 is not None:
         return url_for('.career', careername=opt_param2)
 
     opt_param = request.args.get("request_json")
-    print(opt_param)
+    # print(opt_param)
     if opt_param is "1":
-        results = dict((("Level " + str(t.level) + " - " + t.name), dict(level=t.level, subjects=[
-                dict(name=s.qualification.subject.name, grade=s.grade) for s in filter((lambda x: x.qualification.qualification_type_id==t.id), user_subjects)
-            ])) for t in (user_qual_types + future_qual_types))
-
-        results2 = dict((("Level " + str(9) + " - " + "Careers"), dict(level=9, subjects=[
-                dict(name=s.name, grade=None) for s in current_user.future_careers
-            ])) for t in user_qual_types)
-
-        #results3 = dict((("Level " + str(t.level) + " - " + t.name), dict(level=t.level, test="test")) for t in future_qual_types)
-
-        z = results.copy()
-        z.update(results2)
-        #z.update(results3)
-        return jsonify(**z)
-
+        return get_pathway(current_user)
 
     return render_template("pathway.html",
-                           title="Your Pathway",
-                           subjects=user_subjects)
+                           title="Your Pathway")
 
 
 @main.route('/add_connection/<username>')
@@ -382,6 +346,10 @@ def search(term):
                            careers=careers,
                            term=term)
 
+
+@main.route('/privacy-policy')
+def privacypolicy():
+    return render_template("privacy-policy.html")
 
 @main.route('/test')
 @admin_required

@@ -22,6 +22,8 @@ def create_app(config_name):
     db.init_app(app)
     login_manager.init_app(app)
 
+    app.jinja_env.add_extension('jinja2.ext.do')
+
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
