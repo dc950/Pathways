@@ -383,6 +383,10 @@ def search(term):
                            term=term)
 
 
+@main.route('/privacy-policy')
+def privacypolicy():
+    return render_template("privacy-policy.html")
+
 @main.route('/test')
 @admin_required
 def test():
