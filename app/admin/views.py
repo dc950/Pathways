@@ -6,9 +6,10 @@ from flask.ext.wtf import Form
 from .webcrawler import webcrawler
 from .uniwebcrawler import uniwebcrawler
 from .qualifications import setup
-from ..models import Permission, Career, User, Subject, Field, ReportedComment
+from ..models import Permission, Career, User, Subject, Field, ReportedComment, UserQualification
 from ..decorators import admin_required
 from ..email import send_email
+from app import db
 
 
 @admin.route('/')
@@ -39,6 +40,11 @@ def users():
     user = User.query.filter_by(username=username).first()
     user2 = User.query.filter_by(username=username2).first()
     user3 = User.query.filter_by(username=username3).first()
+    numberofusers=0
+    allusers = User.query.all()
+    for x in allusers:
+        if x.is_active == True:
+            numberofusers=numberofusers+1
     if form1.validate_on_submit():
         if user:
             return redirect(url_for('admin.delete_this_user', username=username))
@@ -58,7 +64,7 @@ def users():
             send_email(user3.email, 'Reflective Pathways Admin Message', 'auth/email/custom-email', customemail=customemail, user=user3)
             flash("A custom email you have written has been sent to " + username3 + ".")
             return redirect(url_for("admin.users"))
-    return render_template('admin-users.html', users=users, form1=form1, form2=form2, form3=form3)
+    return render_template('admin-users.html', users=users, form1=form1, form2=form2, form3=form3, numberofusers=numberofusers)
 
 
 @admin.route('/reportedcomments', methods=['GET', 'POST'])
@@ -121,7 +127,38 @@ def delete_this_user(username):
     user = User.query.filter_by(username=username).first()
     if form1.validate_on_submit():
         send_email(user.email, 'Deletion of account', 'auth/email/delete-notice', user=user)
-        User.query.filter_by(username=username).delete()
+         # Find and delete UserQualificaions
+        uqs = UserQualification.query.filter_by(user_id=user.id).all()
+        for uq in uqs:
+            db.session.delete(uq)
+
+        # Find and delete skills
+        for s in user.skills:
+            user.skills.remove(s)
+
+        # Remove connections
+        for i in user.connection_requests:
+            user.connection_requests.remove(i)
+
+        for i in user.connection_invitations:
+            user.connection_invitations.remove(i)
+
+        # Remove future quals
+        for q in user.future_quals:
+            user.future_quals.remove(q)
+
+        # Remove future careers
+        for c in user.future_careers:
+            user.future_careers.remove(c)
+
+        user.first_name = ''
+        user.last_name = ''
+        user.email = str(user.id)
+        user.username = str(user.id)
+        user.avatar_hash = ''
+
+
+        user.is_active = False
         flash("The account has successfully been deleted.")
         flash("An email has been sent to " + username + " regarding their deleted account.")
         return redirect(url_for('admin.index'))
