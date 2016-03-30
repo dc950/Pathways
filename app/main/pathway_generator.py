@@ -20,7 +20,7 @@ def generate_future_pathway(u):
     # sort them 3
     top_fields = fcount.keys()
     top_fields = sorted(top_fields, key=lambda x: fcount[x])
-
+    print(top_fields)
     if len(top_fields) < 2:
         flash("Not enough course data")
         return
@@ -76,8 +76,8 @@ def generate_future_pathway(u):
             Subject, CareerSubject.subject_id == Subject.id
         ).filter_by(field=i).all()
         if len(careers) < 20:
-            if len(top_careers) > 5:
-                careers += random.sample(top_careers, 5)
+            if len(top_careers) > 10:
+                careers += random.sample(top_careers, 10)
                 chosen_count += 5
             else:
                 careers += top_careers
@@ -98,6 +98,7 @@ def generate_future_pathway(u):
     sorted(careers, key=lambda x: career_skills[x])
 
     # get top 10
+    print(str(careers))
     optimal_careers = careers[:10]
     other_careers = careers[10:]
 
@@ -106,10 +107,18 @@ def generate_future_pathway(u):
     else:
         chosen_careers = optimal_careers
 
-    if len(other_careers) >= 2:
-        chosen_careers += random.sample(other_careers, 2)
+    spaces_left = 5 - len(chosen_careers)
+    print('spaces left: ' + str(spaces_left) + ', len(other_careers): ' + str(len(other_careers)))
+    if len(other_careers) >= spaces_left:
+        chosen_careers += random.sample(other_careers, spaces_left)
     else:
         chosen_careers += other_careers
+        spaces_left = 5 - len(chosen_careers)
+        if spaces_left > 0:
+            if len([x for x in optimal_careers if x not in chosen_careers]) > spaces_left:
+                chosen_careers += random.sample([x for x in optimal_careers if x not in chosen_careers], spaces_left)
+            else:
+                chosen_careers += optimal_careers
 
     # print('Top careers: ' + str(top_careers))
     # print("Chosen courses are: " + str(courses))

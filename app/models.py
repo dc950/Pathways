@@ -19,12 +19,12 @@ user_skills = db.Table('user_skills',
                        db.Column('skill_id', db.Integer, db.ForeignKey('skills.id')))
 
 future_quals = db.Table('future_quals',
-                        db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
-                        db.Column('qual_id', db.Integer, db.ForeignKey('qualifications.id')))
+                        db.Column('user_id', db.Integer, db.ForeignKey('users.id'), primary_key=True),
+                        db.Column('qual_id', db.Integer, db.ForeignKey('qualifications.id'), primary_key=True))
 
 future_careers = db.Table('future_careers',
-                        db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
-                        db.Column('career_id', db.Integer, db.ForeignKey('careers.id')))
+                        db.Column('user_id', db.Integer, db.ForeignKey('users.id'), primary_key=True),
+                        db.Column('career_id', db.Integer, db.ForeignKey('careers.id'), primary_key=True))
 
 
 # If a request is made a connection is added.
@@ -59,8 +59,8 @@ class User(UserMixin, db.Model):
     profile_comments = db.relationship('Comment', backref='profile', foreign_keys="[Comment.profile_id]", lazy='dynamic')
     authored_comments = db.relationship('Comment', backref='author', foreign_keys="[Comment.author_id]", lazy='dynamic')
 
-    future_careers = db.relationship('Career', secondary=future_careers)
-    future_quals = db.relationship('Qualification', secondary=future_quals)
+    future_careers = db.relationship('Career', secondary=future_careers, lazy='dynamic')
+    future_quals = db.relationship('Qualification', secondary=future_quals, lazy='dynamic')
 
     def __repr__(self):
         return '<User %r>' % (self.first_name + self.last_name)
@@ -289,8 +289,8 @@ class User(UserMixin, db.Model):
                      confirmed=True)
             u.generate_username()
             # Select some random qualifications
-            quals = Qualification.query.all()
-            chosen_quals = random.sample(quals, 20)
+            quals = Qualification.query.join(QualificationType).filter(QualificationType.level < 6).all()
+            chosen_quals = random.sample(quals, 15)
             for q in chosen_quals:
                 u.add_qualification(q)
             generate_future_pathway(u)

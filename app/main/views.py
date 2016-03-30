@@ -277,7 +277,7 @@ def pathway():
         uq.qualification = x
         user_subjects.append(uq)
 
-    print(current_user.future_quals)
+    # print(current_user.future_quals)
 
     #user_qual_types.append(future_qual_types)
 
@@ -286,12 +286,12 @@ def pathway():
     #      future_qual_types += QualificationType.query.join(Qualification, QualificationType.id==Qualification.qualification_type_id).filter_by(subject_id=x.qual_id).all()
     
     opt_param2 = request.args.get("request_career_page")
-    print(opt_param2)
+    # print(opt_param2)
     if opt_param2 is not None:
         return url_for('.career', careername=opt_param2)
 
     opt_param = request.args.get("request_json")
-    print(opt_param)
+    # print(opt_param)
     if opt_param is "1":
         results = dict((("Level " + str(t.level) + " - " + t.name), dict(level=t.level, subjects=[
                 dict(name=s.qualification.subject.name, grade=s.grade) for s in filter((lambda x: x.qualification.qualification_type_id==t.id), user_subjects)
