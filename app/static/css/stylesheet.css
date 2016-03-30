@@ -279,6 +279,43 @@ footer {
 	right: 0;
 }
 
+.pathway-buttons {
+	background-color: #F8F8F8;
+	height: 7vh;
+	padding: 0;
+	margin: 0;
+	list-style-type: none;
+}
+
+.pathway-buttons .col-md-4 {
+	height: 100%;
+	padding: 0;
+	border-right: 1px dotted black;
+	border-left: 1px dotted black;
+}
+
+.pathway-buttons .col-md-4 a {
+	height: 100%;
+	width: 100%;
+
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+
+	-ms-flex-align: center;
+	-webkit-align-items: center;
+	-webkit-box-align: center;
+
+	align-items: center;
+	justify-content: middle;
+}
+
+.pathway-buttons .col-md-4 a div {
+	text-align: center;
+	width: 100%;
+
+}
+
 /*----  Pathway Nodes ----*/
 .node {
 	/*fill: black;*/
