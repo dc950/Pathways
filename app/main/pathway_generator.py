@@ -75,23 +75,45 @@ def generate_future_pathway(u):
         ).join(
             Subject, CareerSubject.subject_id == Subject.id
         ).filter_by(field=i).all()
-        if chosen_count == 0:
-            if len(top_careers) > 1:
-                careers = random.sample(top_careers, 2)
-                chosen_count += 1
-            elif len(top_careers) == 1:
-                careers = random.sample(top_careers, 1)
-                chosen_count += 1
-        elif chosen_count > 0 and chosen_count < 3:
-            if len(top_careers) > 0:
-                careers.append(random.sample(top_careers, 1)[0])
+        if len(careers) < 20:
+            if len(top_careers) > 5:
+                careers += random.sample(top_careers, 5)
+                chosen_count += 5
+            else:
+                careers += top_careers
                 chosen_count += 1
         else:
             break
+
+    # Choose best careers based off of the users skills
+
+    # Count number of similar skills for each career
+    career_skills = {}
+    for c in careers:
+        career_skills.update({c: 0})
+        for s in c.skills:
+            if s in u.skills:
+                career_skills.update({c: career_skills[c]+1})
+
+    sorted(careers, key=lambda x: career_skills[x])
+
+    # get top 10
+    optimal_careers = careers[:10]
+    other_careers = careers[10:]
+
+    if len(optimal_careers) >= 3:
+        chosen_careers = random.sample(optimal_careers, 3)
+    else:
+        chosen_careers = optimal_careers
+
+    if len(other_careers) >= 2:
+        chosen_careers += random.sample(other_careers, 2)
+    else:
+        chosen_careers += other_careers
 
     # print('Top careers: ' + str(top_careers))
     # print("Chosen courses are: " + str(courses))
     # print('Chosen careers are: ' + str(careers))
 
     u.future_quals = courses
-    u.future_careers = careers
+    u.future_careers = chosen_careers

@@ -210,11 +210,11 @@ class User(UserMixin, db.Model):
         Adds the skill to the user by name - if the skill does not exist, it is created
         :param skill_name: the name of the skill to be added
         """
-        s = Skill.query.filter_by(name=skill_name)
+        s = Skill.query.filter_by(name=skill_name.lower)
         if s.count():
             self.add_skill(s.first())
         else:
-            s = Skill(name=skill_name)
+            s = Skill(name=skill_name.lower)
             db.session.add(s)
             db.session.commit()
             self.add_skill(s)
@@ -224,7 +224,7 @@ class User(UserMixin, db.Model):
         Removes a skill from the user based off of the skill name
         :param skill_name: The name of the skill to be removed
         """
-        s = Skill.query.filter_by(name=skill_name).first()
+        s = Skill.query.filter_by(name=skill_name.lower).first()
         if s is not None:
             if s in self.skills:
                 self.skills.remove(s)
@@ -390,11 +390,11 @@ class Career(db.Model):
         :param skill_name: the name of the skill to be added
         :param points: The points for showing the importance of the skill
         """
-        s = Skill.query.filter_by(name=skill_name)
+        s = Skill.query.filter_by(name=skill_name.lower)
         if s.count():
             self.add_skill(s.first(), points)
         else:
-            s = Skill(name=skill_name)
+            s = Skill(name=skill_name.lower)
             db.session.add(s)
             db.session.commit()
             self.add_skill(s, points)
