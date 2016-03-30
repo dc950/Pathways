@@ -9,7 +9,10 @@
 {% block main_content %}
 <div class="container-fluid">
     {% if careers|length > 0 %}
-        <div class="row search-result">Careers</div>
+        <div class="row search-result">
+            <div class="col-md-4"><h3>Careers</h3></div>
+            <div class="col-md-4"><h3>Related Fields</h3></div>
+        </div>
     {% endif %}
     {% for c in careers %}
         <a href="{{ url_for('main.career', careername=c.name) }}" class="row search-result">
@@ -17,8 +20,16 @@
                 {{ c.name }}
             </div>
             <div class="col-md-4">
+                {% set fields = [] %}
                 {% for s in c.subjects %}
-                    {{ s.subject.field.name }},
+                    {% if s.subject.field != None %}
+                        {% if s.subject.field.name not in fields %}
+                        <!--{{ fields.append(s.subject.field.name) }}-->
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+                {% for f in fields %}
+                    {{ f }}{% if not loop.last %},{% endif %}
                 {% endfor %}
             </div>
         </a>

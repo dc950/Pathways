@@ -3,7 +3,7 @@ import app
 from flask import render_template, session, flash, redirect, url_for, send_from_directory, Flask, request, jsonify, Response, make_response
 from flask.ext.login import current_user, login_required
 from . import main
-from .pathway_generator import generate_future_pathway
+from .pathway_generator import generate_future_pathway, get_pathway
 from .. import db
 from ..models import User, UserQualification, Qualification, QualificationType, Career, Subject, Comment, future_quals, ReportedComment
 from .forms import EditProfileForm, AddQualificationForm, EditQualificationForm, SearchForm, CommentForm, SkillsForm
@@ -56,14 +56,15 @@ def user(username):
         flash('User %s not found.' % username)
         return redirect(url_for('main.index'))
 
+    opt_param2 = request.args.get("request_career_page")
+    # print(opt_param2)
+    if opt_param2 is not None:
+        return url_for('.career', careername=opt_param2)
+
     opt_param = request.args.get("request_json")
     print(opt_param)
     if opt_param is "1":
-        results = dict((t.name, dict(level=t.level, subjects=[
-                dict(name=s.qualification.subject.name, grade=s.grade) for s in UserQualification.query.filter_by(user_id=user_obj.id).join(Qualification, UserQualification.qualifications_id==Qualification.id).filter_by(qualification_type=t).all()
-            ])) for t in QualificationType.query.join(Qualification, QualificationType.id==Qualification.qualification_type_id).join(UserQualification, UserQualification.qualifications_id==Qualification.id).filter_by(user_id=user_obj.id).order_by(QualificationType.level).all())
-
-        return jsonify(**results)
+        return get_pathway(user_obj)
 
     form = CommentForm()
     if form.validate_on_submit():
@@ -260,31 +261,6 @@ def about():
 @main.route('/user/pathway', methods=['GET', 'POST'])
 @login_required
 def pathway():
-    user_subjects = UserQualification.query.filter_by(user_id=current_user.id).join(Qualification, UserQualification.qualifications_id==Qualification.id).all()
-    user_qual_types = QualificationType.query.join(Qualification, QualificationType.id==Qualification.qualification_type_id).join(UserQualification, UserQualification.qualifications_id==Qualification.id).filter_by(user_id=current_user.id).all()
-    #user_qual_types = QualificationType.query.join(Qualification, QualificationType.id==Qualification.qualification_type_id).all()
-
-    future_qual_types = [] #.qualification_name
-    for x in current_user.future_quals:
-        future_qual_types.append(x.qualification_type)
-
-    #user_subjects = current_user.future_quals
-
-    for x in current_user.future_quals:
-        uq = UserQualification()
-        uq.user_id = current_user.id
-        uq.qualifications_id = x.id
-        uq.qualification = x
-        user_subjects.append(uq)
-
-    # print(current_user.future_quals)
-
-    #user_qual_types.append(future_qual_types)
-
-    #for x in db.session.query(future_quals).filter_by(user_id=current_user.id).all():
-    #    print(x.qual_id)
-    #      future_qual_types += QualificationType.query.join(Qualification, QualificationType.id==Qualification.qualification_type_id).filter_by(subject_id=x.qual_id).all()
-    
     opt_param2 = request.args.get("request_career_page")
     # print(opt_param2)
     if opt_param2 is not None:
@@ -293,25 +269,10 @@ def pathway():
     opt_param = request.args.get("request_json")
     # print(opt_param)
     if opt_param is "1":
-        results = dict((("Level " + str(t.level) + " - " + t.name), dict(level=t.level, subjects=[
-                dict(name=s.qualification.subject.name, grade=s.grade) for s in filter((lambda x: x.qualification.qualification_type_id==t.id), user_subjects)
-            ])) for t in (user_qual_types + future_qual_types))
-
-        results2 = dict((("Level " + str(9) + " - " + "Careers"), dict(level=9, subjects=[
-                dict(name=s.name, grade=None) for s in current_user.future_careers
-            ])) for t in user_qual_types)
-
-        #results3 = dict((("Level " + str(t.level) + " - " + t.name), dict(level=t.level, test="test")) for t in future_qual_types)
-
-        z = results.copy()
-        z.update(results2)
-        #z.update(results3)
-        return jsonify(**z)
-
+        return get_pathway(current_user)
 
     return render_template("pathway.html",
-                           title="Your Pathway",
-                           subjects=user_subjects)
+                           title="Your Pathway")
 
 
 @main.route('/add_connection/<username>')
