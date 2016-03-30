@@ -319,42 +319,26 @@ footer {
 /*----  Pathway Nodes ----*/
 .node {
 	/*fill: black;*/
-	stroke: black;
-	stroke-width: 3;
+	fill: #fff;
+   	stroke: steelblue;
+   	stroke-width: 3px;
 }
 
 .tooltip {
-	stroke: black;
-	stroke-width: 3;
+	fill: #fff;
+   	stroke: steelblue;
+   	stroke-width: 3px;
 }
 
 .node-label {
-	text-align: right;
+	font: 12px sans-serif;
 }
 
-/*.node-level-1 {
-	fill: orange !important;
-}
-
-.node-level-2 {
-	fill: red !important;
-}
-
-.node-level-3 {
-	fill: yellow !important;
-}
-
-.node-level-4 {
-	fill: cyan !important;
-}
-
-.node-level-5 {
-	fill: coral !important;
-}
-
-.node-level-6 {
-	fill: green !important;
-}*/
+.link {
+   fill: none;
+   stroke: #ccc;
+   stroke-width: 2px;
+ }
 
 
 .admin-user-list {

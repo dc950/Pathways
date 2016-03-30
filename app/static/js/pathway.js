@@ -121,8 +121,8 @@ $(document).ready(function(){
 				return y + edgeMargin + titleHeight;
 			}).attr('width', columnWidth).attr('height', nav_offset);
 
-			value.subjects.append('g').attr('clip-path', 'url(#clip1)').append('text').attr("dx", function(d, i){
-				return xPos + (columnWidth / 2) + 20;
+			value.subjects.append('text').attr("dx", function(d, i){
+				return xPos;
 			}).attr("dy", function(d, i){
 				var n = value.subjects[0].length;
 				var edgeMargin = 60;
@@ -135,7 +135,7 @@ $(document).ready(function(){
 					var y = workingHeight / 2 + nav_offset;
 				}
 				
-				return y + edgeMargin + titleHeight;
+				return y + edgeMargin + titleHeight + 25;
 			}).text(function(d){
 				return d.name;
 			}).attr('class', 'node-label');

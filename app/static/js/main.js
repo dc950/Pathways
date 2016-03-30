@@ -34,7 +34,7 @@ $(document).ready(function(){
                 elemName = skillToAdd+'List';
                 //Remove this but
 				var el = ('<li id = "' + elemName + '">' + skillToAdd +
-                '&nbsp;<button type="button" class="close delete-skill" id="' + skillToAdd +'">&times;</button></li>');
+                '&nbsp;<button type="button" class="close delete-skill" onclick="DeleteSkill(&#39;' + skillToAdd + '&#39;)" id="' + skillToAdd +'">&times;</button></li>');
 				$(".list-skills").append(el);
 				//el.addClass("btn btn-primary btn-xs");
 
@@ -50,19 +50,7 @@ $(document).ready(function(){
 		}
 	});
 
-    $(".delete-skill").click(function(){
-        var skillToDelete = this.id;
-        //alert("Deleting "+skillToDelete);
-
-        //Send ajax request
-        var request = $.ajax({
-            type: 'GET',
-            url: '/delete-skill/' + skillToDelete
-        });
-
-        elemName = this.id + 'List';
-        $("#"+elemName).remove()
-    });
+    $(".delete-skill").click(DeleteSkill(this.id));
 
 	$("#learn-more").click(function(){
 		target = $("#selling-point-one");
@@ -72,3 +60,14 @@ $(document).ready(function(){
         }, 1000);
 	})
 });
+
+function DeleteSkill(id){
+	var request = $.ajax({
+        type: 'GET',
+        url: '/delete-skill/' + id
+        success: function(){
+        	var elemName = id + 'List';
+			$("#" + elemName).remove()
+        }
+    });
+}
