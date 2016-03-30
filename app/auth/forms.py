@@ -18,6 +18,7 @@ class RegistrationForm(Form):
     password = PasswordField('Password', validators=[
         DataRequired(), EqualTo('password2', message='Passwords must match.'), Length(6, 32)])
     password2 = PasswordField('Confirm Password', validators=[DataRequired(), Length(6, 32)])
+    terms = BooleanField('I agree to the terms of service and privacy policy', validators=[DataRequired()])
     submit = SubmitField('Register')
 
     def validate_email(self, field):

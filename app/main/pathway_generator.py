@@ -1,7 +1,8 @@
 from ..models import Career, User, Qualification, Skill, UserQualification, QualificationType, Field, Subject, CareerSubject
-from flask import flash
+from flask import flash, request, url_for, jsonify
 from app import db
 import random
+
 
 
 def generate_future_pathway(u):
@@ -126,3 +127,32 @@ def generate_future_pathway(u):
 
     u.future_quals = courses
     u.future_careers = chosen_careers
+
+
+def get_pathway(user):
+    user_subjects = UserQualification.query.filter_by(user_id=user.id).join(Qualification, UserQualification.qualifications_id==Qualification.id).all()
+    user_qual_types = QualificationType.query.join(Qualification, QualificationType.id==Qualification.qualification_type_id).join(UserQualification, UserQualification.qualifications_id==Qualification.id).filter_by(user_id=user.id).all()
+
+    future_qual_types = [] #.qualification_name
+    for x in user.future_quals:
+        future_qual_types.append(x.qualification_type)
+
+    for x in user.future_quals:
+        uq = UserQualification()
+        uq.user_id = user.id
+        uq.qualifications_id = x.id
+        uq.qualification = x
+        user_subjects.append(uq)
+
+    results = dict((("Level " + str(t.level) + " - " + t.name), dict(level=t.level, subjects=[
+            dict(name=s.qualification.subject.name, grade=s.grade) for s in filter((lambda x: x.qualification.qualification_type_id==t.id), user_subjects)
+        ])) for t in (user_qual_types + future_qual_types))
+
+    results2 = dict((("Level " + str(9) + " - " + "Careers"), dict(level=9, subjects=[
+            dict(name=s.name, grade=None) for s in user.future_careers
+        ])) for t in user_qual_types)
+
+    z = results.copy()
+    z.update(results2)
+    #z.update(results3)
+    return jsonify(**z)
