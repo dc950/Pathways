@@ -158,7 +158,7 @@ main .blurb .row {
 	padding: 0px;
 	margin: 50px 0;
 
-	height: 400px;
+	min-height: 150px;
 
 	-webkit-box-shadow: 0px 10px 30px 1px rgba(0,0,0,0.75);
 	-moz-box-shadow: 0px 10px 30px 1px rgba(0,0,0,0.75);
@@ -169,18 +169,18 @@ main .blurb .row .col-md-6 {
 	margin: 0px;
 }
 
-main .blurb .row p {
+.sp {
 	text-align: center;
-	font-size: 22pt;
+	font-size: 3.2vmin;
 	font-family: caviar-dreams;
 
-	padding: 0 50px;
+	padding: 50px;
 
-	height: 400px;
-  	display: flex;
-  	align-items: center;
+	height: 100%;
+	align-items: center;
   	justify-content: center
 }
+
 
 main .blurb .row img {
 	padding: 0;
@@ -208,7 +208,8 @@ main .blurb .row div {
 
 .selling-point {
 	color: white;
-	font-size: 350%;
+	font-size: 30px;
+    font-size: 3.5vw;
 	-webkit-text-stroke: 0.5px black;
 	text-align: center;
 	font-family: coolvetica;
@@ -228,11 +229,7 @@ footer {
 .header {
    padding-left: 30px;
    padding-bottom: 10px;
-   font-family: Palatino Linotype;
-}
-
-.side-padding {
-   padding-left: 3%;
+   font-family: coolvetica;
 }
 
 .social-icon img {
@@ -378,4 +375,23 @@ footer {
 	color: black;
 	margin: 5px 0;
 	padding: 10px;
+}
+
+.report-comment {
+	display: inline;
+}
+
+.profile-name {
+	/*font-family: caviar-dreams;*/
+	text-align: center;
+	font-size: 20pt;
+}
+
+.profile-image-wrapper {
+	width: 100%;
+}
+
+.profile-image-wrapper img {
+	display:block;
+    margin:auto;
 }

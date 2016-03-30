@@ -3,80 +3,83 @@
 {% import "_macros.html" as macros %}
 {% set active_page = "user" %}
 
-{% block header_content %}
-    <div class="header">
-        <h1>{{ user.first_name + " " + user.last_name }}</h1>
-    </div>
-
-{% endblock %}
-
 {% block scripts %}
     {{ super() }}
     <script src="{{ url_for('static', filename='js/d3/d3.js') }}"></script>
     <script src="{{ url_for('static', filename='js/pathway.js') }}"></script>
 {% endblock %}
 
-{% block main_content %}
-    <div class="row">
-        <div class="col-md-3">
-            <div class="side-padding">
+{% block header_content %}
+    <div class="row" style="background-color: red">
+        <div class="col-md-3" style="background-color: green">
+            <div class="profile-image-wrapper">
                 <img src="{{ user.gravatar(256) }}">
             </div>
-        </div>
-        <div class="col-md-3">
-            <p> This is the profile page for {{ user.first_name + " " + user.last_name }} </p>
+
+            <div class="profile-name"> {{ user.first_name + " " + user.last_name }} </div>
             <p>Actions:</p>
-            <div class="side-padding">
+            <div class="btn-group-vertical" role="group">
                 {% if user==current_user %}
-                    <li><a class="btn btn-default" href="{{ url_for('main.edit') }}">Edit Profile</a></li>
-                    <br>
-                    <li><a class="btn btn-default" href="{{ url_for('main.edit_qualification') }}">Edit
-                        Qualifications</a></li>
+                    <a role="button" class="btn btn-default" href="{{ url_for('main.edit') }}">Edit Profile</a>
+                    <a role="button" class="btn btn-default" href="{{ url_for('main.edit_qualification') }}">Edit Qualifications</a>
                 {% elif user in current_user.connections %}
-                    <li><a class="btn btn-default" href="{{ url_for('.remove_connection', username=user.username) }}">Remove
-                        Connection</a></li>
+                    <div><a class="btn btn-default" href="{{ url_for('.remove_connection', username=user.username) }}">Remove
+                        Connection</a></div>
                 {% elif user in current_user.invitations %}
-                    <li><a class="btn btn-default" href="{{ url_for('.add_connection', username=user.username) }}">Accept
-                        Connection Request</a></li>
+                    <div><a class="btn btn-default" href="{{ url_for('.add_connection', username=user.username) }}">Accept
+                        Connection Request</a></div>
                     <br>
-                    <li><a class="btn btn-default" href="{{ url_for('.decline_connection', username=user.username) }}">Decline
-                        Connection Request</a></li>
+                    <div><a class="btn btn-default" href="{{ url_for('.decline_connection', username=user.username) }}">Decline
+                        Connection Request</a></div>
                     <!-- Ignore request -->
                 {% elif user in current_user.requests %}
-                    <li>Connection Request Pending</li>
+                    <div>Connection Request Pending</div>
                 {% else %}
-                    <li><a class="btn btn-default" href="{{ url_for('.add_connection', username=user.username) }}">Send
-                        Connection Request</a></li>
+                    <div><a class="btn btn-default" href="{{ url_for('.add_connection', username=user.username) }}">Send
+                        Connection Request</a></div>
                 {% endif %}
             </div>
-        </div>
         {% if user == current_user or user in current_user.connections %}
-            <div class="col-md-4">
+            <div>
                 <h3>Skills and Interests</h3>
-                {% for s in user.skills %}
-                    <li>{{ s.name }}</li>
-                {% endfor %}
+                <ul class="list-skills">
+                    {% for s in user.skills %}
+                        <li id="{{ s.name }}List">{{ s.name }}&nbsp;<button type="button" class="close delete-skill" id="{{ s.name }}">&times;</button></li>
+                    {% endfor %}
+                </ul>
             </div>
         {% endif %}
-    </div>
-
-
+        </div>
     {% if user == current_user or user in current_user.connections %}
-        <div>
+        <div class="col-md-9" style="background-color: red">
             <div class="profile-pathway">
                 <div id="pathway-container" height=700px>
                     <svg class="overlay img-fluid"></svg>
                 </div>
             </div>
         </div>
+    {% endif %}
+    </div>
+{% endblock %}
+
+{% block main_content %}
+    {% if user == current_user or user in current_user.connections %}
         <div>
             <h3>Page comments</h3>
             {% for c in comments %}
-                <p><a href="{{ url_for('main.user', username=c.author.username) }}"><img
+                <div><a href="{{ url_for('main.user', username=c.author.username) }}"><img
                         src="{{ c.author.gravatar(32) }}">
-                    {{ c.author.first_name }} {{ c.author.last_name }}</a>: {{ c.body }} <a class="btn btn-default"
-                                                                                            href="{{ url_for('main.reportcomment', commentid=c.id) }}">
-                    Report This Comment </a></p>
+                    {{ c.author.first_name }} {{ c.author.last_name }}</a>: {{ c.body }} 
+                    <div class="dropdown report-comment">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-haspopup="true" aria-expanded="false">
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ url_for('main.reportcomment', commentid=c.id) }}">Report This Comment </a></li>
+                            </ul>
+                    </div>
+                </div>
             {% endfor %}
             <div class="pagination">
                 {{ macros.pagination_widget(pagination, 'main.user', username=user.username) }}
@@ -89,7 +92,5 @@
                 <p>{{ form.submit }}</p>
             </form>
         </div>
-    {% else %}
-        <p>You are unable to see this data as you are not connected to the user</p>
     {% endif %}
 {% endblock %}
