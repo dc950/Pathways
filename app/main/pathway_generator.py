@@ -20,7 +20,7 @@ def generate_future_pathway(u):
     # sort them 3
     top_fields = fcount.keys()
     top_fields = sorted(top_fields, key=lambda x: fcount[x])
-
+    print(top_fields)
     if len(top_fields) < 2:
         flash("Not enough course data")
         return
@@ -75,23 +75,54 @@ def generate_future_pathway(u):
         ).join(
             Subject, CareerSubject.subject_id == Subject.id
         ).filter_by(field=i).all()
-        if chosen_count == 0:
-            if len(top_careers) > 1:
-                careers = random.sample(top_careers, 2)
-                chosen_count += 1
-            elif len(top_careers) == 1:
-                careers = random.sample(top_careers, 1)
-                chosen_count += 1
-        elif chosen_count > 0 and chosen_count < 3:
-            if len(top_careers) > 0:
-                careers.append(random.sample(top_careers, 1)[0])
+        if len(careers) < 20:
+            if len(top_careers) > 10:
+                careers += random.sample(top_careers, 10)
+                chosen_count += 5
+            else:
+                careers += top_careers
                 chosen_count += 1
         else:
             break
+
+    # Choose best careers based off of the users skills
+
+    # Count number of similar skills for each career
+    career_skills = {}
+    for c in careers:
+        career_skills.update({c: 0})
+        for s in c.skills:
+            if s in u.skills:
+                career_skills.update({c: career_skills[c]+1})
+
+    sorted(careers, key=lambda x: career_skills[x])
+
+    # get top 10
+    print(str(careers))
+    optimal_careers = careers[:10]
+    other_careers = careers[10:]
+
+    if len(optimal_careers) >= 3:
+        chosen_careers = random.sample(optimal_careers, 3)
+    else:
+        chosen_careers = optimal_careers
+
+    spaces_left = 5 - len(chosen_careers)
+    print('spaces left: ' + str(spaces_left) + ', len(other_careers): ' + str(len(other_careers)))
+    if len(other_careers) >= spaces_left:
+        chosen_careers += random.sample(other_careers, spaces_left)
+    else:
+        chosen_careers += other_careers
+        spaces_left = 5 - len(chosen_careers)
+        if spaces_left > 0:
+            if len([x for x in optimal_careers if x not in chosen_careers]) > spaces_left:
+                chosen_careers += random.sample([x for x in optimal_careers if x not in chosen_careers], spaces_left)
+            else:
+                chosen_careers += optimal_careers
 
     # print('Top careers: ' + str(top_careers))
     # print("Chosen courses are: " + str(courses))
     # print('Chosen careers are: ' + str(careers))
 
     u.future_quals = courses
-    u.future_careers = careers
+    u.future_careers = chosen_careers

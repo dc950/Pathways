@@ -24,13 +24,9 @@
 
 <!-- Main content block for page -->
 {% block main_content %}
-	<div>
-		<a href="{{ url_for('main.add_qualification') }}"> Add New Qualification</a>
-	</div>
-	<div>
-		<a href="{{ url_for('main.edit_qualification') }}">Edit Qualifications</a>
-	</div>
-	<div>
-		<a href="{{ url_for('main.generate_pathway') }}">Generate New Future Pathway</a>
+	<div class="pathway-buttons row">
+		<div class="col-md-4"><a href="{{ url_for('main.add_qualification') }}"><div>Add New Qualification</div></a></div>
+		<div class="col-md-4"><a href="{{ url_for('main.edit_qualification') }}"><div>Edit Qualifications</div></a></div>
+		<div class="col-md-4"><a href="{{ url_for('main.generate_pathway') }}"><div>Generate New Future Pathway</div></a></div>
 	</div>
 {% endblock %}
