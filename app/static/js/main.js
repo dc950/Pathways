@@ -64,7 +64,7 @@ $(document).ready(function(){
 function DeleteSkill(id){
 	var request = $.ajax({
         type: 'GET',
-        url: '/delete-skill/' + id
+        url: '/delete-skill/' + id,
         success: function(){
         	var elemName = id + 'List';
 			$("#" + elemName).remove()

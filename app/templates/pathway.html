@@ -24,9 +24,26 @@
 
 <!-- Main content block for page -->
 {% block main_content %}
-	<div class="pathway-buttons row">
-		<div class="col-md-4"><a href="{{ url_for('main.add_qualification') }}"><div>Add New Qualification</div></a></div>
-		<div class="col-md-4"><a href="{{ url_for('main.edit_qualification') }}"><div>Edit Qualifications</div></a></div>
-		<div class="col-md-4"><a href="{{ url_for('main.generate_pathway') }}"><div>Generate New Future Pathway</div></a></div>
-	</div>
+	<nav class="navbar navbar-default navbar-center">
+	  	<div class="container-fluid">
+	    <!-- Brand and toggle get grouped for better mobile display -->
+	    	<div class="navbar-header" id="path-nav">
+	      		<button  type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-3" aria-expanded="false">
+	        		<span class="sr-only">Toggle navigation</span>
+	        		<span class="icon-bar"></span>
+	        		<span class="icon-bar"></span>
+	        		<span class="icon-bar"></span>
+	      		</button>
+	    	</div>
+
+	    <!-- Collect the nav links, forms, and other content for toggling -->
+	    	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-3">
+	      		<ul class="nav navbar-nav">
+	        		<li><a href="{{ url_for('main.add_qualification') }}"><div>Add New Qualification</div></a></a></li>
+	        		<li><a href="{{ url_for('main.edit_qualification') }}"><div>Edit Qualifications</div></a></li>
+	        		<li class="dropdown"><a href="{{ url_for('main.generate_pathway') }}"><div>Generate New Future Pathway</div></a></li>
+	      		</ul>
+	    	</div><!-- /.navbar-collapse -->
+	  	</div><!-- /.container-fluid -->
+	</nav>
 {% endblock %}
