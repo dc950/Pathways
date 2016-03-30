@@ -24,7 +24,7 @@
                 {% for s in c.subjects %}
                     {% if s.subject.field != None %}
                         {% if s.subject.field.name not in fields %}
-                        <!--{{ fields.append(s.subject.field.name) }}-->
+                        {% do fields.append(s.subject.field.name) %}
                         {% endif %}
                     {% endif %}
                 {% endfor %}
