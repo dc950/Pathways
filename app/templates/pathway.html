@@ -15,16 +15,25 @@
 
 <!-- Page header 100% width -->
 {% block header_content %}
+	<div class="path-nav container-fluid row">
+		<a class="col-md-4" href="{{ url_for('main.edit_qualification') }}">Edit Qualifications</a>
+		<a class="col-md-4" href="{{ url_for('main.generate_pathway') }}">Generate Pathway</a>
+		<svg class="col-md-4">
+			<circle cx="0" class="node" r="10"></circle>
+			<text x="25" y="5" fill="black">Present</text>
+			<circle cx="175" class="node node-future" r="10"></circle>
+			<text x="200" y="5" fill="black">Future</text>
+		</svg>
+    </div>
 	<div id="pathway-container">
-		<svg class="overlay img-fluid"></svg>
+		<svg id="pathway-svg" class="overlay img-fluid"></svg>
 	</div>
 {% endblock %}
 
 <!-- Main content block for page -->
 {% block main_content %}
-	<nav class="navbar navbar-default navbar-center">
+	<!--<nav class="navbar navbar-default navbar-center">
 	  	<div class="container-fluid">
-	    <!-- Brand and toggle get grouped for better mobile display -->
 	    	<div class="navbar-header" id="path-nav">
 	      		<button  type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-3" aria-expanded="false">
 	        		<span class="sr-only">Toggle navigation</span>
@@ -34,14 +43,13 @@
 	      		</button>
 	    	</div>
 
-	    <!-- Collect the nav links, forms, and other content for toggling -->
 	    	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-3">
 	      		<ul class="nav navbar-nav">
 	        		<li><a href="{{ url_for('main.add_qualification') }}"><div>Add New Qualification</div></a></a></li>
 	        		<li><a href="{{ url_for('main.edit_qualification') }}"><div>Edit Qualifications</div></a></li>
 	        		<li class="dropdown"><a href="{{ url_for('main.generate_pathway') }}"><div>Generate New Future Pathway</div></a></li>
 	      		</ul>
-	    	</div><!-- /.navbar-collapse -->
-	  	</div><!-- /.container-fluid -->
-	</nav>
+	    	</div>
+	  	</div>
+	</nav> -->
 {% endblock %}

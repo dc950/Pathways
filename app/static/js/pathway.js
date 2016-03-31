@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-	var nav_offset = $("nav").height();
+	var nav_offset = 0;//$("nav").height();
 
 	var test = [1, 2, 3, 4, 5, 6];
 
@@ -16,7 +16,7 @@ $(document).ready(function(){
 
     	var titleHeight = 30;
 
-    	var baseSvg = d3.select("svg")
+    	var baseSvg = d3.select("#pathway-svg")
         baseSvg.attr("width", viewerWidth).attr("height", viewerHeight);
 
     	var tree = d3.layout.tree().size([viewerHeight, viewerWidth]);
@@ -27,7 +27,7 @@ $(document).ready(function(){
 
 		$.each(treeData, function(index, value){
     		var circles = baseSvg.selectAll('circle').data(value.subjects).sort(value.level);
-			newCircles[j] = {qualification: index ,level: value.level, subjects: circles.enter()};
+			newCircles[j] = {qualification: index , short_name: value.short_name, level: value.level, subjects: circles.enter()};
 	        j++;			
     	});
 
@@ -46,8 +46,8 @@ $(document).ready(function(){
 
     		baseSvg.append("rect").attr("x", xPos).attr("y", nav_offset).attr("width", columnWidth).attr("height", titleHeight)
     		.attr("fill", getLevelColour(value.level));
-
-    		baseSvg.append("text").attr("dx", xPos).attr("dy", 20 +  + nav_offset).text(value.qualification);
+    		console.log(value);
+    		baseSvg.append("text").attr("dx", xPos).attr("dy", 20 +  + nav_offset).text(value.short_name);
 
     		//console.log(value.subjects[0].length);
 
@@ -81,10 +81,17 @@ $(document).ready(function(){
 				return d.name;
 			}).attr('data-qualification', function(){
 				return value.qualification
+			}).attr('data-future', function(d){
+				console.log(d.future);
+				return d.future;
 			}).attr('data-level', function(){
 				return value.level;
-			}).attr('class', function(){
-				return getLevelClass(value.level);
+			}).attr('class', function(d){
+				if (d.future) {
+					 return "node node-future";
+				} else {
+					return "node";
+				}
 			}).attr('fill', getLevelColour(value.level))
 
 			$("<rect></rect>").appendTo("#clip1").attr("x", function(d, i){
@@ -166,45 +173,32 @@ $(document).ready(function(){
 
 function getLevelColour(i) {
 	switch(i) {
-		case 1:
-			return "orange"
 		case 2:
-			return "red"
+			return "#96ceb4"
 		case 3:
-			return "yellow"
+			return "#ffeead"
 		case 4:
-			return "cyan"
+			return "#ff6f69"
 		case 5:
-			return "coral"
+			return "#ffcc5c"
 		case 6:
-			return "blue"
+			return "#b3cde0"
 		case 7:
-			return "Lavender"
+			return "#be9b7b"
 		case 8:
-			return "SandyBrown"
+			return "#fffeb3"
 		case 9:
-			return "Gainsboro"
+			return "#f1cbff"
 		default:
-			return "green"
+			return "white"
 	}
 }
 
 function getLevelClass(i) {
-	switch(i) {
-		case 1:
-			return "node node-level-1"
-		case 2:
-			return "node node-level-2"
-		case 3:
-			return "node node-level-3"
-		case 4:
-			return "node node-level-4"
-		case 5:
-			return "node node-level-5"
-		case 6:
-			return "node node-level-6"
-		default:
-			return "node"
+	if (true) {
+		return "node node-future";
+	} else {
+		return "node";
 	}
 }
 
