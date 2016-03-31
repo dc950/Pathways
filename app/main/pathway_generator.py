@@ -74,6 +74,8 @@ def generate_future_pathway(u):
         else:
             break
 
+    print('Careers: ' + str(careers))
+
     # Choose best careers based off of the users skills
 
     # Count number of similar skills for each career
@@ -106,6 +108,8 @@ def generate_future_pathway(u):
                 chosen_careers += random.sample([x for x in optimal_careers if x not in chosen_careers], spaces_left)
             else:
                 chosen_careers += optimal_careers
+
+    print("chosen careers: " + str(chosen_careers))
 
     u.future_quals = courses
     u.future_careers = chosen_careers
