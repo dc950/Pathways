@@ -35,30 +35,34 @@
 {% block main_content %}
 	<div class="blurb">
 		<div class="row">
-			<p class="col-md-6 sp">Pathways is here to help you plot out your career path from start to finish. We use a combination of your education, work experience and personal interests to show you a range of possible careers and field options that would be open to you.</p>
-			<div class="hidden-xs col-md-6">
+			<p class="col-md-6 col-sm-6 sp">Pathways is here to help you plot out your career path from start to finish.</p>
+			<div class="hidden-xs col-md-6 col-sm-6">
 				<img  class="img-fluid img-circle img-responsive center-block" src="{{ url_for('static', filename='img/education-stock-image.jpg') }}">
 			</div>
 		</div>
 		<div class="row" id="image-break-one">
-			<h1 class="selling-point"><i>We use the latest qualification data from a range of sources, including UCAS, so that we can offer you up-to-date information on degree and career choices.</i></h1>
+			<h1 class="selling-point"><i>We use a combination of your education, skill and personal interests to show you a range of possible qualifications and careers that would be open to you.</i></h1>
 			<!--<img  class="col-md-6 img-responsive" src="{{ url_for('static', filename='img/comp_stock.jpg') }}">-->
 		</div>
 		<div class="row">
-		   <p class="col-md-6 sp">Pathways can be used in two ways, you can give us your education so far and we'll come up with possible next steps for you, or you can tell us your planned career and we'll tell you how to get there. </p>
-			<div class="hidden-xs col-md-6">
-				<img  class="img-fluid img-circle img-responsive center-block" src="https://placeholdit.imgix.net/~text?txtsize=28&bg=0099ff&txtclr=ffffff&txt=FoShizzleMyNizzle&w=300&h=300&fm=png">
+		   <p class="col-md-6 col-sm-6 sp">Using the latest qualification data from a range of sources such as UCAS and which we can offer options tailored to your interests and strengths.</p>
+			<div class="hidden-xs col-md-6 col-sm-6">
+				<img  class="img-fluid img-circle img-responsive center-block" src="{{ url_for('static', filename='img/edu_stock_2.jpg') }}">
 			</div>
 		</div>
 		<div class="row" id="image-break-two">
-			<h1 class="selling-point"><i>To get started just <a href="{{ url_for('auth.register') }}">register </a> an account with us.</i></h1>
+			<h1 class="selling-point"><i>Connect, share and recieve feedback on your pathway by connecting to our global userbase.</i></h1>
 			<!--<img  class="col-md-6 img-responsive" src="{{ url_for('static', filename='img/comp_stock.jpg') }}">-->
 		</div>
 		<div class="row">
-			<p class="col-md-6 sp">Blash blah blash blah blah</p>
-			<div class="hidden-xs col-md-6">
-				<img  class="img-fluid img-circle img-responsive center-block" src="https://placeholdit.imgix.net/~text?txtsize=28&bg=0099ff&txtclr=ffffff&txt=FoShizzleMyNizzle&w=300&h=300&fm=png">
+			<p class="col-md-6 col-sm-6 sp">We're here to help you get to where you want to be.</p>
+			<div class="hidden-xs col-md-6 col-sm-6">
+				<img  class="img-fluid img-circle img-responsive center-block" src="{{ url_for('static', filename='img/work_stock.jpg') }}">
 			</div>
+		</div>
+		<div class="row" id="image-break-three">
+			<h1 class="selling-point"><i>To get started just <a href="{{ url_for('auth.register') }}">register </a> an account with us.</i></h1>
+			<!--<img  class="col-md-6 img-responsive" src="{{ url_for('static', filename='img/comp_stock.jpg') }}">-->
 		</div>
 	</div>
 {% endblock %}
