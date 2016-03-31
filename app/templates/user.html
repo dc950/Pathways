@@ -10,48 +10,51 @@
 {% endblock %}
 
 {% block header_content %}
-    <div class="row" style="background-color: red">
-        <div class="col-md-3" style="background-color: green">
+    <div class="row profile">
+        <div class="col-md-3">
             <div class="profile-image-wrapper">
-                <img src="{{ user.gravatar(256) }}">
+                <img class="img-responsive center-block" src="{{ user.gravatar(256) }}">
             </div>
 
             <div class="profile-name"> {{ user.first_name + " " + user.last_name }} </div>
-            <p>Actions:</p>
-            <div class="btn-group-vertical" role="group">
-                {% if user==current_user %}
-                    <a role="button" class="btn btn-default" href="{{ url_for('main.edit') }}">Edit Profile</a>
-                    <a role="button" class="btn btn-default" href="{{ url_for('main.edit_qualification') }}">Edit Qualifications</a>
-                {% elif user in current_user.connections %}
-                    <div><a class="btn btn-default" href="{{ url_for('.remove_connection', username=user.username) }}">Remove
-                        Connection</a></div>
-                {% elif user in current_user.invitations %}
-                    <div><a class="btn btn-default" href="{{ url_for('.add_connection', username=user.username) }}">Accept
-                        Connection Request</a></div>
-                    <br>
-                    <div><a class="btn btn-default" href="{{ url_for('.decline_connection', username=user.username) }}">Decline
-                        Connection Request</a></div>
-                    <!-- Ignore request -->
-                {% elif user in current_user.requests %}
-                    <div>Connection Request Pending</div>
-                {% else %}
-                    <div><a class="btn btn-default" href="{{ url_for('.add_connection', username=user.username) }}">Send
-                        Connection Request</a></div>
-                {% endif %}
+            <div class="profile-actions">
+                <div class="btn-group-vertical" role="group">
+                    {% if user==current_user %}
+                        <a role="button" class="btn btn-default" href="{{ url_for('main.edit') }}">Edit Profile</a>
+                        <a role="button" class="btn btn-default" href="{{ url_for('main.edit_qualification') }}">Edit Qualifications</a>
+                    {% elif user in current_user.connections %}
+                        <div><a class="btn btn-default" href="{{ url_for('.remove_connection', username=user.username) }}">Remove
+                            Connection</a></div>
+                    {% elif user in current_user.invitations %}
+                        <div><a class="btn btn-default" href="{{ url_for('.add_connection', username=user.username) }}">Accept
+                            Connection Request</a></div>
+                        <br>
+                        <div><a class="btn btn-default" href="{{ url_for('.decline_connection', username=user.username) }}">Decline
+                            Connection Request</a></div>
+                        <!-- Ignore request -->
+                    {% elif user in current_user.requests %}
+                        <div>Connection Request Pending</div>
+                    {% else %}
+                        <div><a class="btn btn-default" href="{{ url_for('.add_connection', username=user.username) }}">Send
+                            Connection Request</a></div>
+                    {% endif %}
+                </div>
             </div>
         {% if user == current_user or user in current_user.connections %}
-            <div>
-                <h3>Skills and Interests</h3>
+            {% if user.skills|length > 0 or True %}
+            <div class="profile-skills">
+                <h4>Skills:</h4>
                 <ul class="list-skills">
                     {% for s in user.skills %}
-                        <li id="{{ s.name }}List">{{ s.name }}&nbsp;<button type="button" class="close delete-skill" id="{{ s.name }}">&times;</button></li>
+                        <li id="{{ s.name }}List">{{ s.name }}&nbsp;<button type="button" class="close" id="{{ s.name }}"></button></li>
                     {% endfor %}
                 </ul>
             </div>
+            {% endif %}
         {% endif %}
         </div>
     {% if user == current_user or user in current_user.connections %}
-        <div class="col-md-9" style="background-color: red">
+        <div class="col-md-9 hidden-xs" style="background-color: red">
             <div class="profile-pathway">
                 <div id="pathway-container" height=700px>
                     <svg class="overlay img-fluid"></svg>

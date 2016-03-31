@@ -50,7 +50,7 @@ $(document).ready(function(){
 		}
 	});
 
-    $(".delete-skill").click(DeleteSkill(this.id));
+    $(".delete-skill").on("click", DeleteSkill(this.id));
 
 	$("#learn-more").click(function(){
 		target = $("#selling-point-one");
@@ -64,7 +64,7 @@ $(document).ready(function(){
 function DeleteSkill(id){
 	var request = $.ajax({
         type: 'GET',
-        url: '/delete-skill/' + id
+        url: '/delete-skill/' + id,
         success: function(){
         	var elemName = id + 'List';
 			$("#" + elemName).remove()

@@ -27,7 +27,8 @@ body {
 
 nav {
 	border: 0px !important;
-	padding-left: 8px;
+	padding-left: 0px;
+	margin-bottom: 0 !important;
 }
 
 .button {
@@ -103,17 +104,26 @@ nav {
     top: 50%;
     left: 50%;
     margin-right: -50%;
-    transform: translate(-50%, -50%)
+    transform: translate(-50%, -50%);
+    padding: 50px;
+    text-align: center;
+
+    background-color: rgba(255, 255, 255, 0.74);
+
+    /*border-radius: 10px 10px 10px 10px;
+    -moz-border-radius: 10px 10px 10px 10px;
+    -webkit-border-radius: 10px 10px 10px 10px;*/
 }
 
 .vcenter div {
-	display: flex;
-  	align-items: center;
-  	justify-content: center
+	margin: 0 auto; 
+    text-align: center;
+    width: inherit;
+    display: inline-block;
 }
 
 #get-started {
-	color: white;
+	color: rgb(76, 76, 76);
 	font-size: 350%;
 	-webkit-text-stroke: 0.25px black;
 	display: block;
@@ -122,15 +132,17 @@ nav {
 }
 
 .get-started-button {
-	color: white;
+	color: rgb(146, 146, 146);
 	font-family: coolvetica;
 	font-size: 20pt;
+
+	font-style: italic;
 
 	width: 200px;
 
 	padding: 10px 10px;
-	margin: 15px 0;
-	background-color: rgba(255, 255, 255, 0.32);
+	margin: 15px 15px;
+	background-color: rgba(255, 255, 255, 0.68);
 
 	border-radius: 10px 10px 10px 10px;
 	-moz-border-radius: 10px 10px 10px 10px;
@@ -139,8 +151,9 @@ nav {
 }
 
 .get-started-button:hover {
-	background-color: red;
+	background-color: rgb(146, 146, 146);
 	text-decoration: none;
+	color: rgba(255, 255, 255, 0.68);;
 }
 
 
@@ -158,7 +171,7 @@ main .blurb .row {
 	padding: 0px;
 	margin: 50px 0;
 
-	min-height: 150px;
+	min-height: 300px;
 
 	-webkit-box-shadow: 0px 10px 30px 1px rgba(0,0,0,0.75);
 	-moz-box-shadow: 0px 10px 30px 1px rgba(0,0,0,0.75);
@@ -171,7 +184,7 @@ main .blurb .row .col-md-6 {
 
 .sp {
 	text-align: center;
-	font-size: 3.2vmin;
+	font-size: 4vmin;
 	font-family: caviar-dreams;
 
 	padding: 50px;
@@ -209,7 +222,7 @@ main .blurb .row div {
 .selling-point {
 	color: white;
 	font-size: 30px;
-    font-size: 3.5vw;
+    font-size: 6vmin;
 	-webkit-text-stroke: 0.5px black;
 	text-align: center;
 	font-family: coolvetica;
@@ -381,6 +394,15 @@ footer {
 	display: inline;
 }
 
+.profile {
+	margin: 0;
+}
+
+.profile div {
+	margin: 0;
+	padding: 0;
+}
+
 .profile-name {
 	/*font-family: caviar-dreams;*/
 	text-align: center;
@@ -389,9 +411,55 @@ footer {
 
 .profile-image-wrapper {
 	width: 100%;
+	display: block;
+  	margin-left: auto;
+  	margin-right: auto;
 }
 
 .profile-image-wrapper img {
-	display:block;
-    margin:auto;
+	margin-top: 25px;
+	margin-bottom: 25px;
+}
+
+.profile-actions {
+	text-align: center;
+}
+
+.profile-actions div {
+	margin: 0 auto; 
+    text-align: center;
+    width: inherit;
+    display: inline-block;
+}
+
+.profile-skills {
+	margin: 25px !important;
+}
+
+.navbar-center {
+	margin: 0px;
+	padding: 0px;
+}
+
+.navbar-center .navbar-nav {
+  display: inline-block;
+  float: none;
+  vertical-align: top;
+}
+
+.navbar-center .navbar-collapse {
+  text-align: center;
+}
+
+.btn-group-vertical {
+	text-align: center;
+}
+
+#path-nav {
+	text-align: center;
+}
+
+#path-nav button {
+	float: none;
+	margin: 10px;
 }

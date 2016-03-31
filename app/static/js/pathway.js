@@ -4,20 +4,6 @@ $(document).ready(function(){
 
 	var test = [1, 2, 3, 4, 5, 6];
 
-	/*$.ajax({
-		  	method: "GET",
-		  	data: { request_json: 1 },
-		  	dataType: 'json',
-          	contentType: 'application/json; charset=utf-8',
-          	success: function (data) {
-            	console.log(data);
-            	test = data;
-        	}
-		})*/
-
-	//console.log(test);
-	
-	//treeJSON = d3.json("../static/js/data.json", function(error, treeData) {
 	treeJSON = d3.json("?request_json=1", function(error, treeData) {
 		console.log("Loading error: " + error);
 		console.log(treeData);
@@ -25,7 +11,7 @@ $(document).ready(function(){
 		var viewerWidth = $("#pathway-container").width();
     	var viewerHeight = $("#pathway-container").height();
 
-    	var marginWidth = 100;
+    	var marginWidth = 10;
     	var columnWidth;
 
     	var titleHeight = 30;
@@ -40,11 +26,8 @@ $(document).ready(function(){
 
 
 		$.each(treeData, function(index, value){
-    		//console.log(index);
-
     		var circles = baseSvg.selectAll('circle').data(value.subjects).sort(value.level);
-
-	        newCircles[j] = {qualification: index ,level: value.level, subjects: circles.enter()};
+			newCircles[j] = {qualification: index ,level: value.level, subjects: circles.enter()};
 	        j++;			
     	});
 
@@ -138,7 +121,7 @@ $(document).ready(function(){
 				return y + edgeMargin + titleHeight + 25;
 			}).text(function(d){
 				return d.name;
-			}).attr('class', 'node-label');
+			}).attr('class', 'node-label hidden-xs');
 
     	});
 
@@ -146,7 +129,7 @@ $(document).ready(function(){
 
     	/*
     	 * Draw ToolTips on screen when node is hovered over
-    	 */
+    	 *
     	$(".node").on({	
 			mouseenter : function(){
 				var currentNode = $(this);
@@ -169,7 +152,7 @@ $(document).ready(function(){
     			toolTip.remove();
     			
     		}
-    	});
+    	}); */
 
     	//Qualification Sections
     	
