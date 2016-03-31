@@ -18,27 +18,22 @@
 
             <div class="profile-name"> {{ user.first_name + " " + user.last_name }} </div>
             <div class="profile-actions">
-                <div class="btn-group-vertical" role="group">
+                <ul class="nav nav-pills nav-stacked">
                     {% if user==current_user %}
-                        <a role="button" class="btn btn-default" href="{{ url_for('main.edit') }}">Edit Profile</a>
-                        <a role="button" class="btn btn-default" href="{{ url_for('main.edit_qualification') }}">Edit Qualifications</a>
+                        <li ><a href="{{ url_for('main.edit') }}">Edit Profile</a></li>
+                        <li><a href="{{ url_for('main.edit_qualification') }}">Edit Qualifications</a></li>
                     {% elif user in current_user.connections %}
-                        <div><a class="btn btn-default" href="{{ url_for('.remove_connection', username=user.username) }}">Remove
-                            Connection</a></div>
+                        <li><a href="{{ url_for('.remove_connection', username=user.username) }}">Remove Connection</a></li>
                     {% elif user in current_user.invitations %}
-                        <div><a class="btn btn-default" href="{{ url_for('.add_connection', username=user.username) }}">Accept
-                            Connection Request</a></div>
-                        <br>
-                        <div><a class="btn btn-default" href="{{ url_for('.decline_connection', username=user.username) }}">Decline
-                            Connection Request</a></div>
+                        <li><a href="{{ url_for('.add_connection', username=user.username) }}">Accept Connection Request</a></li>
+                        <li><a href="{{ url_for('.decline_connection', username=user.username) }}">Decline Connection Request</a></li>
                         <!-- Ignore request -->
                     {% elif user in current_user.requests %}
-                        <div>Connection Request Pending</div>
+                        <li><a href="#">Connection Request Pending</a></li>
                     {% else %}
-                        <div><a class="btn btn-default" href="{{ url_for('.add_connection', username=user.username) }}">Send
-                            Connection Request</a></div>
+                        <li><a href="{{ url_for('.add_connection', username=user.username) }}">Send Connection Request</a></li>
                     {% endif %}
-                </div>
+                </ul>
             </div>
         {% if user == current_user or user in current_user.connections %}
             {% if user.skills|length > 0 or True %}
@@ -54,7 +49,7 @@
         {% endif %}
         </div>
     {% if user == current_user or user in current_user.connections %}
-        <div class="col-md-9 hidden-xs" style="background-color: red">
+        <div class="col-md-9 hidden-xs">
             <div class="profile-pathway">
                 <div id="pathway-container" height=700px>
                     <svg class="overlay img-fluid"></svg>

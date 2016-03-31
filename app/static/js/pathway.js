@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-	var nav_offset = $("nav").height();
+	var nav_offset = 0;//$("nav").height();
 
 	var test = [1, 2, 3, 4, 5, 6];
 
@@ -16,7 +16,7 @@ $(document).ready(function(){
 
     	var titleHeight = 30;
 
-    	var baseSvg = d3.select("svg")
+    	var baseSvg = d3.select("#pathway-svg")
         baseSvg.attr("width", viewerWidth).attr("height", viewerHeight);
 
     	var tree = d3.layout.tree().size([viewerHeight, viewerWidth]);

@@ -145,7 +145,7 @@ def get_pathway(user):
         user_subjects.append(uq)
 
     results = dict((("Level " + str(t.level) + " - " + t.name), dict(level=t.level, subjects=[
-            dict(name=s.qualification.subject.name, grade=s.grade, field=s.qualification.subject.field.name, future=False) for s in filter((lambda x: x.qualification.qualification_type_id==t.id), user_subjects)
+            dict(name=s.qualification.subject.name, grade=s.grade, field=s.qualification.subject.field.name, future=is_future(user, s.qualification)) for s in filter((lambda x: x.qualification.qualification_type_id==t.id), user_subjects)
         ])) for t in (user_qual_types + future_qual_types))
 
     results2 = dict((("Level " + str(9) + " - " + "Careers"), dict(level=9, subjects=[
@@ -156,3 +156,7 @@ def get_pathway(user):
     z.update(results2)
     #z.update(results3)
     return jsonify(**z)
+
+
+def is_future(user, qual):
+    return (qual in user.future_quals)
