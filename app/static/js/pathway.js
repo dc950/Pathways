@@ -81,10 +81,17 @@ $(document).ready(function(){
 				return d.name;
 			}).attr('data-qualification', function(){
 				return value.qualification
+			}).attr('data-future', function(d){
+				console.log(d.future);
+				return d.future;
 			}).attr('data-level', function(){
 				return value.level;
 			}).attr('class', function(d){
-				return getLevelClass(d.future);
+				if (d.future) {
+					 return "node node-future";
+				} else {
+					return "node";
+				}
 			}).attr('fill', getLevelColour(value.level))
 
 			$("<rect></rect>").appendTo("#clip1").attr("x", function(d, i){
@@ -191,9 +198,9 @@ function getLevelColour(i) {
 
 function getLevelClass(i) {
 	if (true) {
-		return "node node-future"
-	}	else {
-		return "node"
+		return "node node-future";
+	} else {
+		return "node";
 	}
 }
 
