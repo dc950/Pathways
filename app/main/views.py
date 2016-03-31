@@ -186,7 +186,7 @@ def add_qualification():
     form = AddQualificationForm()
 
     form.qualification_type.choices = [(q.id, q.name) for q in QualificationType.query.all()]
-    form.subjects.choices = [(s.id, s.subject.name) for s in Qualification.query.all()]
+    form.subjects.choices = sorted([(s.id, s.subject.name) for s in Qualification.query.all()], key=lambda x: x[1])
     """form.subjects2.query_factory = Qualification.query.all"""
 
     opt_param = request.args.get("qual_id")
@@ -197,7 +197,8 @@ def add_qualification():
         print(opt_param)
         """form.subjects2.query_factory = Qualification.query.filter_by(qualification_type_id = opt_param).all"""
 
-        results = [(s.id, s.subject.name) for s in Qualification.query.filter_by(qualification_type_id=opt_param).all()]
+        results = sorted([(s.id, s.subject.name) for s in Qualification.query.filter_by(qualification_type_id=opt_param).all()], key=lambda x: x[1])
+        print(results)
         form.subjects.choices = results
         form.process()
 

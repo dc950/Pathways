@@ -87,7 +87,6 @@ def generate_future_pathway(u):
     sorted(careers, key=lambda x: career_skills[x])
 
     # get top 10
-    print(str(careers))
     optimal_careers = careers[:10]
     other_careers = careers[10:]
 

@@ -145,7 +145,7 @@ def define_qualification_types():
 
 
 def define_subjects():
-    for subject in [["English", "Literature"], ["English Language", "Linguistics"],
+    for subject in sorted([["English", "Literature"], ["English Language", "Linguistics"],
                     ["English Literature", "Literature"], ["Mathematics", "Mathematics"], ["Welsh", "Linguistics"],
                     ["Welsh Second Language", "Linguistics"],
                     ["Welsh Language", "Linguistics"], ["Irish", "Linguistics"], ["Science", "Earth Sciences"],
@@ -219,7 +219,7 @@ def define_subjects():
                     ["Personal & Social Education", "Sociology"],
                     ["Physical Education", "Human Physical Performance & Recreation"],
                     ["Preparation for Working Life", "Sociology"], ["Rural & Agricultural Science", "Agriculture"],
-                    ["Statistics", "Mathematics"]]:
+                    ["Statistics", "Mathematics"]], key=lambda x: x[0]):
 
         s = Subject.new_subject(subject[0])
         s.field = Field.new_field(subject[1])
@@ -229,7 +229,7 @@ def define_subjects():
         db.session.add(s)
         db.session.add(q)
 
-    for subject in [["Accounting", "Economics"], ["Administration", "Public Administration"],
+    for subject in sorted([["Accounting", "Economics"], ["Administration", "Public Administration"],
                     ["Architectural Technology", "Architecture & Design"], ["Art & Design", "Visual Arts"],
                     ["Automotive Engineering", "Engineering & Technology"], ["Biology", "Biology"],
                     ["Biotechnology", "Computer Science"],
@@ -269,7 +269,7 @@ def define_subjects():
                     ["Religious, Moral & Philosophical Studies", "Religious Studies"], ["Russian", "Linguistics"],
                     ["Sociology", "Sociology"], ["Spanish", "Linguistics"],
                     ["Technological Studies", "Computer Science"], ["Travel & Tourism", "Geography"],
-                    ["Urdu", "Linguistics"]]:
+                    ["Urdu", "Linguistics"]], key=lambda x: x[0]):
 
         s = Subject.new_subject(subject[0])
         s.field = Field.new_field(subject[1])
@@ -279,7 +279,7 @@ def define_subjects():
         db.session.add(s)
         db.session.add(q)
 
-    for subject in [["Accounting", "Economics"], ["Administration", "Public Administration"],
+    for subject in sorted([["Accounting", "Economics"], ["Administration", "Public Administration"],
                     ["Architectural Technology", "Architecture & Design"], ["Art & Design", "Visual Arts"],
                     ["Automotive Engineering", "Engineering & Technology"], ["Biology", "Biology"],
                     ["Biotechnology", "Computer Science"],
@@ -319,7 +319,7 @@ def define_subjects():
                     ["Religious, Moral & Philosophical Studies", "Religious Studies"], ["Russian", "Linguistics"],
                     ["Sociology", "Sociology"], ["Spanish", "Linguistics"],
                     ["Technological Studies", "Computer Science"], ["Travel & Tourism", "Geography"],
-                    ["Urdu", "Linguistics"]]:
+                    ["Urdu", "Linguistics"]], key=lambda x: x[0]):
 
         s = Subject.new_subject(subject[0])
         s.field = Field.new_field(subject[1])
@@ -329,7 +329,7 @@ def define_subjects():
         db.session.add(s)
         db.session.add(q)
 
-    for subject in [["Accounting", "Economics"], ["Administration", "Organisational Studies"],
+    for subject in sorted([["Accounting", "Economics"], ["Administration", "Organisational Studies"],
                     ["Applied Mathematics: Mechanics", "Mathematics"],
                     ["Applied Mathematics: Statistics", "Mathematics"],
                     ["Art & Design Enquiry: Design", "Visual Arts"],
@@ -355,7 +355,7 @@ def define_subjects():
                     ["Politics", "Political Science"], ["Product Design", "Architecture & Design"],
                     ["Psychology", "Psychology"], ["Religious, Moral & Philosophical Studies", "Religious Studies"],
                     ["Russian", "Linguistics"], ["Sociology", "Sociology"],
-                    ["Spanish", "Linguistics"], ["Technological Studies", "Computer Science"]]:
+                    ["Spanish", "Linguistics"], ["Technological Studies", "Computer Science"]], key=lambda x: x[0]):
 
         s = Subject.new_subject(subject[0])
         s.field = Field.new_field(subject[1])
@@ -365,7 +365,7 @@ def define_subjects():
         db.session.add(s)
         db.session.add(q)
 
-    for subject in [["Accounting", "Economics"], ["Administration", "Organisational Studies"],
+    for subject in sorted([["Accounting", "Economics"], ["Administration", "Organisational Studies"],
                     ["Applied Mathematics: Mechanics", "Mathematics"],
                     ["Applied Mathematics: Statistics", "Mathematics"],
                     ["Art & Design Enquiry: Design", "Visual Arts"],
@@ -391,7 +391,7 @@ def define_subjects():
                     ["Politics", "Political Science"], ["Product Design", "Architecture & Design"],
                     ["Psychology", "Psychology"], ["Religious, Moral & Philosophical Studies", "Religious Studies"],
                     ["Russian", "Linguistics"], ["Sociology", "Sociology"],
-                    ["Spanish", "Linguistics"], ["Technological Studies", "Computer Science"]]:
+                    ["Spanish", "Linguistics"], ["Technological Studies", "Computer Science"]], key=lambda x: x[0]):
 
         s = Subject.new_subject(subject[0])
         s.field = Field.new_field(subject[1])
@@ -403,7 +403,7 @@ def define_subjects():
 
     db.session.commit()
 
-    for subject in [["Accounting & Finance", "Economics"],
+    for subject in sorted([["Accounting & Finance", "Economics"],
                     ["Aeronautical & Manufacturing Engineering", "Engineering & Technology"],
                     ["Agriculture & Forestry", "Agriculture"],
                     ["American Studies", "Area Studies"],
@@ -443,7 +443,7 @@ def define_subjects():
                     ["Sports Science", "Human Physical Performance & Recreation"],
                     ["Theology & Religious Studies", "Religious Studies"],
                     ["Town & Country Planning and Landscape Design", "Architecture & Design"],
-                    ["Veterinary Medicine", "Medicine"], ["Youth Work", "Social Work"]]:
+                    ["Veterinary Medicine", "Medicine"], ["Youth Work", "Social Work"]], key=lambda x: x[0]):
 
         s = Subject.new_subject(subject[0])
         s.field = Field.new_field(subject[1])
@@ -613,18 +613,16 @@ def define_subjects():
 
 
 def define_fields():
-    l = ["Human History", "Linguistics", "Literature", "Performing Arts", "Visual Arts", "Philosophy",
-         "Religious Studies",
-         "Anthropology", "Ethnic & Cultural Studies", "Archaeology", "Area Studies", "Economics", "Gender Studies",
-         "Geography",
-         "Organisational Studies", "Political Science", "Psychology", "Sociology", "Biology", "Chemistry", "Physics",
-         "Earth Sciences",
-         "Space Science", "Mathematics", "Computer Science", "Systems Science", "Agriculture", "Architecture & Design",
-         "Business",
-         "Divinity", "Education", "Engineering & Technology", "Environmental Studies", "Family & Consumer Science",
-         "Human Physical Performance & Recreation", "Journalism, Media Studies & Communication", "Law",
-         "Library & Museum Studies",
-         "Medicine", "Military Science", "Public Administration", "Social Work", "Transportation"]
+    l = sorted(["Human History", "Linguistics", "Literature", "Performing Arts", "Visual Arts", "Philosophy",
+                "Religious Studies", "Anthropology", "Ethnic & Cultural Studies", "Archaeology", "Area Studies",
+                "Economics", "Gender Studies", "Geography", "Organisational Studies", "Political Science", "Psychology",
+                "Sociology", "Biology", "Chemistry", "Physics", "Earth Sciences",
+                "Space Science", "Mathematics", "Computer Science", "Systems Science", "Agriculture",
+                "Architecture & Design", "Business", "Divinity", "Education", "Engineering & Technology",
+                "Environmental Studies", "Family & Consumer Science",
+                "Human Physical Performance & Recreation", "Journalism, Media Studies & Communication", "Law",
+                "Library & Museum Studies", "Medicine", "Military Science", "Public Administration", "Social Work",
+                "Transportation"])
 
     for name in l:
         f = Field()
