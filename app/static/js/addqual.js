@@ -1,7 +1,5 @@
 $(document).ready(function() {
 
-    alert('loaded');
-
     $.ajax({
         method: "GET",
         data: {qual_id: 1},
