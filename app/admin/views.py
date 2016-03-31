@@ -63,7 +63,7 @@ def users():
             send_email(user3.email, 'Reflective Pathways Admin Message', 'auth/email/custom-email', customemail=custom_email, user=user3)
             flash("A custom email you have written has been sent to " + username3 + ".")
             return redirect(url_for("admin.users"))
-    return render_template('admin-users.html', users=users, form1=form1, form2=form2, form3=form3, numberofusers=number_of_users)
+    return render_template('admin-users.html', users=all_users, form1=form1, form2=form2, form3=form3, numberofusers=number_of_users)
 
 
 @admin.route('/reportedcomments', methods=['GET', 'POST'])
