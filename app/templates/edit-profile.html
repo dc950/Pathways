@@ -21,7 +21,7 @@
             </div>
             <ul class="list-skills">
             {% for s in skills %}
-            <li id="{{ s.name }}List">{{ s.name }}&nbsp;<button type="button" class="close delete-skill" id="{{ s.name }}">&times;</button></li>
+            <li id="{{ s.name }}List">{{ s.name }}&nbsp;<button type="button" onclick="DeleteSkill('{{ s.name }}')" class="close delete-skill" id="{{ s.name }}">&times;</button></li>
             {% endfor %}
             </ul>
         </div>

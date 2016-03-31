@@ -227,7 +227,7 @@ class User(UserMixin, db.Model):
         Removes a skill from the user based off of the skill name
         :param skill_name: The name of the skill to be removed
         """
-        s = Skill.query.filter_by(name=skill_name.lower).first()
+        s = Skill.query.filter_by(name=skill_name.lower()).first()
         if s is not None:
             if s in self.skills:
                 self.skills.remove(s)
