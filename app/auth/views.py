@@ -35,6 +35,8 @@ def send_token():
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.pathway'))
     form = RegistrationForm()
     if form.validate_on_submit():
         user = User(first_name=form.first_name.data,
