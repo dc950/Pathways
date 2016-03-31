@@ -9,6 +9,8 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.pathway'))
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
