@@ -1,13 +1,12 @@
 import json
-import app
-from flask import render_template, session, flash, redirect, url_for, send_from_directory, Flask, request, jsonify, Response, make_response
+from flask import render_template, flash, redirect, url_for, send_from_directory, request, jsonify, make_response
 from flask.ext.login import current_user, login_required
 from . import main
 from .pathway_generator import generate_future_pathway, get_pathway
 from .. import db
-from ..models import User, UserQualification, Qualification, QualificationType, Career, Subject, Comment, future_quals, ReportedComment
+from ..models import User, UserQualification, Qualification, QualificationType, Career, Comment, ReportedComment
 from .forms import EditProfileForm, AddQualificationForm, EditQualificationForm, SearchForm, CommentForm, SkillsForm
-from ..decorators import admin_required, permission_required
+from ..decorators import admin_required
 from .search import search_user, search_careers
 from .profanity_filter import contains_bad_word
 
@@ -45,6 +44,7 @@ def reportcomment(commentid):
     flash('Thank you for reporting this comment for an Admin to review.')
     return redirect(url_for('main.user',username=current_user.username))
 
+
 @main.route('/user/<username>', methods=['GET', 'POST'])
 def user(username):
     user_obj = User.query.filter_by(username=username).first()
@@ -57,7 +57,6 @@ def user(username):
         return redirect(url_for('main.index'))
 
     opt_param2 = request.args.get("request_career_page")
-    # print(opt_param2)
     if opt_param2 is not None:
         return url_for('.career', careername=opt_param2)
 
@@ -73,8 +72,6 @@ def user(username):
         else:
             Comment.add_comment(current_user, user_obj, form.body.data)
     name = user_obj.first_name + " " + user_obj.last_name
-
-    comments = [] #Comment.query.filter_by(profile=user_obj)
 
     # comments = Comment.query.filter_by(profile=user_obj)
     page = request.args.get('page', 1, type=int)
@@ -96,7 +93,6 @@ def user(username):
                            pagination=pagination)
 
 
-
 @main.route('/edit-profile', methods=['GET', 'POST'])
 @login_required
 def edit():
@@ -107,7 +103,6 @@ def edit():
         print("validated")
         current_user.first_name = form1.first_name.data
         current_user.last_name = form1.last_name.data
-        #current_user.email = form1.email.data
         current_user.def_avatar = form1.default_avatar.data
         db.session.add(current_user)
         flash('Your profile has been updated')
@@ -115,7 +110,6 @@ def edit():
     print(form1.errors)
     form1.first_name.data = current_user.first_name
     form1.last_name.data = current_user.last_name
-    #form1.email.data = current_user.email
     form1.default_avatar.data = current_user.def_avatar
     return render_template('edit-profile.html', form1=form1, form2=form2, skills=user_skills)
 
@@ -123,12 +117,7 @@ def edit():
 @main.route('/add-skill/<skill_name>')
 @login_required
 def add_skill(skill_name):
-    # print('In the thing')
     current_user.add_skill_name(skill_name)
-    # skills = current_user.skills
-    # data = []
-    # for s in skills:
-    #     data.append(s.name)
     response = make_response(json.dumps(True))
     response.content_type = 'application/json'
     return response
@@ -155,7 +144,6 @@ def edit_qualification(qualification=None):
 
         if opt_param is not None:
             qual = db.session.query(UserQualification).get((current_user.id, opt_param))
-            #qual = UserQualification.query.filter_by(user_id=current_user.id).filter_by(qualifications_id=opt_param).first()
             db.session.delete(qual)
             db.session.commit()
 
@@ -172,28 +160,20 @@ def edit_qualification(qualification=None):
     else:
         user_qual = db.session.query(UserQualification).get((current_user.id, qualification))
         qual_type = user_qual.qualification.qualification_type_id
-        form = EditQualificationForm()
 
+        form = EditQualificationForm()
         form.qualification_type.choices = [(q.id, q.name) for q in QualificationType.query.filter_by(id=qual_type).all()]
         form.subjects.choices = sorted([(s.id, s.subject.name) for s in Qualification.query.filter_by(qualification_type_id=qual_type).all()], key=lambda x: x[1])
-
         form.subjects.default = qualification
-
         form.grade.default = user_qual.grade
-
-        #form.process()
 
         if form.validate_on_submit():
             user.user_id = current_user.id
             user_qual.qualifications_id = form.subjects.data
             user_qual.grade = form.grade.data
-            #
-            # db.session.add(user_qual)
-            # db.session.commit()
 
             return redirect(url_for('main.edit_qualification'))
 
-        #form.qualification_type.data = qualification
         return render_template("edit-qualification.html",
                            title="Edit Qualification: " + user_qual.qualification.subject.name,
                            show_all=False,
@@ -212,9 +192,9 @@ def add_qualification():
     opt_param = request.args.get("qual_id")
 
     if opt_param is None:
-        print ("Argument not provided")
+        print("Argument not provided")
     else:
-        print (opt_param)
+        print(opt_param)
         """form.subjects2.query_factory = Qualification.query.filter_by(qualification_type_id = opt_param).all"""
 
         results = [(s.id, s.subject.name) for s in Qualification.query.filter_by(qualification_type_id=opt_param).all()]
@@ -234,7 +214,6 @@ def add_qualification():
         oq = UserQualification.query.filter_by(user_id=nq.user_id, qualifications_id=nq.qualifications_id).first()
         if oq is not None:
             oq.grade = nq.grade
-            # db.session.commit()
         else:
             db.session.add(nq)
             db.session.commit()
@@ -244,7 +223,6 @@ def add_qualification():
     return render_template("add-qualification.html",
                             title="Add Qualification",
                             form=form)
-
 
 
 @main.route('/connections')
@@ -265,12 +243,10 @@ def about():
 @login_required
 def pathway():
     opt_param2 = request.args.get("request_career_page")
-    # print(opt_param2)
     if opt_param2 is not None:
         return url_for('.career', careername=opt_param2)
 
     opt_param = request.args.get("request_json")
-    # print(opt_param)
     if opt_param is "1":
         return get_pathway(current_user)
 
@@ -351,6 +327,7 @@ def search(term):
 def privacypolicy():
     return render_template("privacy-policy.html")
 
+
 @main.route('/test')
 @admin_required
 def test():
@@ -372,11 +349,3 @@ def send_js(path):
 @main.route('/img/<path:path>')
 def send_img(path):
     return send_from_directory('img', path)
-
-'''
-/
-/user/
-/user/edit-profile
-/user/pathways
-/user/pathways/edit-qualification 
-'''

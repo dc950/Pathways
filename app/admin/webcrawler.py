@@ -1,8 +1,9 @@
 import re
 import requests
 from bs4 import BeautifulSoup
-from ..models import Career, Qualification
+from ..models import Career
 from .. import db
+
 
 def webcrawler():
     url = "https://www.ucas.com/ucas/after-gcses/find-career-ideas/explore-jobs#js=on"
@@ -29,59 +30,53 @@ def webcrawler():
         soup2 = BeautifulSoup(plain_text2, "html.parser")
         print("\nJOB DESCRIPTION")
         for link2 in soup2.find_all('div', {
-            'class': 'field field-name-field-job-profile-role field-type-text-long field-label-above prose'}):
-            descripList = []
+                'class': 'field field-name-field-job-profile-role field-type-text-long field-label-above prose'}):
+            descrip_list = []
             for x in range(0, len(link2.contents[3].contents[1].contents)):
                 if link2.contents[3].contents[1].contents[x].string is not None:
-                    descripList.append(link2.contents[3].contents[1].contents[x].string)
+                    descrip_list.append(link2.contents[3].contents[1].contents[x].string)
                 else:
-                    for y in range(0,len(link2.contents[3].contents[1].contents[x].contents)):
-                        descripList.append(link2.contents[3].contents[1].contents[x].contents[y].string)
+                    for y in range(0, len(link2.contents[3].contents[1].contents[x].contents)):
+                        descrip_list.append(link2.contents[3].contents[1].contents[x].contents[y].string)
 
-            descripList = [x for x in descripList if x != "\n"]
-            fullDescrip=""
-            for z in range(0,len(descripList)):
+            descrip_list = [x for x in descrip_list if x != "\n"]
+            full_descrip = ""
+            for z in range(0, len(descrip_list)):
                 try:
-                    print(descripList[z].string)
-                    fullDescrip = fullDescrip + "\n" + descripList[z].string
+                    print(descrip_list[z].string)
+                    full_descrip = full_descrip + "\n" + descrip_list[z].string
                 except AttributeError:
-                    ++z
-                career.description = fullDescrip
+                    pass
+                career.description = full_descrip
         print("\nRELATED SKILLS")
         for link2 in soup2.find_all('div', {
             'class': 'field field-name-field-related-skills field-type-taxonomy-term-reference field-label-above'}):
-            skillList = []
+            skill_list = []
             for counter in range(0, len(link2.contents[3])):
-                emptyspacedeleter = link2.contents[3].contents[counter].string.split()
-                if emptyspacedeleter == []:
-                    ++counter
-                else:
-                    skillList.append(link2.contents[3].contents[counter].string.strip())
+                empty_space_deleter = link2.contents[3].contents[counter].string.split()
+                if not empty_space_deleter == []:
+                    skill_list.append(link2.contents[3].contents[counter].string.strip())
                     career.add_skill_name(link2.contents[3].contents[counter].string.strip())
-            print(skillList)
+            print(skill_list)
         print("\nRELATED SUBJECTS")
         for link2 in soup2.find_all('div', {
             'class': 'field field-name-field-related-subjects field-type-taxonomy-term-reference field-label-above'}):
-            subList = []
+            sub_list = []
             for counter in range(0, len(link2.contents[3])):
-                emptyspacedeleter = link2.contents[3].contents[counter].string.split()
-                if emptyspacedeleter == []:
-                    ++counter
-                else:
-                    subList.append(link2.contents[3].contents[counter].string.strip())
+                empty_space_deleter = link2.contents[3].contents[counter].string.split()
+                if not empty_space_deleter == []:
+                    sub_list.append(link2.contents[3].contents[counter].string.strip())
                     career.add_subject_name(link2.contents[3].contents[counter].string.strip())
-            print(subList)
+            print(sub_list)
         print("\nDESIRABLE QUALIFICATIONS")
         for link2 in soup2.find_all('div', {
             'class': 'field field-name-field-desirable-qualifications field-type-text field-label-above'}):
-            qualList = []
+            qual_list = []
             for counter in range(0, len(link2.contents[3])):
-                emptyspacedeleter = link2.contents[3].contents[counter].string.split()
-                if emptyspacedeleter == []:
-                    ++counter
-                else:
-                    qualList.append(link2.contents[3].contents[counter].string.strip())
+                empty_space_deleter = link2.contents[3].contents[counter].string.split()
+                if not empty_space_deleter == []:
+                    qual_list.append(link2.contents[3].contents[counter].string.strip())
                     # career.add_subject_name(link2.contents[3].contents[counter].string.strip())
-            print(qualList)
+            print(qual_list)
         db.session.add(career)
         db.session.commit()

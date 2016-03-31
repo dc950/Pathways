@@ -1,6 +1,6 @@
 from flask.ext.wtf import Form
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, ValidationError
-from wtforms.validators import DataRequired, Email, Length, Regexp, EqualTo
+from wtforms.validators import DataRequired, Email, Length, EqualTo
 from ..models import User
 
 
@@ -32,11 +32,13 @@ class ChangePasswordForm(Form):
     password2 = PasswordField('Confirm Password', validators=[DataRequired(), Length(6, 32)])
     submit = SubmitField('Change Password')
 
+
 class DeleteAccountForm(Form):
     password = PasswordField('Password', validators=[
         DataRequired(), EqualTo('password2', message='Passwords must match.')])
     password2 = PasswordField('Confirm Password', validators=[DataRequired()])
     submit = SubmitField('Delete Account')
+
 
 class ForgottenPasswordForm(Form):
     email = StringField('Email', validators=[DataRequired(), Length(1, 64), Email()])

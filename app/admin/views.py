@@ -1,6 +1,6 @@
 from flask import render_template, redirect, request, url_for, flash
 from . import admin
-from .forms import adminCustomEmailForm, adminDeleteUser, adminWarningEmail, deleteAccountForm
+from .forms import AdminCustomEmailForm, AdminDeleteUser, AdminWarningEmail, DeleteAccountForm
 from wtforms import SelectField, FieldList, SubmitField
 from flask.ext.wtf import Form
 from .webcrawler import webcrawler
@@ -29,22 +29,21 @@ def database():
 @admin.route('/users', methods=['GET', 'POST'])
 @admin_required
 def users():
-    form1 = adminDeleteUser()
-    form2 = adminWarningEmail()
-    form3 = adminCustomEmailForm()
-    users = User.query.all()
-    username = form1.usernamedelete.data
-    username2 = form2.usernamewarning.data
-    username3 = form3.usernamecustom.data
-    customemail = form3.customeemailbox.data
+    form1 = AdminDeleteUser()
+    form2 = AdminWarningEmail()
+    form3 = AdminCustomEmailForm()
+    username = form1.username_delete.data
+    username2 = form2.username_warning.data
+    username3 = form3.username_custom.data
+    custom_email = form3.custom_email_box.data
     user = User.query.filter_by(username=username).first()
     user2 = User.query.filter_by(username=username2).first()
     user3 = User.query.filter_by(username=username3).first()
-    numberofusers=0
-    allusers = User.query.all()
-    for x in allusers:
-        if x.is_active == True:
-            numberofusers=numberofusers+1
+    number_of_users = 0
+    all_users = User.query.all()
+    for x in all_users:
+        if x.is_active:
+            number_of_users += 1
     if form1.validate_on_submit():
         if user:
             return redirect(url_for('admin.delete_this_user', username=username))
@@ -61,10 +60,10 @@ def users():
             flash('Username doesnt exist')
     if form3.validate_on_submit():
         if user3:
-            send_email(user3.email, 'Reflective Pathways Admin Message', 'auth/email/custom-email', customemail=customemail, user=user3)
+            send_email(user3.email, 'Reflective Pathways Admin Message', 'auth/email/custom-email', customemail=custom_email, user=user3)
             flash("A custom email you have written has been sent to " + username3 + ".")
             return redirect(url_for("admin.users"))
-    return render_template('admin-users.html', users=users, form1=form1, form2=form2, form3=form3, numberofusers=numberofusers)
+    return render_template('admin-users.html', users=users, form1=form1, form2=form2, form3=form3, numberofusers=number_of_users)
 
 
 @admin.route('/reportedcomments', methods=['GET', 'POST'])
@@ -98,7 +97,6 @@ def keepcomment(commentid):
     return redirect(url_for('admin.reportedcomments'))
 
 
-
 @admin.route('/get-careers')
 @admin_required
 def get_careers():
@@ -123,11 +121,11 @@ def uni_courses():
 @admin.route('/delete-user/<username>', methods=['GET', 'POST'])
 @admin_required
 def delete_this_user(username):
-    form1 = deleteAccountForm()
+    form1 = DeleteAccountForm()
     user = User.query.filter_by(username=username).first()
     if form1.validate_on_submit():
         send_email(user.email, 'Deletion of account', 'auth/email/delete-notice', user=user)
-         # Find and delete UserQualificaions
+        # Find and delete UserQualifications
         uqs = UserQualification.query.filter_by(user_id=user.id).all()
         for uq in uqs:
             db.session.delete(uq)
@@ -157,7 +155,6 @@ def delete_this_user(username):
         user.username = str(user.id)
         user.avatar_hash = ''
 
-
         user.is_active = False
         flash("The account has successfully been deleted.")
         flash("An email has been sent to " + username + " regarding their deleted account.")
@@ -172,7 +169,6 @@ def set_subject_fields():
     all_fields_choices = sorted([(x.id, x.name) for x in Field.query.all()], key=lambda z: z[1])
     all_fields_choices.insert(0, (-1, 'None'))
 
-    # setattr(SetField, 'fields', FieldList(SelectField('Course', choices=all_fields_choices)))
     class SetField(Form):
         fields = FieldList(SelectField('course', choices=all_fields_choices))
         submit = SubmitField('Submit')
@@ -185,7 +181,7 @@ def set_subject_fields():
     # This is probably less secure but it is in the admin section so it shouldn't be too big a risk...
     if len(f_data) > 0:
         if len(f_data) != len(subjects):
-            flash('An error occured as the subject/fields have been changed by someone since you first loaded the page')
+            flash('An error occurred as the subject/fields have been changed by someone since you first loaded the page')
         for s, f in zip(subjects, form.fields.data):
             if f != '-1':
                 field = Field.query.filter_by(id=f).first()

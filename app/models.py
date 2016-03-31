@@ -33,6 +33,7 @@ connections = db.Table('connections',
                        db.Column('requesting_id', db.Integer, db.ForeignKey('users.id')),
                        db.Column('invitation_id', db.Integer, db.ForeignKey('users.id')))
 
+
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
@@ -271,7 +272,6 @@ class User(UserMixin, db.Model):
             elif permission == Permission.MAKE_COMMENT:
                 self.role = no_comment
 
-
     @staticmethod
     def generate_fake(count=100):
         from sqlalchemy.exc import IntegrityError
@@ -307,7 +307,6 @@ class User(UserMixin, db.Model):
     def unseen_comments(self):
         comments = Comment.query.filter_by(profile=self).filter_by(seen=False).all()
         return comments
-
 
 
 class AnonymousUser(AnonymousUserMixin):
@@ -357,7 +356,7 @@ class Career(db.Model):
         :param points: The points for the qualification with relation to how important it is for the career
         """
 
-        #Find if the subject exists:
+        # Find if the subject exists:
         subject_query = Subject.query.filter_by(name=subject_name).first()
         subject = None
         if subject_query is None:
@@ -427,7 +426,7 @@ class Field(db.Model):
     # interests and skills?
 
     @staticmethod
-    def newField(name):
+    def new_field(name):
         """
         Will return a new subject or if one already exists, it will return that one
         :param name: The name of the subject
@@ -452,7 +451,7 @@ class Subject(db.Model):
     field = db.relationship("Field", backref='subjects')
 
     @staticmethod
-    def newSubject(name):
+    def new_subject(name):
         """
         Will return a new subject or if one already exists, it will return that one
         :param name: The name of the subject
@@ -543,7 +542,6 @@ class QualificationType(db.Model):
             return QualificationType(name=name)
 
 
-
 class UserQualification(db.Model):
     __tablename__ = 'user_qualifications'
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
@@ -587,17 +585,6 @@ class CareerSkill(db.Model):
     def name(self):
         return self.skill.name
 
-# class UniCourses(Qualification):
-#     __tablename__= 'unicourses'
-#     ucaspoints = db.Column(db.String(1024))
-#     alevelgrades = db.Column(db.String(1024))
-#     highers = db.Column(db.String(1024))
-#     internationalbaccalaureate = db.Column(db.String(1024))
-#     advancedhighers = db.Column(db.String(1024))
-#
-#     def __repr__(self):
-#         return '<UniCourses %r>' % self.coursename
-
 
 class Comment(db.Model):
     __tablename__ = 'comments'
@@ -617,7 +604,6 @@ class Comment(db.Model):
         :param body: The body of the text
         :return: The comment
         """
-        # Do some checks to make sure things are allowed regarding privacy, do a flash to show it didn't work etc.
         comment = Comment(body=body, author_id=author.id, profile_id=profile.id)
         db.session.add(comment)
 

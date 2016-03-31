@@ -1,6 +1,3 @@
-import re
-from app import db
-from flask import session
 from ..models import User, Career, Subject, CareerSubject, Field, CareerSkill, Skill
 from sqlalchemy import and_
 
@@ -24,7 +21,6 @@ def search_user(term):
         users += User.query.filter_by(first_name=term).all()
         users += User.query.filter_by(last_name=term).all()
         users += User.query.filter_by(username=term).all()
-
 
         # Try to get close matches next
         users += User.query.filter(User.first_name.like('%'+term+'%')).all()
@@ -65,9 +61,6 @@ def search_user(term):
 def search_careers(term):
 
     careers = []
-
-    words = term.split(' ')
-
     careers += Career.query.filter_by(name=term).all()
     careers += Career.query.filter(Career.name.like('%'+term+'%')).all()
 

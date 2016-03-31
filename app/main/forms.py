@@ -1,8 +1,9 @@
 from flask.ext.wtf import Form
-from wtforms import StringField, SubmitField, DateField, FormField, SelectField, TextAreaField, HiddenField
-from wtforms.validators import Length, DataRequired,  Email, Regexp, ValidationError
-from ..models import User, UserQualification, Qualification, QualificationType, Career
+from wtforms import StringField, SubmitField, SelectField, TextAreaField, HiddenField
+from wtforms.validators import Length, DataRequired,  ValidationError
+from ..models import QualificationType
 import re
+
 
 class SkillsForm(Form):
     skills = TextAreaField()
@@ -12,11 +13,9 @@ class SkillsForm(Form):
 class EditProfileForm(Form):
     first_name = StringField('First Name', validators=[Length(1, 64), DataRequired()])
     last_name = StringField('Last Name', validators=[Length(1, 64), DataRequired()])
-    #email = StringField('If you would like to change your email, please edit the text box below.', validators=[Length(0,64), DataRequired(),Email()])
     default_avatar = SelectField('Default avatar style.  For a custom avatar got to www.gravatar.com', choices=[
         ('mm', 'Default image'), ('identicon', 'Identicon'), ('monsterid', 'Monster'), ('wavatar', 'Wavatar'),
         ('retro', 'Retro')])
-    # s = FormField(SkillsForm)
     submit = SubmitField('Submit')
 
 

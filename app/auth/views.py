@@ -1,8 +1,7 @@
-from flask import render_template, redirect, request, url_for, flash, Markup, current_app, get_flashed_messages
+from flask import render_template, redirect, request, url_for, flash, current_app
 from flask.ext.login import login_user, logout_user, login_required, current_user
 from . import auth
-from ..models import User, UserQualification, user_skills, connections, future_quals, future_careers
-from ..email import send_email
+from ..models import User, UserQualification
 from .forms import LoginForm, RegistrationForm, ChangePasswordForm, ForgottenPasswordForm, DeleteAccountForm
 from app import db
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
@@ -88,6 +87,7 @@ def send_new_password_email(email=None):
             flash("You must authenticate your account before you can do this action. Please see your email to authenticate your account.")
         return redirect(url_for('main.edit'))
 
+
 @auth.route('/change-password/<token>', methods=['GET', 'POST'])
 def change_password(token):
     s = Serializer(current_app.config['SECRET_KEY'])
@@ -165,13 +165,13 @@ def delete_account(token):
             current_user.username = str(current_user.id)
             current_user.avatar_hash = ''
 
-
             current_user.is_active = False
             logout_user()
             # User.query.filter_by(id=uid).delete()
             flash("Your account has successfully been deleted.")
             return redirect(url_for('main.index'))
     return render_template('delete_account.html', form=form)
+
 
 @auth.route('/send-new-delete_acc-email')
 def send_new_delete_acc_email(email=None):
@@ -190,13 +190,3 @@ def send_new_delete_acc_email(email=None):
         else:
             flash("You must authenticate your account before you can do this action. Please see your email to authenticate your account.")
         return redirect(url_for('main.edit'))
-
-# @auth.before_app_request
-# def before_request():
-#     if request.endpoint:
-#         if current_user.is_authenticated and not current_user.confirmed and request.endpoint[:5] != 'auth.':
-#             message = Markup("Note: Your account has not been authenticated yet. <a href='"+url_for('auth.send_token')+"'> Click here </a> to resend the email.")
-#             # for m in get_flashed_messages():
-#             #     if m == message:
-#             #         return
-#             flash(message)
