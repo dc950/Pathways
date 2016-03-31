@@ -83,8 +83,8 @@ $(document).ready(function(){
 				return value.qualification
 			}).attr('data-level', function(){
 				return value.level;
-			}).attr('class', function(){
-				return getLevelClass(value.level);
+			}).attr('class', function(d){
+				return getLevelClass(d.future);
 			}).attr('fill', getLevelColour(value.level))
 
 			$("<rect></rect>").appendTo("#clip1").attr("x", function(d, i){
@@ -190,21 +190,10 @@ function getLevelColour(i) {
 }
 
 function getLevelClass(i) {
-	switch(i) {
-		case 1:
-			return "node node-level-1"
-		case 2:
-			return "node node-level-2"
-		case 3:
-			return "node node-level-3"
-		case 4:
-			return "node node-level-4"
-		case 5:
-			return "node node-level-5"
-		case 6:
-			return "node node-level-6"
-		default:
-			return "node"
+	if (true) {
+		return "node node-future"
+	}	else {
+		return "node"
 	}
 }
 

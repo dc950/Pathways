@@ -337,6 +337,10 @@ footer {
    	stroke-width: 3px;
 }
 
+.node-future {
+	stroke: slategrey !important;
+}
+
 .tooltip {
 	fill: #fff;
    	stroke: steelblue;

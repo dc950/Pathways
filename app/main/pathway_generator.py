@@ -145,11 +145,11 @@ def get_pathway(user):
         user_subjects.append(uq)
 
     results = dict((("Level " + str(t.level) + " - " + t.name), dict(level=t.level, subjects=[
-            dict(name=s.qualification.subject.name, grade=s.grade) for s in filter((lambda x: x.qualification.qualification_type_id==t.id), user_subjects)
+            dict(name=s.qualification.subject.name, grade=s.grade, field=s.qualification.subject.field.name, future=False) for s in filter((lambda x: x.qualification.qualification_type_id==t.id), user_subjects)
         ])) for t in (user_qual_types + future_qual_types))
 
     results2 = dict((("Level " + str(9) + " - " + "Careers"), dict(level=9, subjects=[
-            dict(name=s.name, grade=None) for s in user.future_careers
+            dict(name=s.name, grade=None, field=s.qualification.subject.field.name, future=True) for s in user.future_careers
         ])) for t in user_qual_types)
 
     z = results.copy()
