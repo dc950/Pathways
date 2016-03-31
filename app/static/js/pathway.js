@@ -27,7 +27,7 @@ $(document).ready(function(){
 
 		$.each(treeData, function(index, value){
     		var circles = baseSvg.selectAll('circle').data(value.subjects).sort(value.level);
-			newCircles[j] = {qualification: index ,level: value.level, subjects: circles.enter()};
+			newCircles[j] = {qualification: index , short_name: value.short_name, level: value.level, subjects: circles.enter()};
 	        j++;			
     	});
 
@@ -46,8 +46,8 @@ $(document).ready(function(){
 
     		baseSvg.append("rect").attr("x", xPos).attr("y", nav_offset).attr("width", columnWidth).attr("height", titleHeight)
     		.attr("fill", getLevelColour(value.level));
-
-    		baseSvg.append("text").attr("dx", xPos).attr("dy", 20 +  + nav_offset).text(value.qualification);
+    		console.log(value);
+    		baseSvg.append("text").attr("dx", xPos).attr("dy", 20 +  + nav_offset).text(value.short_name);
 
     		//console.log(value.subjects[0].length);
 
@@ -173,26 +173,24 @@ $(document).ready(function(){
 
 function getLevelColour(i) {
 	switch(i) {
-		case 1:
-			return "orange"
 		case 2:
-			return "red"
+			return "#96ceb4"
 		case 3:
-			return "yellow"
+			return "#ffeead"
 		case 4:
-			return "cyan"
+			return "#ff6f69"
 		case 5:
-			return "coral"
+			return "#ffcc5c"
 		case 6:
-			return "blue"
+			return "#b3cde0"
 		case 7:
-			return "Lavender"
+			return "#be9b7b"
 		case 8:
-			return "SandyBrown"
+			return "#fffeb3"
 		case 9:
-			return "Gainsboro"
+			return "#f1cbff"
 		default:
-			return "green"
+			return "white"
 	}
 }
 
