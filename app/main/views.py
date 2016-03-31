@@ -135,10 +135,6 @@ def delete_skill(skill_name):
 @main.route('/edit-qualification/<qualification>', methods=['GET', 'POST'])
 @login_required
 def edit_qualification(qualification=None):
-    """
-    These SQL queries should be moved to the model as function eventually
-    """
-    
     if qualification is None:
         opt_param = request.args.get("delete") 
 
