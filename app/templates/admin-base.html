@@ -58,11 +58,6 @@
                 {% for href, id, caption in navigation_bar %}
                     <li {% if id == active_page %}class="active"{% endif %}><a href="{{ href }}">{{ caption }}</a></li>
                 {% endfor %}
-            <!--
-                <li class="active"><a href="{{ url_for('admin.index') }}">Home<span class="sr-only">(current)</span></a></li>
-                <li class=""><a href="{{ url_for('admin.database') }}">Database<span class="sr-only">(current)</span></a></li>
-                <li class=""><a href="{{ url_for('admin.users') }}">Users<span class="sr-only">(current)</span></a></li>
-                <li class=""><a href="{{ url_for('admin.reportedcomments') }}">Reported Comments<span class="sr-only">(current)</span></a></li> -->
             </ul>
             <ul class="nav navbar-nav navbar-right">
                <li class=""><a href="{{ url_for('main.index') }}">Live Site</a></li>

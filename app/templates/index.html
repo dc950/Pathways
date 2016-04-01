@@ -12,7 +12,6 @@
 	<!-- Home page Slideshow -->
 	<div class="video-container">
 		<video poster="{{ url_for('static', filename='img/education-stock-image.jpg') }}" muted="muted" autoplay="autoplay" loop="">
-    		<!--<source type="video/ogg" src="{{ url_for('static', filename='media/EducationStock.oggtheora.ogv') }}">-->
     		<source type="video/webm" src="{{ url_for('static', filename='media/EducationStock.webmsd.webm') }}">
     		<source type="video/mp4" src="https://giant.gfycat.com/ExcitableAdorableElephantbeetle.mp4">
   		</video>
@@ -26,7 +25,6 @@
 					Learn More
 				</a>
 			</div>
-			<!--<span style="font-size: 60px;line-height: 1.33;display:block;text-align:center;color:white;" class="glyphicon glyphicon-menu-down" />-->
 		</div>
 	</div>
 {% endblock %}
@@ -42,7 +40,6 @@
 		</div>
 		<div class="row" id="image-break-one">
 			<h1 class="selling-point"><i>We use a combination of your education, skill and personal interests to show you a range of possible qualifications and careers that would be open to you.</i></h1>
-			<!--<img  class="col-md-6 img-responsive" src="{{ url_for('static', filename='img/comp_stock.jpg') }}">-->
 		</div>
 		<div class="row">
 		   <p class="col-md-6 col-sm-6 sp">Using the latest qualification data from a range of sources such as UCAS and which we can offer options tailored to your interests and strengths.</p>
@@ -52,7 +49,6 @@
 		</div>
 		<div class="row" id="image-break-two">
 			<h1 class="selling-point"><i>Connect, share and recieve feedback on your pathway by connecting to our global userbase.</i></h1>
-			<!--<img  class="col-md-6 img-responsive" src="{{ url_for('static', filename='img/comp_stock.jpg') }}">-->
 		</div>
 		<div class="row">
 			<p class="col-md-6 col-sm-6 sp">We're here to help you get to where you want to be.</p>
@@ -62,7 +58,6 @@
 		</div>
 		<div class="row" id="image-break-three">
 			<h1 class="selling-point"><i>To get started just <a href="{{ url_for('auth.register') }}">register </a> an account with us.</i></h1>
-			<!--<img  class="col-md-6 img-responsive" src="{{ url_for('static', filename='img/comp_stock.jpg') }}">-->
 		</div>
 	</div>
 {% endblock %}

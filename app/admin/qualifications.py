@@ -279,56 +279,6 @@ def define_subjects():
         db.session.add(s)
         db.session.add(q)
 
-    for subject in sorted([["Accounting", "Economics"], ["Administration", "Public Administration"],
-                    ["Architectural Technology", "Architecture & Design"], ["Art & Design", "Visual Arts"],
-                    ["Automotive Engineering", "Engineering & Technology"], ["Biology", "Biology"],
-                    ["Biotechnology", "Computer Science"],
-                    ["Building & Architectural Technology", "Architecture & Design"],
-                    ["Building Services", "Engineering & Technology"], ["Business Management", "Business"],
-                    ["Care", "Social Work"], ["Chemistry", "Chemistry"],
-                    ["Civil Engineering", "Engineering & Technology"], ["Classical Greek", "Linguistics"],
-                    ["Classical Studies", "Linguistics"], ["Chinese Language & Culture", "Linguistics"],
-                    ["Computing", "Computer Science"], ["Construction", "Engineering & Technology"],
-                    ["Dance", "Performing Arts"], ["Drama", "Performing Arts"],
-                    ["Early Education & Childcare", "Education"], ["Early Years Care & Education", "Education"],
-                    ["Economics", "Economics"], ["Electrical Engineering", "Engineering & Technology"],
-                    ["Electronics", "Engineering & Technology"], ["English", "Literature"],
-                    ["English for Speakers of Other Languages", "Linguistics"],
-                    ["Fabrication & Welding Engineering", "Engineering & Technology"], ["French", "Linguistics"],
-                    ["Gaelic", "Linguistics"],
-                    ["Gàidhlig", "Linguistics"], ["Geography", "Geography"], ["Geology", "Geography"],
-                    ["German", "Linguistics"], ["Graphic Communication", "Visual Arts"], ["History", "Human History"],
-                    ["Home Economics: Fashion & Textile Technology", "Visual Arts"],
-                    ["Home Economics: Health & Food Technology", "Agriculture"],
-                    ["Home Economics: Lifestyle & Consumer Technology", "Family & Consumer Science"],
-                    ["Hospitality: Food & Drink Service", "Agriculture"],
-                    ["Hospitality: Professional Cookery", "Agriculture"],
-                    ["Hospitality: Reception & Accommodation Operations", "Sociology"], ["Human Biology", "Biology"],
-                    ["Information Systems", "Computer Science"], ["Italian", "Linguistics"], ["Land Use", "Geography"],
-                    ["Latin", "Linguistics"],
-                    ["Managing Environmental Resources", "Organisational Studies"], ["Mandarin Chinese", "Linguistics"],
-                    ["Manufacturing", "Engineering & Technology"], ["Mathematics", "Mathematics"],
-                    ["Mechanical Engineering", "Engineering & Technology"],
-                    ["Mechatronics", "Engineering & Technology"],
-                    ["Media Studies", "Journalism, Media Studies & Communication"], ["Modern Studies", "Anthropology"],
-                    ["Music", "Performing Arts"], ["Personal & Social Education", "Education"],
-                    ["Philosophy", "Philosophy"], ["Photography", "Visual Arts"],
-                    ["Physical Education", "Human Physical Performance & Recreation"], ["Physics", "Physics"],
-                    ["Politics", "Political Science"], ["Product Design", "Architecture & Design"],
-                    ["Psychology", "Psychology"], ["Religious Education", "Religious Studies"],
-                    ["Religious, Moral & Philosophical Studies", "Religious Studies"], ["Russian", "Linguistics"],
-                    ["Sociology", "Sociology"], ["Spanish", "Linguistics"],
-                    ["Technological Studies", "Computer Science"], ["Travel & Tourism", "Geography"],
-                    ["Urdu", "Linguistics"]], key=lambda x: x[0]):
-
-        s = Subject.new_subject(subject[0])
-        s.field = Field.new_field(subject[1])
-        q = Qualification()
-        q.subject = s
-        q.qualification_type = a_level
-        db.session.add(s)
-        db.session.add(q)
-
     for subject in sorted([["Accounting", "Economics"], ["Administration", "Organisational Studies"],
                     ["Applied Mathematics: Mechanics", "Mathematics"],
                     ["Applied Mathematics: Statistics", "Mathematics"],
@@ -362,42 +312,6 @@ def define_subjects():
         q = Qualification()
         q.subject = s
         q.qualification_type = adv_higher
-        db.session.add(s)
-        db.session.add(q)
-
-    for subject in sorted([["Accounting", "Economics"], ["Administration", "Organisational Studies"],
-                    ["Applied Mathematics: Mechanics", "Mathematics"],
-                    ["Applied Mathematics: Statistics", "Mathematics"],
-                    ["Art & Design Enquiry: Design", "Visual Arts"],
-                    ["Art & Design Enquiry: Expressive", "Visual Arts"],
-                    ["Art & Design: Research & Appreciation", "Anthropology"],
-                    ["Biology", "Biology"], ["Building & Architectural Technology", "Architecture & Design"],
-                    ["Business Management", "Business"], ["Chemistry", "Chemistry"],
-                    ["Civil Engineering", "Engineering & Technology"], ["Classical Greek", "Linguistics"],
-                    ["Classical Studies", "Literature"], ["Computing", "Computer Science"],
-                    ["Drama", "Performing Arts"], ["Economics", "Economics"],
-                    ["Electronics", "Engineering & Technology"], ["English", "Literature"], ["French", "Linguistics"],
-                    ["Gaelic", "Linguistics"], ["Gaidhlig", "Linguistics"], ["Geography", "Geography"],
-                    ["Geology", "Geography"], ["German", "Linguistics"], ["Graphic Communication", "Visual Arts"],
-                    ["History", "Human History"], ["Home Economics — Fashion & Textile Technology", "Visual Arts"],
-                    ["Home Economics — Health & Food Technology", "Agriculture"],
-                    ["Home Economics — Lifestyle & Consumer Technology", "Family & Consumer Science"],
-                    ["Information Systems", "Computer Science"], ["Italian", "Linguistics"],
-                    ["Latin", "Linguistics"], ["Managing Environmental Resources", "Organisational Studies"],
-                    ["Mathematics", "Mathematics"], ["Mechatronics", "Engineering & Technology"],
-                    ["Media Studies", "Journalism, Media Studies & Communication"], ["Modern Studies", "Anthropology"],
-                    ["Music", "Performing Arts"], ["Philosophy", "Philosophy"],
-                    ["Physical Education", "Human Physical Performance & Recreation"], ["Physics", "Physics"],
-                    ["Politics", "Political Science"], ["Product Design", "Architecture & Design"],
-                    ["Psychology", "Psychology"], ["Religious, Moral & Philosophical Studies", "Religious Studies"],
-                    ["Russian", "Linguistics"], ["Sociology", "Sociology"],
-                    ["Spanish", "Linguistics"], ["Technological Studies", "Computer Science"]], key=lambda x: x[0]):
-
-        s = Subject.new_subject(subject[0])
-        s.field = Field.new_field(subject[1])
-        q = Qualification()
-        q.subject = s
-        q.qualification_type = diploma
         db.session.add(s)
         db.session.add(q)
 
@@ -455,57 +369,6 @@ def define_subjects():
 
     db.session.commit()
 
-    for subject in [["Accounting & Finance", "Economics"],
-                    ["Aeronautical & Manufacturing Engineering", "Engineering & Technology"],
-                    ["Agriculture & Forestry", "Agriculture"],
-                    ["American Studies", "Area Studies"],
-                    ["Anatomy & Physiology", "Human Physical Performance & Recreation"],
-                    ["Anthropology", "Anthropology"], ["Archaeology", "Archaeology"],
-                    ["Architecture", "Architecture & Design"], ["Art & Design", "Visual Arts"],
-                    ["Biological Sciences", "Biology"], ["Business & Management Studies", "Business"],
-                    ["Celtic Studies", "Linguistics"], ["Chemical Engineering", "Chemistry"],
-                    ["Chemistry", "Chemistry"], ["Civil Engineering", "Engineering & Technology"],
-                    ["Classics & Ancient History", "Human History"],
-                    ["Communication & Media Studies", "Journalism, Media Studies & Communication"],
-                    ["Complementary Medicine", "Medicine"],
-                    ["Computer Science", "Computer Science"], ["Counselling", "Psychology"], ["Criminology", "Law"],
-                    ["Dentistry", "Medicine"], ["Drama, Dance & Cinematics", "Performing Arts"],
-                    ["East & South Asian Studies", "Area Studies"], ["Economics", "Economics"],
-                    ["Education", "Education"], ["Electrical & Electronic Engineering", "Engineering & Technology"],
-                    ["English", "Literature"], ["Fashion", "Visual Arts"], ["Film Making", "Performing Arts"],
-                    ["Food Science", "Agriculture"], ["French", "Linguistics"],
-                    ["Geography & Environmental Sciences", "Geography"], ["Geology", "Earth Sciences"],
-                    ["General Engineering", "Engineering & Technology"], ["German", "Linguistics"],
-                    ["History", "Human History"],
-                    ["History of Art, Architecture & Design", "Human History"],
-                    ["Hospitality, Leisure, Recreation & Tourism", "Sociology"],
-                    ["Iberian Languages/Hispanic Studies", "Area Studies"],
-                    ["Land & Property Management", "Environmental Studies"], ["Law", "Law"],
-                    ["Librarianship & Information Management", "Library & Museum Studies"],
-                    ["Linguistics", "Linguistics"],
-                    ["Marketing", "Business"], ["Materials Technology", "Engineering & Technology"],
-                    ["Mathematics", "Mathematics"], ["Mechanical Engineering", "Engineering & Technology"],
-                    ["Medicine", "Medicine"], ["Middle Eastern and African Studies", "Area Studies"],
-                    ["Music", "Performing Arts"], ["Nursing", "Medicine"], ["Ophthalmics", "Medicine"],
-                    ["Pharmacology & Pharmacy", "Chemistry"], ["Philosophy", "Philosophy"],
-                    ["Physics and Astronomy", "Physics"], ["Physiotherapy", "Human Physical Performance & Recreation"],
-                    ["Politics", "Political Science"], ["Psychology", "Psychology"], ["Robotics", "Computer Science"],
-                    ["Russian & East European Languages", "Linguistics"], ["Social Policy", "Social Work"],
-                    ["Social Work", "Social Work"], ["Sociology", "Sociology"],
-                    ["Sports Science", "Human Physical Performance & Recreation"],
-                    ["Theology & Religious Studies", "Religious Studies"],
-                    ["Town & Country Planning and Landscape Design", "Architecture & Design"],
-                    ["Veterinary Medicine", "Medicine"], ["Youth Work", "Social Work"]]:
-
-        s = Subject.new_subject(subject[0])
-        s.field = Field.new_field(subject[1])
-        q = Qualification()
-        q.subject = s
-        q.qualification_type = foundation_degree
-        db.session.add(s)
-        db.session.add(q)
-
-    db.session.commit()
 
     for subject in [["Accounting & Finance", "Economics"],
                     ["Aeronautical & Manufacturing Engineering", "Engineering & Technology"],

@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-	var nav_offset = 0;//$("nav").height();
+	var nav_offset = 0;
 
 	var test = [1, 2, 3, 4, 5, 6];
 
@@ -49,7 +49,6 @@ $(document).ready(function(){
     		console.log(value);
     		baseSvg.append("text").attr("dx", xPos).attr("dy", 20 +  + nav_offset).text(value.short_name);
 
-    		//console.log(value.subjects[0].length);
 
     		var yHeight;
 
@@ -76,7 +75,7 @@ $(document).ready(function(){
 				}
 
 				return y + edgeMargin + titleHeight;
-				//return titleHeight + ((i+1) * 40);
+
 			}).attr('r', '10').attr('data-subject', function(d){
 				return d.name;
 			}).attr('data-qualification', function(){
@@ -131,39 +130,6 @@ $(document).ready(function(){
 			}).attr('class', 'node-label hidden-xs');
 
     	});
-
-    	var toolTip;
-
-    	/*
-    	 * Draw ToolTips on screen when node is hovered over
-    	 *
-    	$(".node").on({	
-			mouseenter : function(){
-				var currentNode = $(this);
-    			window.mytimeout = setTimeout(function(){
-    				toolTip = baseSvg.append("rect").attr("x", function(){
-    					return currentNode.attr("cx");
-    				}).attr("y", function(){
-    					return currentNode.attr("cy");
-    				}).attr("width", 100).attr("height", 40).attr("fill", function(){
-    					return getLevelColour(parseInt(currentNode.attr("data-level")));
-    				}).attr("stroke", "black")
-
-    				//$(toolTip).css('display', 'none');
-
-    				$(toolTip).fadeIn('slow');
-    			}, 1000)
-    		},
-    		mouseleave : function(){
-    			clearTimeout(window.mytimeout);
-    			toolTip.remove();
-    			
-    		}
-    	}); */
-
-    	//Qualification Sections
-    	
-
 	});
 	
 	

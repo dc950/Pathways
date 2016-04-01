@@ -8,10 +8,6 @@
 	src: url(../fonts/CaviarDreams.ttf);
 }
 
-html {
-	/*background-color: #303030;*/
-}
-
 body {
 	margin: 0;
 }
@@ -71,10 +67,6 @@ nav {
 
 #image-block {
 	height: 400px;
-	/*background-image: url(../img/education-stock-image.jpg);
-	background-repeat: no-repeat;
-	background-size: cover;
-	background-position: center;*/
 	
 	display: flex;
   	align-items: center;

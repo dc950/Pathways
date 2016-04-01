@@ -13,10 +13,4 @@
           <li><a href="{{ url_for('.user', username=user.username) }}">{{ user.first_name }} {{ user.last_name }}</a></li>
        </div>
     {% endfor %}
-    <!--<br><h2><small>All users</small></h2>
-    {% for user in users %}
-       <div class="side-padding">
-          <li><a href="{{ url_for('.user', username=user.username) }}">{{ user.first_name }} {{ user.last_name }}</a></li>
-       </div>
-    {% endfor %}-->
 {% endblock %}

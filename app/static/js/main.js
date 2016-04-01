@@ -50,8 +50,6 @@ $(document).ready(function(){
 		}
 	});
 
-    /*$(".delete-skill").on("click", DeleteSkill(this.id));*/
-
 	$("#learn-more").click(function(){
 		target = $("#selling-point-one");
 
